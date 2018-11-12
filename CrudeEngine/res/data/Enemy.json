@@ -1,0 +1,27 @@
+{
+	"Transform" : {
+		"Pos"  : [0.0, 0.0],
+		"Scale" : [1.0,1.0],
+		"Angle" : 0.0
+	},
+	"Sprite" : {
+		"File" : "enemy/crawler/tile003.png"
+    },
+    "UpDown" : {
+        "GoingUp" : true,
+        "TimerLimit" : 1.0
+    },
+	"Body" : {
+		"Mass" : 0.0,
+		"AABB" : [100.0, 100.0, 100.0, 100.0]
+	},
+	"Animator" : {
+		"Sprites" : [
+			{
+				"FileDir" : "res/textures/enemy/crawler",
+				"Type" : "move",
+				"Default" : true
+			}
+		]
+	}
+}

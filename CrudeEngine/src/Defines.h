@@ -1,0 +1,29 @@
+#pragma once
+
+#define SCREEN_WIDTH	960
+#define SCREEN_HEIGHT	720
+
+#define VELOCITY 200.0f
+#define BULLET_SPEED 500.0f
+
+enum GameObjectTypes
+{
+	NO_OBJECT = -1,
+	PLAYER = 0,
+	CRAWLER,
+	GHOUL,
+	WALL,
+	BULLET,
+	GRENADE,
+	TOMBSTONE,
+};
+
+enum COMPONENT_TYPE
+{
+	TRANSFORM,
+	SPRITE,
+	CONTROLLER,
+	BODY,
+	ANIMATOR,
+	COMP_NUM
+};

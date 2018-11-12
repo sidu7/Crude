@@ -1,0 +1,20 @@
+{
+	"Objects" : [
+		{
+			"File" : "Player.json",
+			"Type" : "Player",
+			"Transform" : {
+				"Pos" : [400.0, 300.0],
+				"Scale" : [150.0, 150.0]
+			}
+		},
+		{
+			"File" : "Enemy.json",
+			"Type" : "Enemy",
+			"Transform" : {
+				"Pos" : [800.0,300.0],
+				"Scale" : [125.0, 125.0]
+			}
+		}
+	]
+}
