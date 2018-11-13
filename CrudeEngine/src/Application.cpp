@@ -163,6 +163,16 @@ int main(int argc, char* args[])
 		background.SetSprite("res/textures/background1.png");
 	//-----
 
+	//----- Wall ------
+		GameObject wall(WALL);
+		
+		pNewComponent = wall.AddComponent(TRANSFORM);
+		pNewComponent = wall.AddComponent(SPRITE);
+
+		wall.SetTransform(95.0f, SCREEN_HEIGHT / 2, 40.0f, SCREEN_HEIGHT - 150.0f, 0.0f);
+		wall.SetSprite("res/textures/wall.png");
+
+	//-------------
 	//----- Health Bar ------
 /*
 		GameObject healthbar(NO_OBJECT);
@@ -211,6 +221,9 @@ int main(int argc, char* args[])
 			background.Update();
 			renderer.Draw(va, ib, *gpShader);
 			
+			wall.Update();
+			renderer.Draw(va, ib, *gpShader);
+
 		//	healthbar.Update();
 		//	renderer.Draw(va, ib, *gpShader);
 

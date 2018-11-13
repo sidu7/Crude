@@ -6,6 +6,7 @@
 #include "Components/Body.h"
 #include "Components/Animator.h"
 #include "Components/Component.h"
+#include "Components/Follow.h"
 
 #include "../Defines.h"
 GameObjectManager::GameObjectManager()
@@ -15,6 +16,7 @@ GameObjectManager::GameObjectManager()
 	mComponentMap[CONTROLLER] = new Controller();
 	mComponentMap[BODY] = new Body();
 	mComponentMap[ANIMATOR] = new Animator();
+	mComponentMap[FOLLOW] = new Follow();
 }
 
 GameObjectManager::~GameObjectManager()

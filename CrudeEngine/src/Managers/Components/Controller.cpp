@@ -34,25 +34,29 @@ void Controller::Update()
 			if (gpInputManager->IsPressed(SDL_SCANCODE_UP))
 			{
 				pBody->mAngV = 90.0f;
-				pAnimator->SetState("move");
+				if(pAnimator->mCurrState!="move_shoot")
+					pAnimator->SetState("move");
 				moving = true;
 			}
 			if (gpInputManager->IsPressed(SDL_SCANCODE_LEFT))
 			{
 				pBody->mAngV = 180.0f;
-				pAnimator->SetState("move");
+				if (pAnimator->mCurrState != "move_shoot")
+					pAnimator->SetState("move");
 				moving = true;
 			}
 			if (gpInputManager->IsPressed(SDL_SCANCODE_DOWN))
 			{
 				pBody->mAngV = 270.0f;
-				pAnimator->SetState("move");
+				if (pAnimator->mCurrState != "move_shoot")
+					pAnimator->SetState("move");
 				moving = true;
 			}
 			if (gpInputManager->IsPressed(SDL_SCANCODE_RIGHT))
 			{
 				pBody->mAngV = 0.0f;
-				pAnimator->SetState("move");
+				if (pAnimator->mCurrState != "move_shoot")
+					pAnimator->SetState("move");
 				moving = true;
 			}
 			if (gpInputManager->IsPressed(SDL_SCANCODE_RIGHT) && gpInputManager->IsPressed(SDL_SCANCODE_DOWN)) {
@@ -74,10 +78,21 @@ void Controller::Update()
 			}
 			else if (gpInputManager->IsTriggered(SDL_SCANCODE_SPACE))
 			{
-				//pAnimator->PlayAnimation("Shoot");
+				if (pAnimator->mCurrState != "move")
+					pAnimator->PlayAnimation("shoot");
+				else if (pAnimator->mCurrState != "move_shoot")
+					pAnimator->PlayAnimation("move_shoot");
 				GameObject *pBullet = gpObjectFactory->LoadObject("bullet.json", BULLET);
 				Body *pBbulletBody = static_cast<Body*>(pBullet->GetComponent(BODY));
-				Vector2DSet(&pBbulletBody->mPosition, pBody->mPosition.x, pBody->mPosition.y);
+
+				//---- Offset -----------
+				Vector2D OffsetY,OffsetX,Offset;
+				Vector2DSet(&OffsetX, 40.0f * cosf(pBody->mAngV * PI / 180), 40.0f * sinf(pBody->mAngV * PI / 180));
+				Vector2DSet(&OffsetY, 18.0f * sinf(pBody->mAngV * PI / 180), 18.0f * -cosf(pBody->mAngV * PI / 180));
+				Vector2DAdd(&Offset, &OffsetX, &OffsetY);
+				Vector2DAdd(&pBbulletBody->mPosition, &pBody->mPosition, &Offset );
+				//-------------------------
+
 				pBbulletBody->mAngV = pBody->mAngV;
 				pBbulletBody->AddVelocity(BULLET_SPEED);
 			}

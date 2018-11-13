@@ -137,6 +137,7 @@
     <ClInclude Include="src\Managers\Components\Body.h" />
     <ClInclude Include="src\Managers\Components\Component.h" />
     <ClInclude Include="src\Managers\Components\Controller.h" />
+    <ClInclude Include="src\Managers\Components\Follow.h" />
     <ClInclude Include="src\Managers\Components\Sprite.h" />
     <ClInclude Include="src\Managers\Components\Transform.h" />
     <ClInclude Include="src\Managers\EventManager.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="src\Managers\Components\Component.cpp" />
     <ClCompile Include="src\Managers\Components\Controller.cpp" />
     <ClCompile Include="src\Managers\Components\Sprite.cpp" />
+    <ClCompile Include="src\Managers\Components\Follow.cpp" />
     <ClCompile Include="src\Managers\Components\Transform.cpp" />
     <ClCompile Include="src\Managers\EventManager.cpp" />
     <ClCompile Include="src\Managers\Frame Rate Controller.cpp" />

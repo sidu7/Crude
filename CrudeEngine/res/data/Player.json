@@ -29,6 +29,10 @@
 			{
 				"FileDir" : "res/textures/player/throw",
 				"Type" : "throw"
+			},
+			{
+				"FileDir" : "res/textures/player/shoot",
+				"Type" : "shoot"
 			}
 		]
 	}

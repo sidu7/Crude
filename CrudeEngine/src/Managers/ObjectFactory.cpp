@@ -3,6 +3,7 @@
 #include "Components/Transform.h"
 #include "GameObjectManager.h"
 #include "Components/Body.h"
+#include "Components/Follow.h"
 
 #include <fstream>
 #include <sstream>
@@ -114,6 +115,12 @@ GameObject* ObjectFactory::LoadObject(const char *pFileName, int type)
 		{
 			pNewComponent = pNewGameObject->AddComponent(ANIMATOR);
 			pNewComponent->Serialize(root[L"Animator"]->AsObject());
+		}
+		if (root.find(L"Follow") != root.end())
+		{
+			pNewComponent = pNewGameObject->AddComponent(FOLLOW);
+			Follow *pFollow = static_cast<Follow*>(pNewComponent);
+			pFollow->Initialize();
 		}
 		gpGameObjectManager->mGameObjects.push_back(pNewGameObject);
 	}
