@@ -5,12 +5,14 @@
 #include "../ResourceManager.h"
 #include "../Frame Rate Controller.h"
 #include "../GameObject.h"
+#include "../GameObjectManager.h"
 #include "Sprite.h"
 
 extern ResourceManager *gpResourceManager;
+extern GameObjectManager *gpGameObjectManager;
 extern FrameRateController *gpFrameRateController;
 
-Animator::Animator() : Component(ANIMATOR), mCurrState(""), mCurrFrame(0), mCurrDelay(0.0f), PlayingAnimation(false)
+Animator::Animator() : Component(ANIMATOR), mCurrState(""), mCurrFrame(0), mCurrDelay(0.0f), PlayingAnimation(false), DestroyAfterAnimation(false)
 {
 }
 
@@ -64,6 +66,10 @@ void Animator::Update()
 				PlayingAnimation = false;
 				mCurrFrame = 0;
 				ResetState();
+				if (DestroyAfterAnimation)
+				{
+					gpGameObjectManager->Destroy(mpOwner);
+				}
 			}
 			mCurrDelay = 0.0f;
 		}
@@ -106,12 +112,13 @@ void Animator::ResetState()
 	mCurrState = "idle";
 }
 
-void Animator::PlayAnimation(std::string animation)
+void Animator::PlayAnimation(std::string animation,bool destroy)
 {
 	mCurrState = animation;
 	PlayingAnimation = true;
 	mCurrDelay = -1.0f;
 	mCurrFrame = 0;
+	DestroyAfterAnimation = destroy;
 }
 
 Component * Animator::Create()

@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Managers\Components\FallExplode.h" />
     <ClInclude Include="src\Defines.h" />
     <ClInclude Include="src\Managers\CollisionManager.h" />
     <ClInclude Include="src\Managers\Components\Animator.h" />
@@ -169,6 +170,7 @@
     <None Include="res\shaders\vertex.shader" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Managers\Components\FallExplode.cpp" />
     <ClCompile Include="glew.c" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Managers\CollisionManager.cpp" />

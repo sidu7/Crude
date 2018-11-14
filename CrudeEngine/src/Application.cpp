@@ -22,6 +22,9 @@
 #include "Managers/CollisionManager.h"
 #include "Managers/PhysicsManager.h"
 #include "Managers/Components/Component.h"
+#include "Managers/EventManager.h"
+
+#include "Managers/Components/Body.h"
 
 #include "Defines.h"
 
@@ -42,6 +45,7 @@ GameObjectManager *gpGameObjectManager;
 ObjectFactory *gpObjectFactory;
 CollisionManager *gpCollisionManager;
 PhysicsManager *gpPhysicsManager;
+EventManager *gpEventManager;
 
 Shader *gpShader;
 Matrix3D* gpProj;
@@ -116,6 +120,7 @@ int main(int argc, char* args[])
 	gpObjectFactory = new ObjectFactory();
 	gpCollisionManager = new CollisionManager();
 	gpPhysicsManager = new PhysicsManager();
+	gpEventManager = new EventManager();
 
 	//-----
 	printf("%s\n",glGetString(GL_VERSION));
@@ -168,10 +173,15 @@ int main(int argc, char* args[])
 		
 		pNewComponent = wall.AddComponent(TRANSFORM);
 		pNewComponent = wall.AddComponent(SPRITE);
+		pNewComponent = wall.AddComponent(BODY);
 
+		Body *pBody = static_cast<Body*>(wall.GetComponent(BODY));
 		wall.SetTransform(95.0f, SCREEN_HEIGHT / 2, 40.0f, SCREEN_HEIGHT - 150.0f, 0.0f);
+		pBody->Initialize();
 		wall.SetSprite("res/textures/wall.png");
-
+		pBody->mpShape = new ShapeAABB(SCREEN_HEIGHT - 150.0f, 40.0f, SCREEN_HEIGHT - 150.0f, 40.0f);
+		pBody->mpShape->mpOwnerBody = pBody;
+		gpGameObjectManager->mGameObjects.push_back(&wall);
 	//-------------
 	//----- Health Bar ------
 /*
@@ -236,7 +246,7 @@ int main(int argc, char* args[])
 			}
 
 			gpPhysicsManager->Update(gpFrameRateController->GetFrameTime());
-
+			gpEventManager->Update(gpFrameRateController->GetFrameTime());
 			SDL_GL_SwapWindow(pWindow);
 
 			gpFrameRateController->FrameEnd();
@@ -251,6 +261,7 @@ int main(int argc, char* args[])
 	free(gpCollisionManager);
 	free(gpObjectFactory);
 	free(gpPhysicsManager);
+	free(gpEventManager);
 
 	// Close and destroy the window
 	SDL_DestroyWindow(pWindow);

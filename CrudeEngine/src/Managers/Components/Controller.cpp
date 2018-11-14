@@ -6,12 +6,13 @@
 #include "SDL_keyboard.h"
 #include "Animator.h"
 #include "../ObjectFactory.h"
-#include "../EventManager.h"
+#include "../Events.h"
 
 #include "../../Defines.h"
 
 extern Input_Manager *gpInputManager;
 extern ObjectFactory *gpObjectFactory;
+extern EventManager *gpEventManager;
 
 Controller::Controller() : Component (CONTROLLER) , moving(false)
 {
@@ -71,20 +72,28 @@ void Controller::Update()
 			if (gpInputManager->IsPressed(SDL_SCANCODE_LEFT) && gpInputManager->IsPressed(SDL_SCANCODE_DOWN)) {
 				pBody->mAngV = 225.0f;
 			}
-			if (gpInputManager->IsPressed(SDL_SCANCODE_G))
+			if (gpInputManager->IsTriggered(SDL_SCANCODE_G))
 			{
-				pAnimator->PlayAnimation("throw");
+				pAnimator->PlayAnimation("throw",false);
+				
+				ThrowGrenadeEvent tge;
+				tge.pBody = pBody;
+				tge.mTimer = 1.0f;
+
+				gpEventManager->AddTimedEvent(&tge);
+				
+
 				moving = false;
 			}
-			else if (gpInputManager->IsTriggered(SDL_SCANCODE_SPACE))
+			if (gpInputManager->IsPressed(SDL_SCANCODE_SPACE))
 			{
-				if (pAnimator->mCurrState != "move")
-					pAnimator->PlayAnimation("shoot");
-				else if (pAnimator->mCurrState != "move_shoot")
-					pAnimator->PlayAnimation("move_shoot");
+ 				//if (pAnimator->mCurrState != "move")
+					//pAnimator->PlayAnimation("shoot",false);
+ 				if (pAnimator->mCurrState != "move_shoot")
+					pAnimator->PlayAnimation("move_shoot",false);
 				GameObject *pBullet = gpObjectFactory->LoadObject("bullet.json", BULLET);
 				Body *pBbulletBody = static_cast<Body*>(pBullet->GetComponent(BODY));
-
+				printf("bullet");
 				//---- Offset -----------
 				Vector2D OffsetY,OffsetX,Offset;
 				Vector2DSet(&OffsetX, 40.0f * cosf(pBody->mAngV * PI / 180), 40.0f * sinf(pBody->mAngV * PI / 180));
@@ -103,7 +112,7 @@ void Controller::Update()
 					pAnimator->ResetState();
 				pBody->mVelocity.x = pBody->mVelocity.y = 0.0f;
 			}
-			else
+			else 
 			{
 				pBody->AddVelocity(VELOCITY);
 			}
@@ -119,4 +128,10 @@ Component * Controller::Create()
 
 void Controller::HandleEvent(Event * pEvent)
 {
+	if (pEvent->mType == WALLCOLLIDE)
+	{
+		Body *pBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
+		printf("wall");
+		Vector2DZero(&pBody->mVelocity);
+	}
 }

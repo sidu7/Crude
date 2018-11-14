@@ -31,6 +31,8 @@ void Matrix2DIdentity(Matrix2D *pResult)
 	pResult->m[2][2] = 1;
 }
 
+
+
 void Matrix3DIdentity(Matrix3D *pResult)
 {
 	memset(pResult, 0, 16 * sizeof(float));

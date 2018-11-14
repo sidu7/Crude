@@ -1,0 +1,26 @@
+{
+    "Transform" : {
+        "Pos"   : [0.0, 0.0],
+        "Scale" : [50.0, 50.0],
+        "Angle" : 0.0
+    },
+    "Sprite" : {
+        "File" : "grenade.png"
+    },
+    "Body" : {
+        "Mass" : 0.0,
+        "AABB" : [200.0, 200.0, 200.0, 200.0]
+    },
+    "Animator" : {
+        "Sprites" : [
+            {
+                "FileDir" : "res/textures/explosion",
+                "Type" : "explode"
+            }
+        ]
+    },
+    "FallExplode" : {
+        "Limit" : 1.0,
+        "Throw" : true
+    }
+}

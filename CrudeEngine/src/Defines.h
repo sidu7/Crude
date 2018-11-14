@@ -8,6 +8,7 @@
 #define VELOCITY 200.0f
 #define BULLET_SPEED 500.0f
 #define ENEMY_VELOCITY 50.0f
+#define GRENADE_SPEED 200.0f
 
 enum GameObjectTypes
 {
@@ -29,5 +30,15 @@ enum COMPONENT_TYPE
 	BODY,
 	ANIMATOR,
 	FOLLOW,
+	FALLEXPLODE,
 	COMP_NUM
+};
+
+enum EventType
+{
+	WALLCOLLIDE,
+	PLAYERHIT,
+	BULLETHIT,
+	GRENADETHROW,
+	NUM
 };

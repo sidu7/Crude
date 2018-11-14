@@ -1,8 +1,12 @@
 #include "Body.h"
 #include "../GameObject.h"
 #include "Transform.h"
-
+#include "../EventManager.h"
+#include "../Events.h"
+#include "../GameObjectManager.h"
 #include "../../Defines.h"
+
+extern GameObjectManager *gpGameObjectManager;
 
 Body::Body() : Component(BODY)
 {
@@ -102,6 +106,14 @@ void Body::AddVelocity(float velocity)
 	Vector2D vel;
 	Vector2DSet(&vel, cosf(mAngV*PI/180), sinf(mAngV*PI/180));
 	Vector2DScale(&mVelocity, &vel, velocity);
+}
+
+void Body::HandleEvent(Event * pEvent)
+{
+	if (pEvent->mType == BULLETHIT)
+	{
+		gpGameObjectManager->Destroy(mpOwner);
+	}
 }
 
 Component * Body::Create()

@@ -14,6 +14,7 @@ public:
 	void Initialize();
 	void Integrate(float Gravity, float DeltaTime);
 	void AddVelocity(float velocity);
+	void HandleEvent(Event* pEvent);
 	Component* Create();
 
 

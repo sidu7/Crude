@@ -4,9 +4,6 @@
 		"Scale" : [1.0,1.0],
 		"Angle" : 0.0
 	},
-	"Sprite" : {
-		"File" : "player/idle/idle.png"
-	},
 	"Controller" : "true",
 	"Body" : {
 		"Mass" : 0.0,
@@ -35,5 +32,8 @@
 				"Type" : "shoot"
 			}
 		]
+	},
+	"Sprite" : {
+		"File" : "player/idle/idle.png"
 	}
 }

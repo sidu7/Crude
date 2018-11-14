@@ -16,7 +16,7 @@ public :
 	void Serialize(JSONObject obj);
 	void SetState(std::string state);
 	void ResetState();
-	void PlayAnimation(std::string animation);
+	void PlayAnimation(std::string animation, bool destroy);
 	Component* Create();
 
 
@@ -27,4 +27,5 @@ public :
 private:
 	int mCurrFrame;
 	float mCurrDelay;
+	bool DestroyAfterAnimation;
 };

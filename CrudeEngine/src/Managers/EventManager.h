@@ -2,14 +2,11 @@
 #include <list>
 #include <unordered_map>
 
+#include "../Defines.h"
+
 class GameObject;
 
-enum EventType
-{
-	COLLIDE,
-	PLAYERHIT,
-	NUM
-};
+
 
 class Event
 {

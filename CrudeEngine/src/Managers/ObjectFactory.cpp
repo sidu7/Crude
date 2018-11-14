@@ -97,11 +97,6 @@ GameObject* ObjectFactory::LoadObject(const char *pFileName, int type)
 			pNewComponent = pNewGameObject->AddComponent(TRANSFORM);
 			pNewComponent->Serialize(root[L"Transform"]->AsObject());
 		}
-		if (root.find(L"Sprite") != root.end())
-		{
-			pNewComponent = pNewGameObject->AddComponent(SPRITE);
-			pNewComponent->Serialize(root[L"Sprite"]->AsObject());
-		}
 		if (root.find(L"Controller") != root.end())
 		{
 			pNewComponent = pNewGameObject->AddComponent(CONTROLLER);
@@ -116,11 +111,21 @@ GameObject* ObjectFactory::LoadObject(const char *pFileName, int type)
 			pNewComponent = pNewGameObject->AddComponent(ANIMATOR);
 			pNewComponent->Serialize(root[L"Animator"]->AsObject());
 		}
+		if (root.find(L"Sprite") != root.end())
+		{
+			pNewComponent = pNewGameObject->AddComponent(SPRITE);
+			pNewComponent->Serialize(root[L"Sprite"]->AsObject());
+		}
 		if (root.find(L"Follow") != root.end())
 		{
 			pNewComponent = pNewGameObject->AddComponent(FOLLOW);
 			Follow *pFollow = static_cast<Follow*>(pNewComponent);
 			pFollow->Initialize();
+		}
+		if (root.find(L"FallExplode") != root.end())
+		{
+			pNewComponent = pNewGameObject->AddComponent(FALLEXPLODE);
+			pNewComponent->Serialize(root[L"FallExplode"]->AsObject());
 		}
 		gpGameObjectManager->mGameObjects.push_back(pNewGameObject);
 	}

@@ -66,9 +66,16 @@ void PhysicsManager::Update(float FrameTime)
 	//Super Advanced Physics here!!!
 	for (auto c : gpCollisionManager->mContacts)
 	{
-		CollideEvent ce;
-
-		c->mBodies[0]->mpOwner->HandleEvent(&ce);
-		c->mBodies[1]->mpOwner->HandleEvent(&ce);
+		if (c->mBodies[0]->mpOwner->mType == CRAWLER && c->mBodies[1]->mpOwner->mType == BULLET)
+		{
+			BulletHitEvent bh;
+			c->mBodies[0]->mpOwner->HandleEvent(&bh);
+			c->mBodies[1]->mpOwner->HandleEvent(&bh);
+		}
+		else if (c->mBodies[0]->mpOwner->mType == PLAYER && c->mBodies[1]->mpOwner->mType == WALL)
+		{
+			WallCollideEvent wc;
+			c->mBodies[0]->mpOwner->HandleEvent(&wc);
+		}
 	}
 }

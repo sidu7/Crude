@@ -63,7 +63,7 @@ void EventManager::Update(float FrameTime)
 			//BroadcastEvent(pEvent);
 			BroadcastEventToSubscribers(pEvent);
 
-			delete pEvent;
+			//delete pEvent;
 			it = mTimedEvents.erase(it);
 		}
 		else

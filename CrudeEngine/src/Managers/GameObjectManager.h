@@ -9,7 +9,7 @@ class GameObjectManager
 	public:
 	GameObjectManager();
 	~GameObjectManager();
-	void Destroy(int itr);
+	void Destroy(GameObject* pGameObject);
 	
 	public:
 	std::vector<GameObject *> mGameObjects;

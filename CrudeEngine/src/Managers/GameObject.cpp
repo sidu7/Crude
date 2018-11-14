@@ -73,6 +73,8 @@ void GameObject::HandleEvent(Event * pEvent)
 {
 	for (auto c : mComponents)
 	{
+		if (mComponents.size() == 0)
+			break;
 		c->HandleEvent(pEvent);
 	}
 }
