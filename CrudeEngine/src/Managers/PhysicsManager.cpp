@@ -91,5 +91,12 @@ void PhysicsManager::Update(float FrameTime)
 		{
 			gpGameObjectManager->Destroy(c->mBodies[1]->mpOwner);
 		}
+		else if (c->mBodies[0]->mpOwner->mType == TOMBSTONE && c->mBodies[1]->mpOwner->mType == BULLET)
+		{
+			TakeDamage *td = new TakeDamage();
+			td->DamageDealt = 10;
+			c->mBodies[0]->mpOwner->HandleEvent(td);
+			gpGameObjectManager->Destroy(c->mBodies[1]->mpOwner);
+		}
 	}
 }

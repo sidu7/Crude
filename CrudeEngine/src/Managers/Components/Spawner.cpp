@@ -21,7 +21,7 @@ Spawner::~Spawner()
 
 void Spawner::Update()
 {
-	mCurrDelay += gpFrameRateController->GetFrameTime();
+	/*mCurrDelay += gpFrameRateController->GetFrameTime();
 	if (mCurrDelay > mStartDelay + 2.0f)
 	{
 		GameObject *pCrawler = gpObjectFactory->LoadObject("Crawler.json", CRAWLER);
@@ -36,7 +36,7 @@ void Spawner::Update()
 		//-------------------------
 		Vector2DSet(&pCrawlerTrans->mScale, 125.0f, 125.0f);
 		mCurrDelay = mStartDelay;
-	}
+	}*/
 }
 
 Component * Spawner::Create()

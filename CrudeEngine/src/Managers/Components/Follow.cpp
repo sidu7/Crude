@@ -9,26 +9,6 @@
 
 extern GameObjectManager *gpGameObjectManager;
 
-
-float getAngleVector(Vector2D mVec1, Vector2D aVec2)
-{
-
-	float dotProduct, angle;
-	Vector2D UpVec;
-
-	dotProduct = Vector2DDotProduct(&mVec1, &aVec2);
-	Vector2DSet(&UpVec, -mVec1.y, mVec1.x);
-
-
-	angle = acosf(dotProduct / (Vector2DLength(&mVec1)*Vector2DLength(&aVec2)));
-
-	if (Vector2DDotProduct(&UpVec, &aVec2) < 0)
-	{
-		angle = -angle;
-	}
-	return angle;
-}
-
 Follow::Follow() : Component(FOLLOW), Init(false)
 {	
 }
@@ -62,4 +42,23 @@ void Follow::Update()
 Component* Follow::Create()
 {
 	return new Follow();
+}
+
+float Follow::getAngleVector(Vector2D mVec1, Vector2D aVec2)
+{
+
+	float dotProduct, angle;
+	Vector2D UpVec;
+
+	dotProduct = Vector2DDotProduct(&mVec1, &aVec2);
+	Vector2DSet(&UpVec, -mVec1.y, mVec1.x);
+
+
+	angle = acosf(dotProduct / (Vector2DLength(&mVec1)*Vector2DLength(&aVec2)));
+
+	if (Vector2DDotProduct(&UpVec, &aVec2) < 0)
+	{
+		angle = -angle;
+	}
+	return angle;
 }

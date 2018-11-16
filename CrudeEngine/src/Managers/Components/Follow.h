@@ -3,6 +3,7 @@
 
 class Transform;
 class Body;
+class Vector2D;
 
 class Follow : public Component
 {
@@ -19,4 +20,5 @@ private:
 	Transform *mPlayerPos;
 	Body *mBody;
 	bool Init;
+	float getAngleVector(Vector2D mVec1, Vector2D aVec2);
 };

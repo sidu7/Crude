@@ -7,13 +7,14 @@
 #include "Animator.h"
 #include "../ObjectFactory.h"
 #include "../Events.h"
-
+#include "SDL.h"
 
 #include "../../Defines.h"
 
 extern Input_Manager *gpInputManager;
 extern ObjectFactory *gpObjectFactory;
 extern EventManager *gpEventManager;
+
 
 Controller::Controller() : Component (CONTROLLER) , moving(false)
 {
@@ -27,13 +28,14 @@ Controller::~Controller()
 void Controller::Update()
 {
 	Animator *pAnimator = static_cast<Animator*>(mpOwner->GetComponent(ANIMATOR));
+	Body *pBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
 	
 	if(mpOwner != nullptr && gpInputManager != nullptr && pAnimator->mCurrState != "throw")
 	{
-		Body *pBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
 		
 		if(pBody != nullptr)
 		{
+			pBody->mAngV = getAngleFromMouse(pBody->mPosition);
 			if (gpInputManager->IsPressed(SDL_SCANCODE_W))
 			{
 				pBody->mAngV = 90.0f;
@@ -161,3 +163,42 @@ void Controller::HandleEvent(Event * pEvent)
 
 	}
 }
+
+
+float Controller::getAngleVector(Vector2D mVec1, Vector2D aVec2)
+{
+
+	float dotProduct, angle;
+	Vector2D UpVec;
+
+	dotProduct = Vector2DDotProduct(&mVec1, &aVec2);
+	Vector2DSet(&UpVec, -mVec1.y, mVec1.x);
+
+
+	angle = acosf(dotProduct / (Vector2DLength(&mVec1)*Vector2DLength(&aVec2)));
+
+	if (Vector2DDotProduct(&UpVec, &aVec2) < 0)
+	{
+		angle = -angle;
+	}
+	return angle;
+}
+
+float Controller::getAngleFromMouse(Vector2D PlayerPos)
+{
+	Vector2D Dir, eDir;
+	Vector2D MouseVec;
+	int x, y;
+	SDL_PumpEvents();
+	SDL_GetMouseState(&x, &y);
+	Vector2DSet(&MouseVec, x, 720 - y);
+	Vector2DSub(&Dir, &MouseVec, &PlayerPos);
+	Vector2DSet(&eDir, cosf(PI), sinf(PI));
+	Vector2DNormalize(&Dir, &Dir);
+	float ang = getAngleVector(Dir, eDir);
+	if (ang > 0)
+		return acosf(Dir.x) * 180 / PI;
+	else
+		return -(acosf(Dir.x) * 180 / PI);
+}
+

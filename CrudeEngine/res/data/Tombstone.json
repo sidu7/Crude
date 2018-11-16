@@ -18,10 +18,13 @@
 				"Default" : true
             },
             {
-                "FileDir" : "res/textures/tombstone/destory",
+                "FileDir" : "res/textures/tombstone/destroy",
                 "Type" : "destroy"
             }
 		]
     },
-    "Spawner" : true
+    "Spawner" : true,
+    "Attributes" : {
+        "TotalHP" : 100
+    }
 }

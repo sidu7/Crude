@@ -1,6 +1,8 @@
 #include "Attributes.h"
 #include "../Events.h"
 #include "../GameObjectManager.h"
+#include "../GameObject.h"
+#include "Animator.h"
 
 extern GameObjectManager *gpGameObjectManager;
 
@@ -20,7 +22,10 @@ void Attributes::Update()
 void Attributes::Serialize(JSONObject obj)
 {
 	mTotalHP = obj[L"TotalHP"]->AsNumber();
-	mDamage = obj[L"Damage"]->AsNumber();
+	if (obj.find(L"Damage") != obj.end())
+	{
+		mDamage = obj[L"Damage"]->AsNumber();
+	}
 	mCurrHP = mTotalHP;
 }
 
@@ -37,7 +42,13 @@ void Attributes::HandleEvent(Event * pEvent)
 		mCurrHP -= td->DamageDealt;
 		if (mCurrHP == 0)
 		{
-			gpGameObjectManager->Destroy(mpOwner);
+			if (mpOwner->mType == TOMBSTONE)
+			{
+				Animator *pAnimator = static_cast<Animator*>(mpOwner->GetComponent(ANIMATOR));
+				pAnimator->PlayAnimation("destroy", true);
+			}
+			else
+				gpGameObjectManager->Destroy(mpOwner);
 		}
 	}
 }
