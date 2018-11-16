@@ -39,7 +39,6 @@ void Animator::LoadSpriteSheet(std::string FilePath,std::string type)
 			{
 				std::string path = FilePath + "/" + entry->d_name;
 				Texture* TempTex = gpResourceManager->LoadSurface(path.c_str());
-				
 				sheet.push_back(TempTex);
 			}
 		}
@@ -65,11 +64,10 @@ void Animator::Update()
 			{
 				PlayingAnimation = false;
 				mCurrFrame = 0;
-				ResetState();
 				if (DestroyAfterAnimation)
-				{
 					gpGameObjectManager->Destroy(mpOwner);
-				}
+				else
+					ResetState();
 			}
 			mCurrDelay = 0.0f;
 		}

@@ -34,7 +34,7 @@ void FallExplode::Update()
 		Transform *pTr = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM));
 		Vector2DSet(&pTr->mScale, 200.0, 200.0);
 		ShapeAABB *rect = static_cast<ShapeAABB*>(pBody->mpShape);
-		rect->mTop = rect->mBottom = rect->mLeft = rect->mRight = 200.0f;
+		rect->mTop = rect->mBottom = rect->mLeft = rect->mRight = 150.0f;
 		pAnimator->PlayAnimation("explode",true);
 		Exploding = true;
 	}

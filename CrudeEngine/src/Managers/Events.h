@@ -35,3 +35,10 @@ public:
 	~ThrowGrenadeEvent() { }
 	Body* pBody;
 };
+
+class GrenadeHit : public Event
+{
+public:
+	GrenadeHit() : Event(GRENADEHIT) { }
+	~GrenadeHit() { }
+};

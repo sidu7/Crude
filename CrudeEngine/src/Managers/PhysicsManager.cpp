@@ -1,5 +1,6 @@
 #include "PhysicsManager.h"
 #include "Components/Body.h"
+#include "Components/Transform.h"
 #include "GameObject.h"
 #include "GameObjectManager.h"
 #include "Events.h"
@@ -97,6 +98,24 @@ void PhysicsManager::Update(float FrameTime)
 			td->DamageDealt = 10;
 			c->mBodies[0]->mpOwner->HandleEvent(td);
 			gpGameObjectManager->Destroy(c->mBodies[1]->mpOwner);
+		}
+		else if (c->mBodies[0]->mpOwner->mType == GRENADE && c->mBodies[1]->mpOwner->mType == CRAWLER)	
+		{
+			Transform *pTr = static_cast<Transform*>(c->mBodies[0]->mpOwner->GetComponent(TRANSFORM));
+			if (pTr->mScale.x == 200.0f)
+			{
+				GrenadeHit gh;
+				c->mBodies[1]->mpOwner->HandleEvent(&gh);
+			}
+		}
+		else if (c->mBodies[0]->mpOwner->mType == CRAWLER && c->mBodies[1]->mpOwner->mType == GRENADE)
+		{
+			Transform *pTr = static_cast<Transform*>(c->mBodies[1]->mpOwner->GetComponent(TRANSFORM));
+			if (pTr->mScale.x == 200.0f)
+			{
+				GrenadeHit gh;
+				c->mBodies[0]->mpOwner->HandleEvent(&gh);
+			}
 		}
 	}
 }

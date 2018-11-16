@@ -204,13 +204,7 @@ int main(int argc, char* args[])
 			}
 			
 			gpInputManager->Update();
-			SDL_PumpEvents();
-			//int x, y;
-			//SDL_GetMouseState(&x, &y);
-			//printf("x %d y %d\n",x,y);
 			
-
-
 			if (gpInputManager->IsPressed(SDL_SCANCODE_ESCAPE))
 			{
 				appIsRunning = false;

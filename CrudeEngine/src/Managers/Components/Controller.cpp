@@ -88,6 +88,7 @@ void Controller::Update()
 				
 				moving = false;
 			}
+			//if(gpInputManager->IsMouseClicked(12))
 			if (gpInputManager->IsTriggered(SDL_SCANCODE_SPACE))
 			{
 				if (pAnimator->mCurrState != "move")
@@ -148,7 +149,7 @@ void Controller::HandleEvent(Event * pEvent)
 		ThrowGrenadeEvent *tge = static_cast<ThrowGrenadeEvent*>(pEvent);
 		GameObject *pGrenade = gpObjectFactory->LoadObject("grenade.json", GRENADE);
 		Body *pGrenadeBody = static_cast<Body*>(pGrenade->GetComponent(BODY));
-		printf("grenade");
+		
 		//---- Offset -----------
 		Vector2D Offset;
 		Vector2DSet(&Offset, 40.0f * cosf(tge->pBody->mAngV * PI / 180), 40.0f * sinf(tge->pBody->mAngV * PI / 180));

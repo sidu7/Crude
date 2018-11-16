@@ -51,4 +51,8 @@ void Attributes::HandleEvent(Event * pEvent)
 				gpGameObjectManager->Destroy(mpOwner);
 		}
 	}
+	if (pEvent->mType == GRENADEHIT)
+	{
+		gpGameObjectManager->Destroy(mpOwner);
+	}
 }

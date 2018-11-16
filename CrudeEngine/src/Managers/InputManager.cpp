@@ -16,6 +16,7 @@ Creation date:	10/18/2018
 
 #include "InputManager.h"
 #include "SDL_keyboard.h"
+#include "SDL.h"
 #include <string>
 #include <iostream>
 
@@ -75,4 +76,26 @@ bool Input_Manager::IsReleased(unsigned int KeyScanCode)
 		return true;
 
 	return false;
+}
+
+bool Input_Manager::IsMouseClicked(unsigned int KeyScanCode)
+{
+	SDL_Event e;
+	bool result = false;
+	while (SDL_PollEvent(&e) != 0)
+	{
+		//User requests quit
+		if (e.type == SDL_MOUSEBUTTONDOWN)
+		{
+			if (e.button.button == SDL_BUTTON_LEFT)
+				result = true;
+		}
+		if (e.type == SDL_MOUSEBUTTONUP)
+		{
+			if (e.button.button == SDL_BUTTON_LEFT)
+				if (result)
+					return true;
+				else return false;
+		}
+	}
 }
