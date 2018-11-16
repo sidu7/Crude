@@ -8,6 +8,9 @@
 #include "Components/Component.h"
 #include "Components/Follow.h"
 #include "Components/FallExplode.h"
+#include "Components/Subscription.h"
+#include "Components/Spawner.h"
+#include "Components/Attributes.h"
 
 #include "../Defines.h"
 GameObjectManager::GameObjectManager()
@@ -19,6 +22,9 @@ GameObjectManager::GameObjectManager()
 	mComponentMap[ANIMATOR] = new Animator();
 	mComponentMap[FOLLOW] = new Follow();
 	mComponentMap[FALLEXPLODE] = new FallExplode();
+	mComponentMap[SUBSCRIPTION] = new Subscription();
+	mComponentMap[SPAWNER] = new Spawner();
+	mComponentMap[ATTRIBUTES] = new Attributes();
 }
 
 GameObjectManager::~GameObjectManager()

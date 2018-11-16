@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Managers\Components\Attributes.h" />
     <ClInclude Include="src\Managers\Components\FallExplode.h" />
     <ClInclude Include="src\Defines.h" />
     <ClInclude Include="src\Managers\CollisionManager.h" />
@@ -139,7 +140,9 @@
     <ClInclude Include="src\Managers\Components\Component.h" />
     <ClInclude Include="src\Managers\Components\Controller.h" />
     <ClInclude Include="src\Managers\Components\Follow.h" />
+    <ClInclude Include="src\Managers\Components\Spawner.h" />
     <ClInclude Include="src\Managers\Components\Sprite.h" />
+    <ClInclude Include="src\Managers\Components\Subscription.h" />
     <ClInclude Include="src\Managers\Components\Transform.h" />
     <ClInclude Include="src\Managers\EventManager.h" />
     <ClInclude Include="src\Managers\Frame Rate Controller.h" />
@@ -170,6 +173,7 @@
     <None Include="res\shaders\vertex.shader" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Managers\Components\Attributes.cpp" />
     <ClCompile Include="src\Managers\Components\FallExplode.cpp" />
     <ClCompile Include="glew.c" />
     <ClCompile Include="src\Application.cpp" />
@@ -178,8 +182,10 @@
     <ClCompile Include="src\Managers\Components\Body.cpp" />
     <ClCompile Include="src\Managers\Components\Component.cpp" />
     <ClCompile Include="src\Managers\Components\Controller.cpp" />
+    <ClCompile Include="src\Managers\Components\Spawner.cpp" />
     <ClCompile Include="src\Managers\Components\Sprite.cpp" />
     <ClCompile Include="src\Managers\Components\Follow.cpp" />
+    <ClCompile Include="src\Managers\Components\Subscription.cpp" />
     <ClCompile Include="src\Managers\Components\Transform.cpp" />
     <ClCompile Include="src\Managers\EventManager.cpp" />
     <ClCompile Include="src\Managers\Frame Rate Controller.cpp" />

@@ -30,8 +30,8 @@ EventManager::~EventManager()
 
 void EventManager::BroadcastEvent(Event * pEvent)
 {
-	for (auto g : gpGameObjectManager->mGameObjects)
-		g->HandleEvent(pEvent);
+	for (unsigned int i = 0; i < gpGameObjectManager->mGameObjects.size(); ++i)
+		gpGameObjectManager->mGameObjects[i]->HandleEvent(pEvent);
 }
 
 

@@ -68,14 +68,28 @@ void PhysicsManager::Update(float FrameTime)
 	{
 		if (c->mBodies[0]->mpOwner->mType == CRAWLER && c->mBodies[1]->mpOwner->mType == BULLET)
 		{
-			BulletHitEvent bh;
-			c->mBodies[0]->mpOwner->HandleEvent(&bh);
-			c->mBodies[1]->mpOwner->HandleEvent(&bh);
+			TakeDamage *td = new TakeDamage();
+			td->DamageDealt = 10;
+			c->mBodies[0]->mpOwner->HandleEvent(td);
+			gpGameObjectManager->Destroy(c->mBodies[1]->mpOwner);
+
 		}
 		else if (c->mBodies[0]->mpOwner->mType == PLAYER && c->mBodies[1]->mpOwner->mType == WALL)
 		{
-			WallCollideEvent wc;
-			c->mBodies[0]->mpOwner->HandleEvent(&wc);
+			WallCollideEvent *wc = new WallCollideEvent();
+			if (c->mBodies[1]->mPosition.y > SCREEN_HEIGHT / 2)
+				wc->side = 1;
+			else if (c->mBodies[1]->mPosition.y < SCREEN_HEIGHT / 2)
+				wc->side = 3;
+			else if (c->mBodies[1]->mPosition.x < SCREEN_WIDTH / 2)
+				wc->side = 0;
+			else if (c->mBodies[1]->mPosition.x > SCREEN_WIDTH / 2)
+				wc->side = 2;
+			c->mBodies[0]->mpOwner->HandleEvent(wc);
+		}
+		else if (c->mBodies[0]->mpOwner->mType == WALL && c->mBodies[1]->mpOwner->mType == BULLET)
+		{
+			gpGameObjectManager->Destroy(c->mBodies[1]->mpOwner);
 		}
 	}
 }

@@ -48,7 +48,7 @@ Component* GameObject::GetComponent(unsigned int Type)
 		if(c->GetType() == Type)
 			return c;
 		
-	return NULL;
+	return nullptr;
 }
 
 void GameObject::SetTransform(float posX, float posY, float scaleX, float scaleY, float angle)

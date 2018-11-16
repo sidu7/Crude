@@ -8,6 +8,7 @@
 #include "../ObjectFactory.h"
 #include "../Events.h"
 
+
 #include "../../Defines.h"
 
 extern Input_Manager *gpInputManager;
@@ -16,6 +17,7 @@ extern EventManager *gpEventManager;
 
 Controller::Controller() : Component (CONTROLLER) , moving(false)
 {
+	wallcollision = { 0 };
 }
 
 Controller::~Controller()
@@ -32,68 +34,67 @@ void Controller::Update()
 		
 		if(pBody != nullptr)
 		{
-			if (gpInputManager->IsPressed(SDL_SCANCODE_UP))
+			if (gpInputManager->IsPressed(SDL_SCANCODE_W))
 			{
 				pBody->mAngV = 90.0f;
 				if(pAnimator->mCurrState!="move_shoot")
 					pAnimator->SetState("move");
 				moving = true;
 			}
-			if (gpInputManager->IsPressed(SDL_SCANCODE_LEFT))
+			if (gpInputManager->IsPressed(SDL_SCANCODE_A))
 			{
 				pBody->mAngV = 180.0f;
 				if (pAnimator->mCurrState != "move_shoot")
 					pAnimator->SetState("move");
 				moving = true;
 			}
-			if (gpInputManager->IsPressed(SDL_SCANCODE_DOWN))
+			if (gpInputManager->IsPressed(SDL_SCANCODE_S))
 			{
 				pBody->mAngV = 270.0f;
 				if (pAnimator->mCurrState != "move_shoot")
 					pAnimator->SetState("move");
 				moving = true;
 			}
-			if (gpInputManager->IsPressed(SDL_SCANCODE_RIGHT))
+			if (gpInputManager->IsPressed(SDL_SCANCODE_D))
 			{
 				pBody->mAngV = 0.0f;
 				if (pAnimator->mCurrState != "move_shoot")
 					pAnimator->SetState("move");
 				moving = true;
 			}
-			if (gpInputManager->IsPressed(SDL_SCANCODE_RIGHT) && gpInputManager->IsPressed(SDL_SCANCODE_DOWN)) {
+			if (gpInputManager->IsPressed(SDL_SCANCODE_D) && gpInputManager->IsPressed(SDL_SCANCODE_S)) {
 				pBody->mAngV = 315.0f;
 			}
-			if (gpInputManager->IsPressed(SDL_SCANCODE_RIGHT) && gpInputManager->IsPressed(SDL_SCANCODE_UP)) {
+			if (gpInputManager->IsPressed(SDL_SCANCODE_D) && gpInputManager->IsPressed(SDL_SCANCODE_W)) {
 				pBody->mAngV = 45.0f;
 			}
-			if (gpInputManager->IsPressed(SDL_SCANCODE_LEFT) && gpInputManager->IsPressed(SDL_SCANCODE_UP)) {
+			if (gpInputManager->IsPressed(SDL_SCANCODE_A) && gpInputManager->IsPressed(SDL_SCANCODE_W)) {
 				pBody->mAngV = 135.0f;
 			}
-			if (gpInputManager->IsPressed(SDL_SCANCODE_LEFT) && gpInputManager->IsPressed(SDL_SCANCODE_DOWN)) {
+			if (gpInputManager->IsPressed(SDL_SCANCODE_A) && gpInputManager->IsPressed(SDL_SCANCODE_S)) {
 				pBody->mAngV = 225.0f;
 			}
 			if (gpInputManager->IsTriggered(SDL_SCANCODE_G))
 			{
 				pAnimator->PlayAnimation("throw",false);
 				
-				ThrowGrenadeEvent tge;
-				tge.pBody = pBody;
-				tge.mTimer = 1.0f;
+				ThrowGrenadeEvent *tge = new ThrowGrenadeEvent();
+				tge->pBody = pBody;
+				tge->mTimer = 0.7f;
 
-				gpEventManager->AddTimedEvent(&tge);
+				gpEventManager->AddTimedEvent(tge);
 				
-
 				moving = false;
 			}
-			if (gpInputManager->IsPressed(SDL_SCANCODE_SPACE))
+			if (gpInputManager->IsTriggered(SDL_SCANCODE_SPACE))
 			{
- 				//if (pAnimator->mCurrState != "move")
-					//pAnimator->PlayAnimation("shoot",false);
- 				if (pAnimator->mCurrState != "move_shoot")
+				if (pAnimator->mCurrState != "move")
+					pAnimator->PlayAnimation("shoot",false);
+ 				else if (pAnimator->mCurrState != "move_shoot")
 					pAnimator->PlayAnimation("move_shoot",false);
 				GameObject *pBullet = gpObjectFactory->LoadObject("bullet.json", BULLET);
 				Body *pBbulletBody = static_cast<Body*>(pBullet->GetComponent(BODY));
-				printf("bullet");
+				
 				//---- Offset -----------
 				Vector2D OffsetY,OffsetX,Offset;
 				Vector2DSet(&OffsetX, 40.0f * cosf(pBody->mAngV * PI / 180), 40.0f * sinf(pBody->mAngV * PI / 180));
@@ -115,8 +116,14 @@ void Controller::Update()
 			else 
 			{
 				pBody->AddVelocity(VELOCITY);
+				if ((wallcollision[1] && pBody->mVelocity.y > 0.0f) || (wallcollision[3] && pBody->mVelocity.y < 0.0f))
+					Vector2DSet(&pBody->mVelocity, pBody->mVelocity.x, 0.0f);
+				if ((wallcollision[0] && pBody->mVelocity.x < 0.0f) || (wallcollision[2] && pBody->mVelocity.x > 0.0f))
+					Vector2DSet(&pBody->mVelocity, 0.0f, pBody->mVelocity.y);
+
 			}
 			moving = false;
+			wallcollision = { 0 };
 		}
 	}
 }
@@ -131,7 +138,26 @@ void Controller::HandleEvent(Event * pEvent)
 	if (pEvent->mType == WALLCOLLIDE)
 	{
 		Body *pBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
-		printf("wall");
-		Vector2DZero(&pBody->mVelocity);
+		WallCollideEvent *wc = static_cast<WallCollideEvent*>(pEvent);
+		wallcollision[wc->side] = true;
+	}
+	if (pEvent->mType == GRENADETHROW)
+	{
+		ThrowGrenadeEvent *tge = static_cast<ThrowGrenadeEvent*>(pEvent);
+		GameObject *pGrenade = gpObjectFactory->LoadObject("grenade.json", GRENADE);
+		Body *pGrenadeBody = static_cast<Body*>(pGrenade->GetComponent(BODY));
+		printf("grenade");
+		//---- Offset -----------
+		Vector2D Offset;
+		Vector2DSet(&Offset, 40.0f * cosf(tge->pBody->mAngV * PI / 180), 40.0f * sinf(tge->pBody->mAngV * PI / 180));
+		//Vector2DSet(&Offset, 300.0 * cosf(pBody->mAngV * PI / 180), 300.0f * sinf(pBody->mAngV * PI / 180));
+		Vector2DAdd(&pGrenadeBody->mPosition, &tge->pBody->mPosition, &Offset);
+		//-------------------------
+
+		pGrenadeBody->mAngV = tge->pBody->mAngV;
+		//Animator *pGrenadeAnimator = static_cast<Animator*>(pGrenade->GetComponent(ANIMATOR));
+		//pGrenadeAnimator->PlayAnimation("explode", true);
+		pGrenadeBody->AddVelocity(GRENADE_SPEED);
+
 	}
 }

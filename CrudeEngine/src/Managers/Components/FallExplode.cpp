@@ -2,6 +2,7 @@
 
 #include "Body.h"
 #include "Animator.h"
+#include "Transform.h"
 #include "../GameObject.h"
 #include "../ObjectFactory.h"
 #include "../Events.h"
@@ -30,6 +31,10 @@ void FallExplode::Update()
 	{
 		Vector2DZero(&pBody->mVelocity);
 		Animator* pAnimator = static_cast<Animator*>(mpOwner->GetComponent(ANIMATOR));
+		Transform *pTr = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM));
+		Vector2DSet(&pTr->mScale, 200.0, 200.0);
+		ShapeAABB *rect = static_cast<ShapeAABB*>(pBody->mpShape);
+		rect->mTop = rect->mBottom = rect->mLeft = rect->mRight = 200.0f;
 		pAnimator->PlayAnimation("explode",true);
 		Exploding = true;
 	}
@@ -38,10 +43,6 @@ void FallExplode::Update()
 void FallExplode::Serialize(JSONObject obj)
 {
 	mDelayLimit = obj[L"Limit"]->AsNumber();
-	if (obj[L"Throw"]->AsBool())
-	{
-		gpEventManager->Subscribe(GRENADETHROW, mpOwner);
-	}
 }
 
 Component * FallExplode::Create()
@@ -51,25 +52,6 @@ Component * FallExplode::Create()
 
 void FallExplode::HandleEvent(Event * pEvent)
 {
-	if (pEvent->mType == GRENADETHROW)
-	{
-		ThrowGrenadeEvent *tge = static_cast<ThrowGrenadeEvent*>(pEvent);
-		GameObject *pGrenade = gpObjectFactory->LoadObject("grenade.json", GRENADE);
-		Body *pGrenadeBody = static_cast<Body*>(pGrenade->GetComponent(BODY));
-		printf("grenade");
-		//---- Offset -----------
-		Vector2D Offset;
-		Vector2DSet(&Offset, 40.0f * cosf(tge->pBody->mAngV * PI / 180), 40.0f * sinf(tge->pBody->mAngV * PI / 180));
-		//Vector2DSet(&Offset, 300.0 * cosf(pBody->mAngV * PI / 180), 300.0f * sinf(pBody->mAngV * PI / 180));
-		Vector2DAdd(&pGrenadeBody->mPosition, &tge->pBody->mPosition, &Offset);
-		//-------------------------
-
-		pGrenadeBody->mAngV = tge->pBody->mAngV;
-		//Animator *pGrenadeAnimator = static_cast<Animator*>(pGrenade->GetComponent(ANIMATOR));
-		//pGrenadeAnimator->PlayAnimation("explode", true);
-		pGrenadeBody->AddVelocity(GRENADE_SPEED);
-
-
-	}
+	
 }
 

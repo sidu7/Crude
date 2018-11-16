@@ -50,7 +50,7 @@ void Animator::LoadSpriteSheet(std::string FilePath,std::string type)
 
 void Animator::Update()
 {
-	Sprite *pSp = static_cast<Sprite*>(mpOwner->GetComponent(SPRITE));;
+	Sprite *pSp = static_cast<Sprite*>(mpOwner->GetComponent(SPRITE));
 
 	if (PlayingAnimation)
 	{
@@ -110,6 +110,9 @@ void Animator::SetState(std::string state)
 void Animator::ResetState()
 {
 	mCurrState = "idle";
+	Sprite *pSp = static_cast<Sprite*>(mpOwner->GetComponent(SPRITE));
+	if (mAnimations[mCurrState].size() != 0)
+		pSp->mpTexture = mAnimations[mCurrState][0];
 }
 
 void Animator::PlayAnimation(std::string animation,bool destroy)

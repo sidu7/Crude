@@ -110,10 +110,6 @@ void Body::AddVelocity(float velocity)
 
 void Body::HandleEvent(Event * pEvent)
 {
-	if (pEvent->mType == BULLETHIT)
-	{
-		gpGameObjectManager->Destroy(mpOwner);
-	}
 }
 
 Component * Body::Create()

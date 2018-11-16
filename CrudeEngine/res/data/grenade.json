@@ -8,7 +8,6 @@
         "File" : "grenade.png"
     },
     "Body" : {
-        "Mass" : 0.0,
         "AABB" : [200.0, 200.0, 200.0, 200.0]
     },
     "Animator" : {
@@ -20,7 +19,6 @@
         ]
     },
     "FallExplode" : {
-        "Limit" : 1.0,
-        "Throw" : true
+        "Limit" : 1.0
     }
 }

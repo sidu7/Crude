@@ -2,6 +2,7 @@
 #define CONTROLLER_H
 
 #include "Component.h"
+#include <array>
 
 class GameObject;
 class Event;
@@ -18,6 +19,7 @@ public:
 
 private:
 	bool moving;
+	std::array<bool,4> wallcollision;
 };
 
 #endif

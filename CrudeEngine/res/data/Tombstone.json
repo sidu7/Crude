@@ -1,0 +1,27 @@
+{
+	"Transform" : {
+		"Pos"  : [0.0, 0.0],
+		"Scale" : [1.0,1.0],
+		"Angle" : 0.0
+	},
+	"Sprite" : {
+		"File" : "tombstone/idle/idle0.png"
+    },
+	"Body" : {
+		"AABB" : [100.0, 100.0, 100.0, 100.0]
+	},
+	"Animator" : {
+		"Sprites" : [
+			{
+				"FileDir" : "res/textures/tombstone/idle",
+				"Type" : "idle",
+				"Default" : true
+            },
+            {
+                "FileDir" : "res/textures/tombstone/destory",
+                "Type" : "destroy"
+            }
+		]
+    },
+    "Spawner" : true
+}

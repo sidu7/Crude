@@ -24,7 +24,7 @@
 #include "Managers/Components/Component.h"
 #include "Managers/EventManager.h"
 
-#include "Managers/Components/Body.h"
+#include "Managers/Components/Spawner.h"
 
 #include "Defines.h"
 
@@ -50,6 +50,7 @@ EventManager *gpEventManager;
 Shader *gpShader;
 Matrix3D* gpProj;
 
+float Spawner::mStatic = 0.0f;
 
 int main(int argc, char* args[])
 {
@@ -165,24 +166,11 @@ int main(int argc, char* args[])
 		pNewComponent = background.AddComponent(SPRITE);
 
 		background.SetTransform(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH - 150.0f, SCREEN_HEIGHT - 150.0f, 0.0f);
-		background.SetSprite("res/textures/background1.png");
+		background.SetSprite("res/textures/background.png");
+
+
 	//-----
 
-	//----- Wall ------
-		GameObject wall(WALL);
-		
-		pNewComponent = wall.AddComponent(TRANSFORM);
-		pNewComponent = wall.AddComponent(SPRITE);
-		pNewComponent = wall.AddComponent(BODY);
-
-		Body *pBody = static_cast<Body*>(wall.GetComponent(BODY));
-		wall.SetTransform(95.0f, SCREEN_HEIGHT / 2, 40.0f, SCREEN_HEIGHT - 150.0f, 0.0f);
-		pBody->Initialize();
-		wall.SetSprite("res/textures/wall.png");
-		pBody->mpShape = new ShapeAABB(SCREEN_HEIGHT - 150.0f, 40.0f, SCREEN_HEIGHT - 150.0f, 40.0f);
-		pBody->mpShape->mpOwnerBody = pBody;
-		gpGameObjectManager->mGameObjects.push_back(&wall);
-	//-------------
 	//----- Health Bar ------
 /*
 		GameObject healthbar(NO_OBJECT);
@@ -231,8 +219,6 @@ int main(int argc, char* args[])
 			background.Update();
 			renderer.Draw(va, ib, *gpShader);
 			
-			wall.Update();
-			renderer.Draw(va, ib, *gpShader);
 
 		//	healthbar.Update();
 		//	renderer.Draw(va, ib, *gpShader);
@@ -247,6 +233,7 @@ int main(int argc, char* args[])
 
 			gpPhysicsManager->Update(gpFrameRateController->GetFrameTime());
 			gpEventManager->Update(gpFrameRateController->GetFrameTime());
+			
 			SDL_GL_SwapWindow(pWindow);
 
 			gpFrameRateController->FrameEnd();

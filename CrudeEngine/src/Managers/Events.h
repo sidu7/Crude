@@ -7,8 +7,9 @@
 class WallCollideEvent : public Event
 {
 public:
-	WallCollideEvent() : Event(WALLCOLLIDE) { }
+	WallCollideEvent() : Event(WALLCOLLIDE) { side = { 0 }; }
 	~WallCollideEvent() { }
+	unsigned int side; // 0:left, 1:top, 2:right, 3:bottom
 };
 
 
@@ -19,11 +20,12 @@ public:
 	~PlayerHitEvent() { }
 };
 
-class BulletHitEvent : public Event
+class TakeDamage : public Event
 {
 public:
-	BulletHitEvent() : Event(BULLETHIT) { }
-	~BulletHitEvent() { }
+	TakeDamage() : Event(TAKEDAMAGE) { }
+	~TakeDamage() { }
+	int DamageDealt;
 };
 
 class ThrowGrenadeEvent : public Event

@@ -114,6 +114,15 @@
     <ClInclude Include="src\Managers\Components\FallExplode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Managers\Components\Subscription.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Managers\Components\Spawner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Managers\Components\Attributes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\fragment.shader" />
@@ -214,6 +223,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Managers\Components\FallExplode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Managers\Components\Subscription.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Managers\Components\Spawner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Managers\Components\Attributes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
