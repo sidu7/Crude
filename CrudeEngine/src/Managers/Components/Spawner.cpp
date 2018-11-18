@@ -4,6 +4,7 @@
 #include "../GameObject.h"
 #include "Body.h"
 #include "Transform.h"
+#include "Animator.h"
 
 extern FrameRateController *gpFrameRateController;
 extern ObjectFactory *gpObjectFactory;
@@ -23,17 +24,17 @@ void Spawner::Update()
 	mCurrDelay += gpFrameRateController->GetFrameTime();
 	if (mCurrDelay > mStartDelay + 2.0f)
 	{
-		GameObject *pCrawler = gpObjectFactory->LoadObject("Crawler.json", CRAWLER);
+		GameObject *pCrawler = gpObjectFactory->LoadObject("Ghoul.json", CRAWLER);
 		Body *pTombBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
 		Body *pCrawlerBody = static_cast<Body*>(pCrawler->GetComponent(BODY));
 		Transform *pCrawlerTrans = static_cast<Transform*>(pCrawler->GetComponent(TRANSFORM));
 		//---- Offset -----------
-		if(mStartDelay == 1.0f)
+		if (mStartDelay == 1.0f)
 			Vector2DSet(&pCrawlerBody->mPosition, pTombBody->mPosition.x + 50.0f, pTombBody->mPosition.y + 20.0f);
 		else
 			Vector2DSet(&pCrawlerBody->mPosition, pTombBody->mPosition.x - 50.0f, pTombBody->mPosition.y - 20.0f);
 		//-------------------------
-		Vector2DSet(&pCrawlerTrans->mScale, 125.0f, 125.0f);
+		Vector2DSet(&pCrawlerTrans->mScale, 80.0f, 80.0f);
 		mCurrDelay = mStartDelay;
 	}
 }

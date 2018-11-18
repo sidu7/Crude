@@ -18,6 +18,7 @@ class PlayerHitEvent : public Event
 public:
 	PlayerHitEvent() : Event(PLAYERHIT) { }
 	~PlayerHitEvent() { }
+	float HPLost;
 };
 
 class TakeDamage : public Event

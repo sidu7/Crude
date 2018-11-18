@@ -1,14 +1,6 @@
 {
 	"Objects" : [
 		{
-			"File" : "Player.json",
-			"Type" : "Player",
-			"Transform" : {
-				"Pos" : [480.0, 360.0],
-				"Scale" : [150.0, 150.0]
-			}
-		},
-		{
 			"File" : "Tombstone.json",
 			"Type" : "Tombstone",
 			"Transform" : {
@@ -22,6 +14,14 @@
 			"Transform" : {
 				"Pos" : [760.0,520.0],
 				"Scale" : [100.0, 100.0]
+			}
+		},
+		{
+			"File" : "Player.json",
+			"Type" : "Player",
+			"Transform" : {
+				"Pos" : [480.0, 360.0],
+				"Scale" : [150.0, 150.0]
 			}
 		},
 		{

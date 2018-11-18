@@ -27,16 +27,23 @@ void Follow::Initialize()
 void Follow::Update()
 {
 	Body *mBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
-	Vector2D Dir,eDir;
-	Vector2DSub(&Dir, &mPlayerPos->mPosition, &mBody->mPosition);
-	Vector2DSet(&eDir, cosf(PI), sinf(PI));
-	Vector2DNormalize(&Dir, &Dir);
-	Vector2DScale(&mBody->mVelocity, &Dir, ENEMY_VELOCITY);
-	float ang = getAngleVector(Dir, eDir);
-	if (ang > 0)
-		mBody->mAngV = acosf(Dir.x) * 180 / PI;
+	if (mPlayerPos != nullptr)
+	{
+		Vector2D Dir, eDir;
+		Vector2DSub(&Dir, &mPlayerPos->mPosition, &mBody->mPosition);
+		Vector2DSet(&eDir, cosf(PI), sinf(PI));
+		Vector2DNormalize(&Dir, &Dir);
+		Vector2DScale(&mBody->mVelocity, &Dir, ENEMY_VELOCITY);
+		float ang = getAngleVector(Dir, eDir);
+		if (ang > 0)
+			mBody->mAngV = acosf(Dir.x) * 180 / PI;
+		else
+			mBody->mAngV = -(acosf(Dir.x) * 180 / PI);
+	}
 	else
-		mBody->mAngV = -(acosf(Dir.x) * 180 / PI);
+	{
+		Vector2DZero(&mBody->mVelocity);
+	}
 }
 
 Component* Follow::Create()

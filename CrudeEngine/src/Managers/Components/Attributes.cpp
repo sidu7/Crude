@@ -6,6 +6,8 @@
 
 extern GameObjectManager *gpGameObjectManager;
 
+extern EventManager *gpEventManager;//to remove
+
 
 Attributes::Attributes() : Component(ATTRIBUTES), mCurrHP(0), mTotalHP(0), mDamage(0)
 {
@@ -40,19 +42,39 @@ void Attributes::HandleEvent(Event * pEvent)
 	{
 		TakeDamage* td = static_cast<TakeDamage*>(pEvent);
 		mCurrHP -= td->DamageDealt;
+		if (mpOwner->mType == PLAYER)
+		{
+			PlayerHitEvent *phe = new PlayerHitEvent();
+			phe->HPLost = td->DamageDealt / 10.0f;
+			gpEventManager->BroadcastEventToSubscribers(phe);
+		}
 		if (mCurrHP == 0)
 		{
 			if (mpOwner->mType == TOMBSTONE)
 			{
 				Animator *pAnimator = static_cast<Animator*>(mpOwner->GetComponent(ANIMATOR));
-				pAnimator->PlayAnimation("destroy", true);
+				pAnimator->PlayAnimation("destroy", false);
+				mpOwner->RemoveComponent(BODY);
+				mpOwner->RemoveComponent(SPAWNER);
 			}
-			else
-				gpGameObjectManager->Destroy(mpOwner);
+			else if (mpOwner->mType == CRAWLER)
+			{
+				Animator *pAnimator = static_cast<Animator*>(mpOwner->GetComponent(ANIMATOR));
+				pAnimator->PlayAnimation("die", false);
+				mpOwner->RemoveComponent(BODY);
+				mpOwner->RemoveComponent(ATTRIBUTES);
+				mpOwner->RemoveComponent(FOLLOW);
+				mpOwner->RemoveComponent(SUBSCRIPTION);
+			}
 		}
 	}
 	if (pEvent->mType == GRENADEHIT)
 	{
-		gpGameObjectManager->Destroy(mpOwner);
+		Animator *pAnimator = static_cast<Animator*>(mpOwner->GetComponent(ANIMATOR));
+		pAnimator->PlayAnimation("die", false);
+		mpOwner->RemoveComponent(BODY);
+		mpOwner->RemoveComponent(ATTRIBUTES);
+		mpOwner->RemoveComponent(FOLLOW);
+		mpOwner->RemoveComponent(SUBSCRIPTION);
 	}
 }

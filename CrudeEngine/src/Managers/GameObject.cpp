@@ -11,7 +11,7 @@
 extern GameObjectManager *gpGameObjectManager;
 extern ResourceManager *gpResourceManager;
 
-GameObject::GameObject(int type) : mType(type)
+GameObject::GameObject(int type) : mType(type), mDeathDelay(0.0f)
 {
 }
 
@@ -49,6 +49,16 @@ Component* GameObject::GetComponent(unsigned int Type)
 			return c;
 		
 	return nullptr;
+}
+
+void GameObject::RemoveComponent(unsigned int Type)
+{
+	for (unsigned int i = 0; i < mComponents.size(); ++i)
+		if (mComponents[i]->GetType() == Type)
+		{
+			mComponents.erase(mComponents.begin() + i);
+			break;
+		}
 }
 
 void GameObject::SetTransform(float posX, float posY, float scaleX, float scaleY, float angle)

@@ -117,5 +117,17 @@ void PhysicsManager::Update(float FrameTime)
 				c->mBodies[0]->mpOwner->HandleEvent(&gh);
 			}
 		}
+		else if (c->mBodies[0]->mpOwner->mType == WALL && c->mBodies[1]->mpOwner->mType == GRENADE)
+		{
+			WallCollideEvent wc;
+			c->mBodies[1]->mpOwner->HandleEvent(&wc);
+		}
+		else if (c->mBodies[0]->mpOwner->mType == PLAYER && c->mBodies[1]->mpOwner->mType == CRAWLER)
+		{
+			gpGameObjectManager->Destroy(c->mBodies[1]->mpOwner);
+			TakeDamage *td = new TakeDamage();
+			td->DamageDealt = 5;
+			c->mBodies[0]->mpOwner->HandleEvent(td);
+		}
 	}
 }

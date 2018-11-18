@@ -12,6 +12,8 @@ public:
 	void Serialize(JSONObject obj);
 	Component* Create();
 	void HandleEvent(Event *pEvent);
+
+	void Explode();
 	
 private:
 	float mCurrDelay;

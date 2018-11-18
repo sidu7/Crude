@@ -8,7 +8,7 @@
         "File" : "grenade.png"
     },
     "Body" : {
-        "AABB" : [200.0, 200.0, 200.0, 200.0]
+        "AABB" : [50.0, 50.0, 50.0, 50.0]
     },
     "Animator" : {
         "Sprites" : [

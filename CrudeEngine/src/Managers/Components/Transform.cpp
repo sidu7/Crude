@@ -1,7 +1,10 @@
 #include "Transform.h"
+#include "../Events.h"
+#include "../GameObject.h"
 
 extern Shader* gpShader;
 extern Matrix3D* gpProj;
+extern bool PlayerIsDead;
 
 Transform::Transform() : Component (TRANSFORM)
 {
@@ -46,7 +49,20 @@ void Transform::Serialize(JSONObject obj)
 		mAngle = obj[L"Angle"]->AsNumber();
 }
 
+void Transform::HandleEvent(Event * pEvent)
+{
+	if (mpOwner->mType == HPBAR && pEvent->mType == PLAYERHIT)
+	{
+		PlayerHitEvent *phe = static_cast<PlayerHitEvent*>(pEvent);
+		mScale.x -= 17.5f * phe->HPLost;
+		mPosition.x -= 8.75f * phe->HPLost;
+		if (mScale.x == 0.0f)
+			PlayerIsDead = true;
+	}
+}
+
 Component * Transform::Create()
 {
 	return new Transform();
 }
+

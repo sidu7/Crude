@@ -34,6 +34,12 @@ GameObjectManager::~GameObjectManager()
 		delete go;
 	}
 	mGameObjects.clear();
+
+	for (auto go : mStaticDeadObjects)
+	{
+		delete go;
+	}
+	mStaticDeadObjects.clear();
 }
 
 void GameObjectManager::Destroy(GameObject* pGameObject)
@@ -44,4 +50,9 @@ void GameObjectManager::Destroy(GameObject* pGameObject)
 			//mGameObjects[i]->~GameObject();
 			mGameObjects.erase(mGameObjects.begin()+i);
 		}
+}
+
+void GameObjectManager::AddStaticDeadObject(GameObject* pGameObject)
+{
+
 }

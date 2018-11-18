@@ -66,6 +66,17 @@ void Animator::Update()
 				mCurrFrame = 0;
 				if (DestroyAfterAnimation)
 					gpGameObjectManager->Destroy(mpOwner);
+				if (mCurrState == "die")
+				{
+					gpGameObjectManager->Destroy(mpOwner);
+					mpOwner->RemoveComponent(BODY);
+					mpOwner->RemoveComponent(ATTRIBUTES);
+					mpOwner->RemoveComponent(FOLLOW);
+					mpOwner->RemoveComponent(SUBSCRIPTION);
+					mpOwner->RemoveComponent(ANIMATOR);
+					mpOwner->mDeathDelay = 5.0f;
+					gpGameObjectManager->mStaticDeadObjects.push_back(mpOwner);
+				}
 				else
 					ResetState();
 			}

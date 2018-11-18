@@ -20,6 +20,7 @@ enum GameObjectTypes
 	BULLET,
 	GRENADE,
 	TOMBSTONE,
+	HPBAR,
 };
 
 enum COMPONENT_TYPE

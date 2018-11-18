@@ -23,8 +23,9 @@
 #include "Managers/PhysicsManager.h"
 #include "Managers/Components/Component.h"
 #include "Managers/EventManager.h"
-
 #include "Managers/Components/Spawner.h"
+#include "Managers/Components/Transform.h" //to remove
+#include "Managers/Components/Sprite.h"
 
 #include "Defines.h"
 
@@ -46,6 +47,7 @@ ObjectFactory *gpObjectFactory;
 CollisionManager *gpCollisionManager;
 PhysicsManager *gpPhysicsManager;
 EventManager *gpEventManager;
+bool PlayerIsDead;
 
 Shader *gpShader;
 Matrix3D* gpProj;
@@ -172,20 +174,31 @@ int main(int argc, char* args[])
 	//-----
 
 	//----- Health Bar ------
-/*
+
 		GameObject healthbar(NO_OBJECT);
 
 		pNewComponent = healthbar.AddComponent(TRANSFORM);
 		pNewComponent = healthbar.AddComponent(SPRITE);
 
-		healthbar.SetTransform( 170.0f, SCREEN_HEIGHT - 50.0f, 300.0f, 60.0f, 0.0f);
+		healthbar.SetTransform( 170.0f, SCREEN_HEIGHT - 40.0f, 225.0f, 60.0f, 0.0f);
 		healthbar.SetSprite("res/textures/hpbar.png");
-		*/
+
+		GameObject HP(HPBAR);
+
+		pNewComponent = HP.AddComponent(TRANSFORM);
+		pNewComponent = HP.AddComponent(SPRITE);
+		gpEventManager->Subscribe(PLAYERHIT, &HP);
+
+		HP.SetTransform(184.0f, SCREEN_HEIGHT - 40.0f, 175.0f, 40.0f, 0.0f);
+		HP.SetSprite("res/textures/hp.png");
+		Transform* pTr = static_cast<Transform*>(HP.GetComponent(TRANSFORM));
 
 	//-----
 
 	//------
 		Renderer renderer;
+		bool Pause = false;
+		PlayerIsDead = false;
 	
 		/* Loop until the user closes the window */
 		while (true == appIsRunning)
@@ -202,14 +215,18 @@ int main(int argc, char* args[])
 					appIsRunning = false;
 				}
 			}
-			
+
 			gpInputManager->Update();
 			
 			if (gpInputManager->IsPressed(SDL_SCANCODE_ESCAPE))
 			{
 				appIsRunning = false;
 			}
-
+			if (gpInputManager->IsTriggered(SDL_SCANCODE_P))
+			{
+				Pause = !Pause;
+			}
+			
 			gpShader->Bind();
 
 			/* Render here */
@@ -217,22 +234,53 @@ int main(int argc, char* args[])
 
 			background.Update();
 			renderer.Draw(va, ib, *gpShader);
+
+			HP.Update();
+			renderer.Draw(va, ib, *gpShader);
+
+			healthbar.Update();
+			renderer.Draw(va, ib, *gpShader);
 			
-
-		//	healthbar.Update();
-		//	renderer.Draw(va, ib, *gpShader);
-
-			for(unsigned int i = 0; i < gpGameObjectManager->mGameObjects.size(); ++i)
+			if (!PlayerIsDead && !Pause)
 			{
-				gpGameObjectManager->mGameObjects[i]->Update();
+				for (unsigned int i = 0; i < gpGameObjectManager->mStaticDeadObjects.size(); ++i)
+				{
+					gpGameObjectManager->mStaticDeadObjects[i]->mDeathDelay -= gpFrameRateController->GetFrameTime();
+					if (gpGameObjectManager->mStaticDeadObjects[i]->mDeathDelay < 0.0f)
+						gpGameObjectManager->mStaticDeadObjects.erase(gpGameObjectManager->mStaticDeadObjects.begin() + i);
+					else
+					{
+						gpGameObjectManager->mStaticDeadObjects[i]->Update();
+						renderer.Draw(va, ib, *gpShader);
+					}
 
-				/* Draw call*/
-				renderer.Draw(va, ib, *gpShader);
+				}
+
+				for (unsigned int i = 0; i < gpGameObjectManager->mGameObjects.size(); ++i)
+				{
+					gpGameObjectManager->mGameObjects[i]->Update();
+					
+					/* Draw call*/
+					renderer.Draw(va, ib, *gpShader);
+				}
+
+				gpPhysicsManager->Update(gpFrameRateController->GetFrameTime());
+				gpEventManager->Update(gpFrameRateController->GetFrameTime());
 			}
+			else
+			{
+				for (unsigned int i = 0; i < gpGameObjectManager->mGameObjects.size(); ++i)
+				{
+					Transform* pT = static_cast<Transform*>(gpGameObjectManager->mGameObjects[i]->GetComponent(TRANSFORM));
+					Sprite* pSp = static_cast<Sprite*>(gpGameObjectManager->mGameObjects[i]->GetComponent(SPRITE));
+					pT->Update();
+					pSp->Update();
 
-			gpPhysicsManager->Update(gpFrameRateController->GetFrameTime());
-			gpEventManager->Update(gpFrameRateController->GetFrameTime());
-			
+					/* Draw call*/
+					renderer.Draw(va, ib, *gpShader);
+				}
+
+			}
 			SDL_GL_SwapWindow(pWindow);
 
 			gpFrameRateController->FrameEnd();

@@ -5,7 +5,7 @@
 		"Angle" : 0.0
 	},
 	"Sprite" : {
-		"File" : "tombstone/idle/idle0.png"
+		"File" : "tombstone/active/idle0.png"
     },
 	"Body" : {
 		"AABB" : [100.0, 100.0, 100.0, 100.0]
@@ -13,14 +13,18 @@
 	"Animator" : {
 		"Sprites" : [
 			{
-				"FileDir" : "res/textures/tombstone/idle",
-				"Type" : "idle",
+				"FileDir" : "res/textures/tombstone/active",
+				"Type" : "active",
 				"Default" : true
             },
             {
                 "FileDir" : "res/textures/tombstone/destroy",
                 "Type" : "destroy"
-            }
+			},
+			{
+				"FileDir" : "res/textures/tombstone/idle",
+				"Type" : "idle"
+			}
 		]
     },
     "Spawner" : true,

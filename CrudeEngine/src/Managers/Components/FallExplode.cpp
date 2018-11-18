@@ -24,19 +24,11 @@ FallExplode::~FallExplode()
 
 void FallExplode::Update()
 {
-	Body* pBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
 	mCurrDelay += gpFrameRateController->GetFrameTime();
 	
 	if (mCurrDelay > mDelayLimit && !Exploding)
 	{
-		Vector2DZero(&pBody->mVelocity);
-		Animator* pAnimator = static_cast<Animator*>(mpOwner->GetComponent(ANIMATOR));
-		Transform *pTr = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM));
-		Vector2DSet(&pTr->mScale, 200.0, 200.0);
-		ShapeAABB *rect = static_cast<ShapeAABB*>(pBody->mpShape);
-		rect->mTop = rect->mBottom = rect->mLeft = rect->mRight = 150.0f;
-		pAnimator->PlayAnimation("explode",true);
-		Exploding = true;
+		Explode();
 	}
 }
 
@@ -52,6 +44,22 @@ Component * FallExplode::Create()
 
 void FallExplode::HandleEvent(Event * pEvent)
 {
-	
+	if (pEvent->mType == WALLCOLLIDE)
+	{
+		if(!Exploding)
+			Explode();
+	}
 }
 
+void FallExplode::Explode()
+{
+	Body* pBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
+	Vector2DZero(&pBody->mVelocity);
+	Animator* pAnimator = static_cast<Animator*>(mpOwner->GetComponent(ANIMATOR));
+	Transform *pTr = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM));
+	Vector2DSet(&pTr->mScale, 200.0, 200.0);
+	ShapeAABB *rect = static_cast<ShapeAABB*>(pBody->mpShape);
+	rect->mTop = rect->mBottom = rect->mLeft = rect->mRight = 150.0f;
+	pAnimator->PlayAnimation("explode", true);
+	Exploding = true;
+}

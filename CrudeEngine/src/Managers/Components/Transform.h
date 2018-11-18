@@ -3,6 +3,7 @@
 #include "../../OpenGL/Shader.h"
 #include "../../Maths/Vector2D.h"
 
+class Event;
 
 class Transform : public Component
 {
@@ -13,6 +14,7 @@ class Transform : public Component
 	void Update();
 	
 	void Serialize(JSONObject obj);
+	void HandleEvent(Event *pEvent);
 
 	Component* Create();
 	
