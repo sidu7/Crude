@@ -23,7 +23,7 @@ void Attributes::Update()
 
 void Attributes::Serialize(JSONObject obj)
 {
-	mTotalHP = obj[L"TotalHP"]->AsNumber();
+	mTotalHP = static_cast<int>(obj[L"TotalHP"]->AsNumber());
 	if (obj.find(L"Damage") != obj.end())
 	{
 		mDamage = obj[L"Damage"]->AsNumber();

@@ -132,9 +132,6 @@
     <ClCompile Include="src\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="glew.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Managers\Components\Component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

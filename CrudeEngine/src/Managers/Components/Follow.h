@@ -3,7 +3,7 @@
 
 class Transform;
 class Body;
-class Vector2D;
+struct Vector2D;
 
 class Follow : public Component
 {

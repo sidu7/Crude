@@ -44,15 +44,10 @@ GameObjectManager::~GameObjectManager()
 
 void GameObjectManager::Destroy(GameObject* pGameObject)
 {
-	for (int i = 0; i < mGameObjects.size(); ++i)
+	for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		if (mGameObjects[i] == pGameObject)
 		{
 			//mGameObjects[i]->~GameObject();
 			mGameObjects.erase(mGameObjects.begin()+i);
 		}
-}
-
-void GameObjectManager::AddStaticDeadObject(GameObject* pGameObject)
-{
-
 }

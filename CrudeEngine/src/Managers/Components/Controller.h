@@ -6,7 +6,7 @@
 
 class GameObject;
 class Event;
-class Vector2D;
+struct Vector2D;
 
 class Controller : public Component
 {
