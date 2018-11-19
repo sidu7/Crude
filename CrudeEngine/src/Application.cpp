@@ -51,6 +51,7 @@ EventManager *gpEventManager;
 bool PlayerIsDead;
 bool Debug;
 int GrenadeCount;
+bool MouseEnabled;
 
 Shader *gpShader;
 Matrix3D* gpProj;
@@ -217,6 +218,7 @@ int main(int argc, char* args[])
 		PlayerIsDead = false;
 		Debug = false;
 		GrenadeCount = 5;
+		MouseEnabled = true;
 
 		/* Loop until the user closes the window */
 		while (true == appIsRunning)
@@ -247,6 +249,10 @@ int main(int argc, char* args[])
 			if (gpInputManager->IsTriggered(SDL_SCANCODE_O))
 			{
 				Debug = !Debug;
+			}
+			if (gpInputManager->IsTriggered(SDL_SCANCODE_M))
+			{
+				MouseEnabled = !MouseEnabled;
 			}
 			
 			gpShader->Bind();

@@ -20,7 +20,7 @@ extern ObjectFactory *gpObjectFactory;
 extern EventManager *gpEventManager;
 extern ResourceManager *gpResourceManager;
 extern int GrenadeCount;
-
+extern bool MouseEnabled;
 
 
 Controller::Controller() : Component (CONTROLLER) , moving(false)
@@ -42,7 +42,9 @@ void Controller::Update()
 		
 		if(pBody != nullptr)
 		{
-			pBody->mAngV = getAngleFromMouse(pBody->mPosition);
+			if (MouseEnabled)
+				pBody->mAngV = getAngleFromMouse(pBody->mPosition);
+			
 			if (gpInputManager->IsPressed(SDL_SCANCODE_W))
 			{
 				pBody->mAngV = 90.0f;
