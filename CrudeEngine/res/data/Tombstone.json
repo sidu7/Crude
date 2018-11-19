@@ -8,7 +8,7 @@
 		"File" : "tombstone/active/idle0.png"
     },
 	"Body" : {
-		"AABB" : [100.0, 100.0, 100.0, 100.0]
+		"AABB" : [80.0, 80.0, 80.0, 80.0]
 	},
 	"Animator" : {
 		"Sprites" : [

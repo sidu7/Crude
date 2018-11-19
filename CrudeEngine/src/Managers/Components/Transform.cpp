@@ -4,7 +4,6 @@
 
 extern Shader* gpShader;
 extern Matrix3D* gpProj;
-extern bool PlayerIsDead;
 
 Transform::Transform() : Component (TRANSFORM)
 {
@@ -23,11 +22,17 @@ void Transform::Update()
 	Matrix3DScale(&scale,mScale.x, mScale.y, 1.0f);
 
 	Matrix3DTranslate(&trans, mPosition.x, mPosition.y, 0.0f);
-
-	Matrix3DRotDeg(&rot, mAngle);
-
-	Matrix3DConcat(&transform, &trans, &rot);
-	Matrix3DConcat(&model, &transform, &scale);
+	
+	if (!Debug)
+	{
+		Matrix3DRotDeg(&rot, mAngle);
+		Matrix3DConcat(&transform, &trans, &rot);
+		Matrix3DConcat(&model, &transform, &scale);
+	}
+	else
+	{
+		Matrix3DConcat(&model, &trans, &scale);
+	}
 
 	Matrix3DConcat(&mvp, gpProj, &model);
 	gpShader->SetUniformMat4f("u_MVP", &mvp);
@@ -51,13 +56,11 @@ void Transform::Serialize(JSONObject obj)
 
 void Transform::HandleEvent(Event * pEvent)
 {
-	if (mpOwner->mType == HPBAR && pEvent->mType == PLAYERHIT)
+	if (mpOwner->mType == HPBAR && pEvent->mType == PLAYERHP)
 	{
-		PlayerHitEvent *phe = static_cast<PlayerHitEvent*>(pEvent);
-		mScale.x -= 17.5f * phe->HPLost;
-		mPosition.x -= 8.75f * phe->HPLost;
-		if (mScale.x == 0.0f)
-			PlayerIsDead = true;
+		PlayerHPEvent *phe = static_cast<PlayerHPEvent*>(pEvent);
+		mScale.x += 15.0f * phe->HPChange;
+		mPosition.x += 7.5f * phe->HPChange;
 	}
 }
 

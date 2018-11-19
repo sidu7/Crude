@@ -74,11 +74,11 @@ void ObjectFactory::LoadLevel(const char *pFileName)
 		GameObject *pGameObject = nullptr;
 		if (FileName == "")
 		{
-			pGameObject = new GameObject(type);
+			pGameObject = new GameObject(GameObjectTypes(type));
 			gpGameObjectManager->mGameObjects.push_back(pGameObject);
 		}
 		else
-			pGameObject = LoadObject(FileName.c_str(), type);
+			pGameObject = LoadObject(FileName.c_str(), GameObjectTypes(type));
 
 		if (obj.find(L"Body") != obj.end()){
 			Body *pBody = static_cast<Body*>(pGameObject->GetComponent(BODY));
@@ -109,7 +109,7 @@ void ObjectFactory::LoadLevel(const char *pFileName)
 
 }
 
-GameObject* ObjectFactory::LoadObject(const char *pFileName, int type)
+GameObject* ObjectFactory::LoadObject(const char *pFileName, GameObjectTypes type)
 {
 	GameObject *pNewGameObject = nullptr;
 	

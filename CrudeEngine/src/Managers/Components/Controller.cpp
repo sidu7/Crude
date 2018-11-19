@@ -7,6 +7,10 @@
 #include "Animator.h"
 #include "../ObjectFactory.h"
 #include "../Events.h"
+#include "Buff.h"
+#include "Attributes.h"
+#include "Sprite.h"
+#include "../ResourceManager.h"
 #include "SDL.h"
 
 #include "../../Defines.h"
@@ -14,6 +18,9 @@
 extern Input_Manager *gpInputManager;
 extern ObjectFactory *gpObjectFactory;
 extern EventManager *gpEventManager;
+extern ResourceManager *gpResourceManager;
+extern int GrenadeCount;
+
 
 
 Controller::Controller() : Component (CONTROLLER) , moving(false)
@@ -78,36 +85,56 @@ void Controller::Update()
 			}
 			if (gpInputManager->IsTriggered(SDL_SCANCODE_G))
 			{
-				pAnimator->PlayAnimation("throw",false);
-				
-				ThrowGrenadeEvent *tge = new ThrowGrenadeEvent();
-				tge->pBody = pBody;
-				tge->mTimer = 0.7f;
+				if (GrenadeCount > 0)
+				{
+					pAnimator->PlayAnimation("throw", false);
 
-				gpEventManager->AddTimedEvent(tge);
-				
-				moving = false;
+					ThrowGrenadeEvent *tge = new ThrowGrenadeEvent();
+					tge->pBody = pBody;
+					tge->mTimer = 0.7f;
+
+					gpEventManager->AddTimedEvent(tge);
+
+					moving = false;
+
+					GrenadeCount--;
+				}
 			}
-			//if(gpInputManager->IsMouseClicked(12))
 			if (gpInputManager->IsTriggered(SDL_SCANCODE_SPACE))
 			{
+				int repeat;
 				if (pAnimator->mCurrState != "move")
-					pAnimator->PlayAnimation("shoot",false);
- 				else if (pAnimator->mCurrState != "move_shoot")
-					pAnimator->PlayAnimation("move_shoot",false);
+					pAnimator->PlayAnimation("shoot", false);
+				else if (pAnimator->mCurrState != "move_shoot")
+				pAnimator->PlayAnimation("move_shoot", false);
 				GameObject *pBullet = gpObjectFactory->LoadObject("bullet.json", BULLET);
 				Body *pBbulletBody = static_cast<Body*>(pBullet->GetComponent(BODY));
+				Attributes *pAttr = static_cast<Attributes*>(pBullet->AddComponent(ATTRIBUTES));
 				
+				Buff *pBuff = static_cast<Buff*>(mpOwner->GetComponent(BUFF));
+				if (pBuff != nullptr)
+				{
+					pAttr->mDamage = 20.0f;
+					Sprite *pSp = static_cast<Sprite*>(pBullet->GetComponent(SPRITE));
+					pSp->mpTexture = gpResourceManager->LoadSurface("res/textures/doublebullet.png");
+					Transform *pTr = static_cast<Transform*>(pBullet->GetComponent(TRANSFORM));
+					pTr->mScale.y = 20.0f;
+				}
+				else
+				{
+					pAttr->mDamage = 10.0f;
+				}
+
 				//---- Offset -----------
-				Vector2D OffsetY,OffsetX,Offset;
+				Vector2D OffsetY, OffsetX, Offset;
 				Vector2DSet(&OffsetX, 40.0f * cosf(pBody->mAngV * PI / 180), 40.0f * sinf(pBody->mAngV * PI / 180));
 				Vector2DSet(&OffsetY, 18.0f * sinf(pBody->mAngV * PI / 180), 18.0f * -cosf(pBody->mAngV * PI / 180));
 				Vector2DAdd(&Offset, &OffsetX, &OffsetY);
-				Vector2DAdd(&pBbulletBody->mPosition, &pBody->mPosition, &Offset );
+				Vector2DAdd(&pBbulletBody->mPosition, &pBody->mPosition, &Offset);
 				//-------------------------
 
 				pBbulletBody->mAngV = pBody->mAngV;
-				pBbulletBody->AddVelocity(BULLET_SPEED);
+				pBbulletBody->AddVelocity(BULLET_SPEED);				
 			}
 
 			if (moving == false)

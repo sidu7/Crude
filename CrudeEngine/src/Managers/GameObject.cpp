@@ -11,8 +11,9 @@
 extern GameObjectManager *gpGameObjectManager;
 extern ResourceManager *gpResourceManager;
 
-GameObject::GameObject(int type) : mType(type), mDeathDelay(0.0f)
+GameObject::GameObject(GameObjectTypes type) : mType(type), mDeathDelay(0.0f), Destroyed(false)
 {
+	Vector2DZero(&mTempScale);
 }
 
 
@@ -23,10 +24,11 @@ GameObject::~GameObject()
 	mComponents.clear();
 }
 
-void GameObject::Update()
+bool GameObject::Update()
 {	
 	for(auto c: mComponents)
 		c->Update();
+	return Destroyed;
 }
 
 Component* GameObject::AddComponent(unsigned int Type)
@@ -88,4 +90,26 @@ void GameObject::HandleEvent(Event * pEvent)
 		c->HandleEvent(pEvent);
 	}
 }
+
+void GameObject::ScaleToBody()
+{
+	Transform *pTr = static_cast<Transform*>(GetComponent(TRANSFORM));
+	Body* pBody = static_cast<Body*>(GetComponent(BODY));
+	if (pBody == nullptr)
+		return;
+	ShapeAABB *pShape = static_cast<ShapeAABB*>(pBody->mpShape);
+	Vector2DSet(&mTempScale, pTr->mScale.x, pTr->mScale.y);
+	Vector2DSet(&pTr->mScale, pShape->mTop, pShape->mLeft);
+	pTr->Debug = true;
+	pTr->Update();
+}
+
+void GameObject::ResetScale()
+{
+	Transform *pTr = static_cast<Transform*>(GetComponent(TRANSFORM));
+	Vector2DSet(&pTr->mScale, mTempScale.x, mTempScale.y);
+	pTr->Debug = false;
+	pTr->Update();
+}
+
 

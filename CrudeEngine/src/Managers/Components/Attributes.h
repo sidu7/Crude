@@ -16,7 +16,7 @@ public:
 	void HandleEvent(Event *pEvent);
 	inline int GetCurrentHP() { return mCurrHP; }
 
-private:
+public:
 	int mCurrHP;
 	int mTotalHP;
 	int mDamage;

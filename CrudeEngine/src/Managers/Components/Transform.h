@@ -22,4 +22,6 @@ class Transform : public Component
 	Vector2D mPosition;
 	Vector2D mScale;
 	float mAngle;
+	bool Debug;
+
 };

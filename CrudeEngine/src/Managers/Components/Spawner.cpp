@@ -5,6 +5,8 @@
 #include "Body.h"
 #include "Transform.h"
 #include "Animator.h"
+#include "Drop.h"
+#include <time.h>
 
 extern FrameRateController *gpFrameRateController;
 extern ObjectFactory *gpObjectFactory;
@@ -36,6 +38,16 @@ void Spawner::Update()
 		//-------------------------
 		Vector2DSet(&pCrawlerTrans->mScale, 80.0f, 80.0f);
 		mCurrDelay = mStartDelay;
+
+		//------ Add Drop Items -----
+		srand(time(NULL));
+		int value = rand() % 20;
+		if (value == 1 || value == 3 || value == 5)
+		{
+			Drop *pDrop = static_cast<Drop*>(pCrawler->AddComponent(DROP));
+			pDrop->mType = DropType(value);
+		}
+		//---------------------------
 	}
 }
 

@@ -47,7 +47,10 @@ ObjectFactory *gpObjectFactory;
 CollisionManager *gpCollisionManager;
 PhysicsManager *gpPhysicsManager;
 EventManager *gpEventManager;
+
 bool PlayerIsDead;
+bool Debug;
+int GrenadeCount;
 
 Shader *gpShader;
 Matrix3D* gpProj;
@@ -187,19 +190,34 @@ int main(int argc, char* args[])
 
 		pNewComponent = HP.AddComponent(TRANSFORM);
 		pNewComponent = HP.AddComponent(SPRITE);
-		gpEventManager->Subscribe(PLAYERHIT, &HP);
+		gpEventManager->Subscribe(PLAYERHP, &HP);
 
-		HP.SetTransform(184.0f, SCREEN_HEIGHT - 40.0f, 175.0f, 40.0f, 0.0f);
+		HP.SetTransform(190.0f, SCREEN_HEIGHT - 30.0f, 155.0f, 20.0f, 0.0f);
 		HP.SetSprite("res/textures/hp.png");
 		Transform* pTr = static_cast<Transform*>(HP.GetComponent(TRANSFORM));
 
 	//-----
 
-	//------
+	//------ Grenades ----
+
+		GameObject* CurrGrenade[5];
+
+		for (int i = 0; i < 5; ++i)
+		{
+			CurrGrenade[i] = new GameObject(NO_OBJECT);
+			pNewComponent = CurrGrenade[i]->AddComponent(TRANSFORM);
+			pNewComponent = CurrGrenade[i]->AddComponent(SPRITE);
+
+			CurrGrenade[i]->SetSprite("res/textures/grenade.png");
+		}
+
+	//--------------------
 		Renderer renderer;
 		bool Pause = false;
 		PlayerIsDead = false;
-	
+		Debug = false;
+		GrenadeCount = 5;
+
 		/* Loop until the user closes the window */
 		while (true == appIsRunning)
 		{
@@ -226,6 +244,10 @@ int main(int argc, char* args[])
 			{
 				Pause = !Pause;
 			}
+			if (gpInputManager->IsTriggered(SDL_SCANCODE_O))
+			{
+				Debug = !Debug;
+			}
 			
 			gpShader->Bind();
 
@@ -240,12 +262,21 @@ int main(int argc, char* args[])
 
 			healthbar.Update();
 			renderer.Draw(va, ib, *gpShader);
+
+			//Current Greande Count
+			for (unsigned int i = 0; i < GrenadeCount; ++i)
+			{
+				CurrGrenade[i]->SetTransform(300.0f + (i*30), SCREEN_HEIGHT - 30.0f, 30.0f, 30.0f, 0.0f);
+				CurrGrenade[i]->Update();
+				renderer.Draw(va, ib, *gpShader);
+			}
 			
 			if (!PlayerIsDead && !Pause)
 			{
 				for (unsigned int i = 0; i < gpGameObjectManager->mStaticDeadObjects.size(); ++i)
 				{
-					gpGameObjectManager->mStaticDeadObjects[i]->mDeathDelay -= gpFrameRateController->GetFrameTime();
+					if(gpGameObjectManager->mStaticDeadObjects[i]->mType != TOMBSTONE)
+						gpGameObjectManager->mStaticDeadObjects[i]->mDeathDelay -= gpFrameRateController->GetFrameTime();
 					if (gpGameObjectManager->mStaticDeadObjects[i]->mDeathDelay < 0.0f)
 						gpGameObjectManager->mStaticDeadObjects.erase(gpGameObjectManager->mStaticDeadObjects.begin() + i);
 					else
@@ -258,10 +289,16 @@ int main(int argc, char* args[])
 
 				for (unsigned int i = 0; i < gpGameObjectManager->mGameObjects.size(); ++i)
 				{
-					gpGameObjectManager->mGameObjects[i]->Update();
+					bool destroyed = gpGameObjectManager->mGameObjects[i]->Update();
 					
 					/* Draw call*/
 					renderer.Draw(va, ib, *gpShader);
+					if (Debug && !destroyed)
+					{
+						gpGameObjectManager->mGameObjects[i]->ScaleToBody();
+						renderer.DebugDraw(va, ib, *gpShader);
+						gpGameObjectManager->mGameObjects[i]->ResetScale();
+					}
 				}
 
 				gpPhysicsManager->Update(gpFrameRateController->GetFrameTime());

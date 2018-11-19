@@ -132,6 +132,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Managers\Components\Attributes.h" />
+    <ClInclude Include="src\Managers\Components\Buff.h" />
+    <ClInclude Include="src\Managers\Components\Drop.h" />
     <ClInclude Include="src\Managers\Components\FallExplode.h" />
     <ClInclude Include="src\Defines.h" />
     <ClInclude Include="src\Managers\CollisionManager.h" />
@@ -174,6 +176,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Managers\Components\Attributes.cpp" />
+    <ClCompile Include="src\Managers\Components\Buff.cpp" />
+    <ClCompile Include="src\Managers\Components\Drop.cpp" />
     <ClCompile Include="src\Managers\Components\FallExplode.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Managers\CollisionManager.cpp" />

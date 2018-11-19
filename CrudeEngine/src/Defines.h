@@ -8,7 +8,7 @@
 #define VELOCITY 200.0f
 #define BULLET_SPEED 500.0f
 #define ENEMY_VELOCITY 50.0f
-#define GRENADE_SPEED 200.0f
+#define GRENADE_SPEED 150.0f
 
 enum GameObjectTypes
 {
@@ -21,6 +21,7 @@ enum GameObjectTypes
 	GRENADE,
 	TOMBSTONE,
 	HPBAR,
+	DROPITEM,
 };
 
 enum COMPONENT_TYPE
@@ -35,6 +36,8 @@ enum COMPONENT_TYPE
 	SUBSCRIPTION,
 	SPAWNER,
 	ATTRIBUTES,
+	DROP,
+	BUFF,
 	COMP_NUM
 };
 
@@ -42,8 +45,16 @@ enum EventType
 {
 	WALLCOLLIDE,
 	TAKEDAMAGE,
-	PLAYERHIT,
+	PLAYERHP,
 	GRENADETHROW,
 	GRENADEHIT,
+	DROPPICKED,
 	NUM
+};
+
+enum DropType
+{
+	MEDKIT = 1,
+	DGRENADE = 3,
+	DOUBLEDMG = 5
 };

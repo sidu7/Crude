@@ -7,6 +7,7 @@
 #include "../GameObject.h"
 #include "../GameObjectManager.h"
 #include "Sprite.h"
+#include "Transform.h"
 
 extern ResourceManager *gpResourceManager;
 extern GameObjectManager *gpGameObjectManager;
@@ -66,15 +67,17 @@ void Animator::Update()
 				mCurrFrame = 0;
 				if (DestroyAfterAnimation)
 					gpGameObjectManager->Destroy(mpOwner);
-				if (mCurrState == "die")
+				if (mCurrState == "die" || mCurrState == "destroy")
 				{
 					gpGameObjectManager->Destroy(mpOwner);
-					mpOwner->RemoveComponent(BODY);
-					mpOwner->RemoveComponent(ATTRIBUTES);
-					mpOwner->RemoveComponent(FOLLOW);
-					mpOwner->RemoveComponent(SUBSCRIPTION);
+					if (mCurrState == "die")
+					{
+						mpOwner->RemoveComponent(FOLLOW);
+						mpOwner->RemoveComponent(SUBSCRIPTION);
+						mpOwner->mDeathDelay = 5.0f;
+					}
 					mpOwner->RemoveComponent(ANIMATOR);
-					mpOwner->mDeathDelay = 5.0f;
+					mpOwner->RemoveComponent(ATTRIBUTES);
 					gpGameObjectManager->mStaticDeadObjects.push_back(mpOwner);
 				}
 				else

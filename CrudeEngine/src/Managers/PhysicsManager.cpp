@@ -4,6 +4,8 @@
 #include "GameObject.h"
 #include "GameObjectManager.h"
 #include "Events.h"
+#include "Components/Attributes.h"
+#include "Components/Buff.h"
 
 #include "../Defines.h"
 
@@ -70,7 +72,8 @@ void PhysicsManager::Update(float FrameTime)
 		if (c->mBodies[0]->mpOwner->mType == CRAWLER && c->mBodies[1]->mpOwner->mType == BULLET)
 		{
 			TakeDamage *td = new TakeDamage();
-			td->DamageDealt = 10;
+			Attributes *pAttr = static_cast<Attributes*>(c->mBodies[1]->mpOwner->GetComponent(ATTRIBUTES));
+			td->DamageDealt = pAttr->mDamage;
 			c->mBodies[0]->mpOwner->HandleEvent(td);
 			gpGameObjectManager->Destroy(c->mBodies[1]->mpOwner);
 
@@ -95,7 +98,8 @@ void PhysicsManager::Update(float FrameTime)
 		else if (c->mBodies[0]->mpOwner->mType == TOMBSTONE && c->mBodies[1]->mpOwner->mType == BULLET)
 		{
 			TakeDamage *td = new TakeDamage();
-			td->DamageDealt = 10;
+			Attributes *pAttr = static_cast<Attributes*>(c->mBodies[1]->mpOwner->GetComponent(ATTRIBUTES));
+			td->DamageDealt = pAttr->mDamage;
 			c->mBodies[0]->mpOwner->HandleEvent(td);
 			gpGameObjectManager->Destroy(c->mBodies[1]->mpOwner);
 		}
@@ -126,8 +130,17 @@ void PhysicsManager::Update(float FrameTime)
 		{
 			gpGameObjectManager->Destroy(c->mBodies[1]->mpOwner);
 			TakeDamage *td = new TakeDamage();
-			td->DamageDealt = 5;
+			Attributes *pAtt = static_cast<Attributes*>(c->mBodies[1]->mpOwner->GetComponent(ATTRIBUTES));
+			td->DamageDealt = pAtt->mDamage;
 			c->mBodies[0]->mpOwner->HandleEvent(td);
+		}
+		else if (c->mBodies[0]->mpOwner->mType == PLAYER && c->mBodies[1]->mpOwner->mType == DROPITEM)
+		{
+			DropPicked *dp = new DropPicked();
+			Buff *pBuff = static_cast<Buff*>(c->mBodies[1]->mpOwner->GetComponent(BUFF));
+			dp->Drop = pBuff->DropType;
+			c->mBodies[0]->mpOwner->HandleEvent(dp);
+			gpGameObjectManager->Destroy(c->mBodies[1]->mpOwner);
 		}
 	}
 }

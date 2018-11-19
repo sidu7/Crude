@@ -11,6 +11,8 @@
 #include "Components/Subscription.h"
 #include "Components/Spawner.h"
 #include "Components/Attributes.h"
+#include "Components/Drop.h"
+#include "Components/Buff.h"
 
 #include "../Defines.h"
 GameObjectManager::GameObjectManager()
@@ -25,6 +27,8 @@ GameObjectManager::GameObjectManager()
 	mComponentMap[SUBSCRIPTION] = new Subscription();
 	mComponentMap[SPAWNER] = new Spawner();
 	mComponentMap[ATTRIBUTES] = new Attributes();
+	mComponentMap[DROP] = new Drop();
+	mComponentMap[BUFF] = new Buff();
 }
 
 GameObjectManager::~GameObjectManager()
@@ -48,6 +52,7 @@ void GameObjectManager::Destroy(GameObject* pGameObject)
 		if (mGameObjects[i] == pGameObject)
 		{
 			//mGameObjects[i]->~GameObject();
+			mGameObjects[i]->Destroyed = true;
 			mGameObjects.erase(mGameObjects.begin()+i);
 		}
 }

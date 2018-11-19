@@ -13,12 +13,12 @@ public:
 };
 
 
-class PlayerHitEvent : public Event
+class PlayerHPEvent : public Event
 {
 public:
-	PlayerHitEvent() : Event(PLAYERHIT) { }
-	~PlayerHitEvent() { }
-	float HPLost;
+	PlayerHPEvent() : Event(PLAYERHP) { }
+	~PlayerHPEvent() { }
+	float HPChange;
 };
 
 class TakeDamage : public Event
@@ -42,4 +42,12 @@ class GrenadeHit : public Event
 public:
 	GrenadeHit() : Event(GRENADEHIT) { }
 	~GrenadeHit() { }
+};
+
+class DropPicked : public Event
+{
+public:
+	DropPicked() : Event(DROPPICKED) { }
+	~DropPicked() { }
+	DropType Drop;
 };

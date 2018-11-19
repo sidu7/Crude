@@ -27,6 +27,8 @@ void Follow::Initialize()
 void Follow::Update()
 {
 	Body *mBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
+	if (mBody == nullptr)
+		return;
 	if (mPlayerPos != nullptr)
 	{
 		Vector2D Dir, eDir;
