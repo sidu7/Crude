@@ -26,7 +26,7 @@ void Spawner::Update()
 	mCurrDelay += gpFrameRateController->GetFrameTime();
 	if (mCurrDelay > mStartDelay + 2.0f)
 	{
-		GameObject *pCrawler = gpObjectFactory->LoadObject("Ghoul.json", CRAWLER);
+		GameObject *pCrawler = gpObjectFactory->LoadObject("Ghoul.json", GHOUL);
 		Body *pTombBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
 		Body *pCrawlerBody = static_cast<Body*>(pCrawler->GetComponent(BODY));
 		Transform *pCrawlerTrans = static_cast<Transform*>(pCrawler->GetComponent(TRANSFORM));
@@ -42,7 +42,7 @@ void Spawner::Update()
 		//------ Add Drop Items -----
 		srand(time(NULL));
 		int value = rand() % 20;
-		if (value == 1 || value == 3 || value == 5)
+		if (value == 1 || value == 3 || value == 5 || value == 7)
 		{
 			Drop *pDrop = static_cast<Drop*>(pCrawler->AddComponent(DROP));
 			pDrop->mType = DropType(value);

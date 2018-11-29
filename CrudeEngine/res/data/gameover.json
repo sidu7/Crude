@@ -1,0 +1,22 @@
+{
+	"Transform" : {
+		"Pos"  : [480.0, 360.0],
+		"Scale" : [960.0,720.0],
+		"Angle" : 0.0
+	},
+	"Sprite" : {
+		"File" : "gameover/gameover0.png"
+    },
+	"Body" : {
+		"AABB" : [0.0, 0.0, 0.0, 0.0]
+	},
+	"Animator" : {
+		"Sprites" : [
+			{
+				"FileDir" : "res/textures/gameover",
+				"Type" : "gameover",
+                "Default" : true
+            }
+		]
+    }
+}

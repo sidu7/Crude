@@ -29,6 +29,6 @@
     },
     "Spawner" : true,
     "Attributes" : {
-        "TotalHP" : 100
+        "TotalHP" : 500
     }
 }

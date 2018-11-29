@@ -61,16 +61,16 @@ void Transform::HandleEvent(Event * pEvent)
 	if (mpOwner->mType == HPBAR && pEvent->mType == PLAYERHP)
 	{
 		PlayerHPEvent *phe = static_cast<PlayerHPEvent*>(pEvent);
-		mScale.x += 15.0f * phe->HPChange;
-		mPosition.x += 7.5f * phe->HPChange;
+		mScale.x += 155.0f * phe->HPChange;
+		mPosition.x += 77.0f * phe->HPChange;
 	}
 	if (pEvent->mType == TOMBHIT)
 	{
 		TombHitEvent *the = static_cast<TombHitEvent*>(pEvent);
 		if (mpOwner->mType == TOMB1HP && the->tomb == 1)
 		{
-			mScale.x -= 9.0f * the->HPLost;
-			mPosition.x -= 4.5f * the->HPLost;
+			mScale.x -= 90.0f * the->HPLost;
+			mPosition.x -= 45.0f * the->HPLost;
 			if (mScale.x == 0.0f)
 			{
 				for (unsigned int i = 0; i < gpGameObjectManager->mGameObjects.size(); ++i)
@@ -85,8 +85,8 @@ void Transform::HandleEvent(Event * pEvent)
 		}
 		else if(mpOwner->mType == TOMB2HP && the->tomb == 2)
 		{
-			mScale.x -= 9.0f * the->HPLost;
-			mPosition.x -= 4.5f * the->HPLost;
+			mScale.x -= 90.0f * the->HPLost;
+			mPosition.x -= 45.0f * the->HPLost;
 			if (mScale.x == 0.0f)
 			{
 				for (unsigned int i = 0; i < gpGameObjectManager->mGameObjects.size(); ++i)

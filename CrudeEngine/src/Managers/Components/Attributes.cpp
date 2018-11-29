@@ -50,7 +50,7 @@ void Attributes::HandleEvent(Event * pEvent)
 		{
 			//Update Player HP bar
 			PlayerHPEvent *phe = new PlayerHPEvent();
-			phe->HPChange = -td->DamageDealt / 10.0f;
+			phe->HPChange = -(td->DamageDealt*1.0f/mTotalHP);
 			gpEventManager->BroadcastEventToSubscribers(phe);
 			if (mCurrHP <= 0)
 			{
@@ -62,7 +62,7 @@ void Attributes::HandleEvent(Event * pEvent)
 		{
 			//Update Tombstone HP bar
 			TombHitEvent *the = new TombHitEvent();
-			the->HPLost = td->DamageDealt / 10.0f;
+			the->HPLost = (td->DamageDealt*1.0f/mTotalHP);
 			Transform *pTr = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM));
 			//find the tomb hit
 			if (pTr->mPosition.x == 200.0f)
@@ -84,7 +84,7 @@ void Attributes::HandleEvent(Event * pEvent)
 				mpOwner->RemoveComponent(BODY);
 				mpOwner->RemoveComponent(SPAWNER);
 			}
-			else if (mpOwner->mType == CRAWLER)
+			else if (mpOwner->mType == GHOUL || mpOwner->mType == CRAWLER)
 			{
 				Animator *pAnimator = static_cast<Animator*>(mpOwner->GetComponent(ANIMATOR));
 				mpOwner->RemoveComponent(BODY);
@@ -106,9 +106,12 @@ void Attributes::HandleEvent(Event * pEvent)
 		DropPicked *dp = static_cast<DropPicked*>(pEvent);
 		if (dp->Drop == MEDKIT)
 		{
-			PlayerHPEvent *phe = new PlayerHPEvent();
-			phe->HPChange = 1.0f;
-			gpEventManager->BroadcastEventToSubscribers(phe);
+			if (mCurrHP < mTotalHP*0.9)
+			{
+				PlayerHPEvent *phe = new PlayerHPEvent();
+				phe->HPChange = 0.1;	
+				gpEventManager->BroadcastEventToSubscribers(phe);
+			}
 		}
 		else if (dp->Drop == DGRENADE)
 		{

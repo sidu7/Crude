@@ -112,11 +112,12 @@ void Controller::Update()
 				GameObject *pBullet = gpObjectFactory->LoadObject("bullet.json", BULLET);
 				Body *pBbulletBody = static_cast<Body*>(pBullet->GetComponent(BODY));
 				Attributes *pAttr = static_cast<Attributes*>(pBullet->AddComponent(ATTRIBUTES));
-				
+				Attributes *pPlayerAttr = static_cast<Attributes*>(mpOwner->GetComponent(ATTRIBUTES));
+
 				Buff *pBuff = static_cast<Buff*>(mpOwner->GetComponent(BUFF));
 				if (pBuff != nullptr)
 				{
-					pAttr->mDamage = 20.0f;
+					pAttr->mDamage = pPlayerAttr->mDamage * 2;
 					Sprite *pSp = static_cast<Sprite*>(pBullet->GetComponent(SPRITE));
 					pSp->mpTexture = gpResourceManager->LoadSurface("res/textures/doublebullet.png");
 					Transform *pTr = static_cast<Transform*>(pBullet->GetComponent(TRANSFORM));
@@ -124,7 +125,7 @@ void Controller::Update()
 				}
 				else
 				{
-					pAttr->mDamage = 10.0f;
+					pAttr->mDamage = pPlayerAttr->mDamage;
 				}
 
 				//---- Offset -----------

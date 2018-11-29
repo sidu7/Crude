@@ -13,7 +13,8 @@ extern ResourceManager *gpResourceManager;
 extern GameObjectManager *gpGameObjectManager;
 extern FrameRateController *gpFrameRateController;
 
-Animator::Animator() : Component(ANIMATOR), mCurrState(""), mCurrFrame(0), mCurrDelay(0.0f), PlayingAnimation(false), DestroyAfterAnimation(false)
+Animator::Animator() : Component(ANIMATOR), mCurrState(""), mCurrFrame(0), mCurrDelay(0.0f), 
+PlayingAnimation(false), DestroyAfterAnimation(false)
 {
 }
 

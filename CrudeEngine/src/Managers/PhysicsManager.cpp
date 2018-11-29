@@ -69,7 +69,8 @@ void PhysicsManager::Update(float FrameTime)
 	//Super Advanced Physics here!!!
 	for (auto c : gpCollisionManager->mContacts)
 	{
-		if (c->mBodies[0]->mpOwner->mType == CRAWLER && c->mBodies[1]->mpOwner->mType == BULLET)
+		if ((c->mBodies[0]->mpOwner->mType == GHOUL || c->mBodies[0]->mpOwner->mType == CRAWLER) && 
+			c->mBodies[1]->mpOwner->mType == BULLET)
 		{
 			TakeDamage *td = new TakeDamage();
 			Attributes *pAttr = static_cast<Attributes*>(c->mBodies[1]->mpOwner->GetComponent(ATTRIBUTES));
@@ -103,7 +104,8 @@ void PhysicsManager::Update(float FrameTime)
 			c->mBodies[0]->mpOwner->HandleEvent(td);
 			gpGameObjectManager->Destroy(c->mBodies[1]->mpOwner);
 		}
-		else if (c->mBodies[0]->mpOwner->mType == GRENADE && c->mBodies[1]->mpOwner->mType == CRAWLER)	
+		else if (c->mBodies[0]->mpOwner->mType == GRENADE && (c->mBodies[1]->mpOwner->mType == GHOUL ||
+			c->mBodies[1]->mpOwner->mType == CRAWLER))
 		{
 			Transform *pTr = static_cast<Transform*>(c->mBodies[0]->mpOwner->GetComponent(TRANSFORM));
 			if (pTr->mScale.x == 200.0f)
@@ -112,7 +114,8 @@ void PhysicsManager::Update(float FrameTime)
 				c->mBodies[1]->mpOwner->HandleEvent(&gh);
 			}
 		}
-		else if (c->mBodies[0]->mpOwner->mType == CRAWLER && c->mBodies[1]->mpOwner->mType == GRENADE)
+		else if ((c->mBodies[0]->mpOwner->mType == GHOUL || c->mBodies[0]->mpOwner->mType == CRAWLER) && 
+			c->mBodies[1]->mpOwner->mType == GRENADE)
 		{
 			Transform *pTr = static_cast<Transform*>(c->mBodies[1]->mpOwner->GetComponent(TRANSFORM));
 			if (pTr->mScale.x == 200.0f)
@@ -126,7 +129,8 @@ void PhysicsManager::Update(float FrameTime)
 			WallCollideEvent wc;
 			c->mBodies[1]->mpOwner->HandleEvent(&wc);
 		}
-		else if (c->mBodies[0]->mpOwner->mType == PLAYER && c->mBodies[1]->mpOwner->mType == CRAWLER)
+		else if (c->mBodies[0]->mpOwner->mType == PLAYER && (c->mBodies[1]->mpOwner->mType == GHOUL 
+			|| c->mBodies[1]->mpOwner->mType == CRAWLER))
 		{
 			gpGameObjectManager->Destroy(c->mBodies[1]->mpOwner);
 			TakeDamage *td = new TakeDamage();

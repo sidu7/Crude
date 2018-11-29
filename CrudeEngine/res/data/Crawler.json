@@ -1,11 +1,11 @@
 {
 	"Transform" : {
 		"Pos"  : [-100.0, -100.0],
-		"Scale" : [1.0,1.0],
+		"Scale" : [100.0,100.0],
 		"Angle" : 0.0
 	},
 	"Sprite" : {
-		"File" : "enemy/ghoul/move/move0.png"
+		"File" : "enemy/crawler/move/tile000.png"
     },
 	"Body" : {
 		"AABB" : [60.0, 60.0, 60.0, 60.0]
@@ -13,12 +13,12 @@
 	"Animator" : {
 		"Sprites" : [
 			{
-				"FileDir" : "res/textures/enemy/ghoul/move",
+				"FileDir" : "res/textures/enemy/crawler/move",
 				"Type" : "move",
 				"Default" : true
 			},
 			{
-				"FileDir" : "res/textures/enemy/ghoul/die",
+				"FileDir" : "res/textures/enemy/crawler/die",
 				"Type" : "die"
 			}
 		]
@@ -28,7 +28,7 @@
 		"Events" : [ 1 ]
 	},
 	"Attributes" : {
-		"TotalHP" : 40,
+		"TotalHP" : 20,
 		"Damage" : 10
 	}
 }

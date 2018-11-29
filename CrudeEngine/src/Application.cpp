@@ -182,8 +182,14 @@ int main(int argc, char* args[])
 		pause.SetTransform(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
 		pause.SetSprite("res/textures/pause.png");
 
+	//----- Gameover Screen ----
+		/*GameObject gameover(NO_OBJECT);
 
-	//-----
+		pNewComponent = gameover.AddComponent(TRANSFORM);
+		pNewComponent = gameover.AddComponent(SPRITE);
+
+		gameover.SetTransform(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
+		gameover.SetSprite("res/textures/gameover.png");*/
 
 	//----- Health Bar ------
 
@@ -349,7 +355,16 @@ int main(int argc, char* args[])
 					/* Draw call*/
 					renderer.Draw(va, ib, *gpShader);
 				}
-				pause.Update();
+				if (Pause)
+				{
+					pause.Update();
+				}
+				else if (PlayerIsDead)
+				{
+					GameObject* gameover = gpObjectFactory->LoadObject("gameover.json",NO_OBJECT);
+					gameover->Update();
+
+				}
 				renderer.Draw(va, ib, *gpShader);
 			}
 			SDL_GL_SwapWindow(pWindow);

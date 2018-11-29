@@ -7,7 +7,8 @@
 
 #define VELOCITY 200.0f
 #define BULLET_SPEED 500.0f
-#define ENEMY_VELOCITY 50.0f
+#define GHOUL_VELOCITY 50.0f
+#define CRAWLER_VELOCITY 100.0f
 #define GRENADE_SPEED 150.0f
 
 enum GameObjectTypes
@@ -59,5 +60,6 @@ enum DropType
 {
 	MEDKIT = 1,
 	DGRENADE = 3,
-	DOUBLEDMG = 5
+	DOUBLEDMG = 5,
+	CRAWL = 7
 };
