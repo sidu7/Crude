@@ -14,4 +14,5 @@ public:
 public:
 	DropType DropType;
 	float BuffTime;
+	GameObject* Bufficon;
 };

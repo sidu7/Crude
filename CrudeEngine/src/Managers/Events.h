@@ -51,3 +51,12 @@ public:
 	~DropPicked() { }
 	DropType Drop;
 };
+
+class TombHitEvent : public Event 
+{
+public:
+	TombHitEvent() : Event(TOMBHIT) { }
+	~TombHitEvent() { }
+	int tomb;
+	float HPLost;
+};

@@ -21,7 +21,10 @@ void Buff::Update()
 	if (BuffTime < 0.0f)
 	{
 		if (mpOwner->mType == PLAYER)
+		{
+			gpGameObjectManager->Destroy(Bufficon);
 			mpOwner->RemoveComponent(BUFF);
+		}
 		else
 			gpGameObjectManager->Destroy(mpOwner);
 	}

@@ -1,9 +1,11 @@
 #include "Transform.h"
 #include "../Events.h"
 #include "../GameObject.h"
+#include "../GameObjectManager.h"
 
 extern Shader* gpShader;
 extern Matrix3D* gpProj;
+extern GameObjectManager* gpGameObjectManager;
 
 Transform::Transform() : Component (TRANSFORM)
 {
@@ -61,6 +63,42 @@ void Transform::HandleEvent(Event * pEvent)
 		PlayerHPEvent *phe = static_cast<PlayerHPEvent*>(pEvent);
 		mScale.x += 15.0f * phe->HPChange;
 		mPosition.x += 7.5f * phe->HPChange;
+	}
+	if (pEvent->mType == TOMBHIT)
+	{
+		TombHitEvent *the = static_cast<TombHitEvent*>(pEvent);
+		if (mpOwner->mType == TOMB1HP && the->tomb == 1)
+		{
+			mScale.x -= 9.0f * the->HPLost;
+			mPosition.x -= 4.5f * the->HPLost;
+			if (mScale.x == 0.0f)
+			{
+				for (unsigned int i = 0; i < gpGameObjectManager->mGameObjects.size(); ++i)
+				{
+  					Transform *pTr = static_cast<Transform*>(gpGameObjectManager->mGameObjects[i]->GetComponent(TRANSFORM));
+					if (gpGameObjectManager->mGameObjects[i]->mType == NO_OBJECT && pTr->mPosition.x == 200.0f)
+					{
+						gpGameObjectManager->mGameObjects.erase(gpGameObjectManager->mGameObjects.begin() + i);
+					}
+				}
+			}
+		}
+		else if(mpOwner->mType == TOMB2HP && the->tomb == 2)
+		{
+			mScale.x -= 9.0f * the->HPLost;
+			mPosition.x -= 4.5f * the->HPLost;
+			if (mScale.x == 0.0f)
+			{
+				for (unsigned int i = 0; i < gpGameObjectManager->mGameObjects.size(); ++i)
+				{
+					Transform *pTr = static_cast<Transform*>(gpGameObjectManager->mGameObjects[i]->GetComponent(TRANSFORM));
+					if (gpGameObjectManager->mGameObjects[i]->mType == NO_OBJECT && pTr->mPosition.x == 760.0f)
+					{
+						gpGameObjectManager->mGameObjects.erase(gpGameObjectManager->mGameObjects.begin() + i);
+					}
+				}
+			}
+		}
 	}
 }
 

@@ -3,6 +3,8 @@
 #include "../GameObjectManager.h"
 #include "../GameObject.h"
 #include "Animator.h"
+#include "Transform.h"
+#include "Sprite.h"
 #include "Buff.h"
 
 extern GameObjectManager *gpGameObjectManager;
@@ -46,16 +48,34 @@ void Attributes::HandleEvent(Event * pEvent)
 		mCurrHP -= td->DamageDealt;
 		if (mpOwner->mType == PLAYER)
 		{
+			//Update Player HP bar
 			PlayerHPEvent *phe = new PlayerHPEvent();
 			phe->HPChange = -td->DamageDealt / 10.0f;
 			gpEventManager->BroadcastEventToSubscribers(phe);
-			if (mCurrHP == 0)
+			if (mCurrHP <= 0)
 			{
 				PlayerIsDead = true;
 				gpGameObjectManager->Destroy(mpOwner);
 			}
 		}
-		if (mCurrHP == 0)
+		if (mpOwner->mType == TOMBSTONE)
+		{
+			//Update Tombstone HP bar
+			TombHitEvent *the = new TombHitEvent();
+			the->HPLost = td->DamageDealt / 10.0f;
+			Transform *pTr = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM));
+			//find the tomb hit
+			if (pTr->mPosition.x == 200.0f)
+			{
+				the->tomb = 1;
+			}
+			else
+			{
+				the->tomb = 2;
+			}
+			gpEventManager->BroadcastEventToSubscribers(the);
+		}
+		if (mCurrHP <= 0)
 		{
 			if (mpOwner->mType == TOMBSTONE)
 			{
@@ -97,10 +117,18 @@ void Attributes::HandleEvent(Event * pEvent)
 		}
 		else if (dp->Drop == DOUBLEDMG)
 		{
+			GameObject *pBufficon = new GameObject(NO_OBJECT);
+			pBufficon->AddComponent(TRANSFORM);
+			pBufficon->AddComponent(SPRITE);
+			pBufficon->SetTransform(500, SCREEN_HEIGHT - 30.0f, 40, 40, 0.0f);
+			pBufficon->SetSprite("res/textures/doubledmg.png");
+			gpGameObjectManager->mGameObjects.push_back(pBufficon);
+
 			Buff *pBuff = static_cast<Buff*>(mpOwner->GetComponent(BUFF));
 			if (pBuff == nullptr)
 				pBuff = static_cast<Buff*>(mpOwner->AddComponent(BUFF));
 			pBuff->BuffTime = 5.0f;
+			pBuff->Bufficon = pBufficon;
 		}
 	}
 }

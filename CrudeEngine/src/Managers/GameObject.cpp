@@ -91,6 +91,9 @@ void GameObject::HandleEvent(Event * pEvent)
 	}
 }
 
+
+//For Debug Drawing
+
 void GameObject::ScaleToBody()
 {
 	Transform *pTr = static_cast<Transform*>(GetComponent(TRANSFORM));

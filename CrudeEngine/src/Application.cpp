@@ -162,7 +162,6 @@ int main(int argc, char* args[])
 		gpShader = new Shader("res/shaders/vertex.shader", "res/shaders/fragment.shader");
 		gpShader->Bind();
 
-		gpObjectFactory->LoadLevel("level.json");
 
 	//---- Background -----
 		GameObject background(NO_OBJECT);
@@ -174,18 +173,19 @@ int main(int argc, char* args[])
 		background.SetTransform(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH - 150.0f, SCREEN_HEIGHT - 150.0f, 0.0f);
 		background.SetSprite("res/textures/background.png");
 
+	//------ Pause Screen -----
+		GameObject pause(NO_OBJECT);
+		
+		pNewComponent = pause.AddComponent(TRANSFORM);
+		pNewComponent = pause.AddComponent(SPRITE);
+
+		pause.SetTransform(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
+		pause.SetSprite("res/textures/pause.png");
+
 
 	//-----
 
 	//----- Health Bar ------
-
-		GameObject healthbar(NO_OBJECT);
-
-		pNewComponent = healthbar.AddComponent(TRANSFORM);
-		pNewComponent = healthbar.AddComponent(SPRITE);
-
-		healthbar.SetTransform( 170.0f, SCREEN_HEIGHT - 40.0f, 225.0f, 60.0f, 0.0f);
-		healthbar.SetSprite("res/textures/hpbar.png");
 
 		GameObject HP(HPBAR);
 
@@ -195,11 +195,33 @@ int main(int argc, char* args[])
 
 		HP.SetTransform(190.0f, SCREEN_HEIGHT - 30.0f, 155.0f, 20.0f, 0.0f);
 		HP.SetSprite("res/textures/hp.png");
-		Transform* pTr = static_cast<Transform*>(HP.GetComponent(TRANSFORM));
 
+		gpGameObjectManager->mGameObjects.push_back(&HP);
+
+		GameObject Tomb1HP(TOMB1HP);
+
+		pNewComponent = Tomb1HP.AddComponent(TRANSFORM);
+		pNewComponent = Tomb1HP.AddComponent(SPRITE);
+		gpEventManager->Subscribe(TOMBHIT, &Tomb1HP);
+
+		Tomb1HP.SetTransform(200.0f, 145.0f, 90.0f, 10.0f, 0.0f);
+		Tomb1HP.SetSprite("res/textures/hp.png");
+
+		gpGameObjectManager->mGameObjects.push_back(&Tomb1HP);
+
+		GameObject Tomb2HP(TOMB2HP);
+
+		pNewComponent = Tomb2HP.AddComponent(TRANSFORM);
+		pNewComponent = Tomb2HP.AddComponent(SPRITE);
+		gpEventManager->Subscribe(TOMBHIT, &Tomb2HP);
+
+		Tomb2HP.SetTransform(760.0f, 580.0f, 90.0f, 10.0f, 0.0f);
+		Tomb2HP.SetSprite("res/textures/hp.png");
+
+		gpGameObjectManager->mGameObjects.push_back(&Tomb2HP);
 	//-----
 
-	//------ Grenades ----
+	//------ Grenades counter ----
 
 		GameObject* CurrGrenade[5];
 
@@ -212,7 +234,13 @@ int main(int argc, char* args[])
 			CurrGrenade[i]->SetSprite("res/textures/grenade.png");
 		}
 
-	//--------------------
+	//-----
+
+	//----- Load Level -----
+
+		gpObjectFactory->LoadLevel("level.json");
+
+	//------
 		Renderer renderer;
 		bool Pause = false;
 		PlayerIsDead = false;
@@ -263,11 +291,6 @@ int main(int argc, char* args[])
 			background.Update();
 			renderer.Draw(va, ib, *gpShader);
 
-			HP.Update();
-			renderer.Draw(va, ib, *gpShader);
-
-			healthbar.Update();
-			renderer.Draw(va, ib, *gpShader);
 
 			//Current Greande Count
 			for (unsigned int i = 0; i < GrenadeCount; ++i)
@@ -279,6 +302,7 @@ int main(int argc, char* args[])
 			
 			if (!PlayerIsDead && !Pause)
 			{
+				//--- Draw static dead objects
 				for (unsigned int i = 0; i < gpGameObjectManager->mStaticDeadObjects.size(); ++i)
 				{
 					if(gpGameObjectManager->mStaticDeadObjects[i]->mType != TOMBSTONE)
@@ -301,6 +325,9 @@ int main(int argc, char* args[])
 					renderer.Draw(va, ib, *gpShader);
 					if (Debug && !destroyed)
 					{
+						Component* pBody = gpGameObjectManager->mGameObjects[i]->GetComponent(BODY);
+						if (pBody == nullptr)
+							continue;
 						gpGameObjectManager->mGameObjects[i]->ScaleToBody();
 						renderer.DebugDraw(va, ib, *gpShader);
 						gpGameObjectManager->mGameObjects[i]->ResetScale();
@@ -322,7 +349,8 @@ int main(int argc, char* args[])
 					/* Draw call*/
 					renderer.Draw(va, ib, *gpShader);
 				}
-
+				pause.Update();
+				renderer.Draw(va, ib, *gpShader);
 			}
 			SDL_GL_SwapWindow(pWindow);
 

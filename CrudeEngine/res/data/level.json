@@ -1,6 +1,36 @@
 {
 	"Objects" : [
 		{
+			"Type" : "PlayerHPbar",
+			"Transform" : {
+				"Pos" : [170.0,680.0],
+				"Scale" : [225.0,60.0]
+			},
+			"Sprite" : {
+				"File" : "hpbar.png"
+			}
+		},
+		{
+			"Type" : "TombstoneHPbar",
+			"Transform" : {
+				"Pos" : [200.0,145.0],
+				"Scale" : [100.0,50.0]
+			},
+			"Sprite" : {
+				"File" : "tombhp.png"
+			}
+		},
+		{
+			"Type" : "TombstoneHPbar",
+			"Transform" : {
+				"Pos" : [760.0,580.0],
+				"Scale" : [100.0,50.0]
+			},
+			"Sprite" : {
+				"File" : "tombhp.png"
+			}
+		},
+		{
 			"File" : "Tombstone.json",
 			"Type" : "Tombstone",
 			"Transform" : {
@@ -28,8 +58,7 @@
 			"Type" : "Wall",
 			"Transform" : {
 				"Pos"  : [95.0, 360.0],
-				"Scale" : [40.0,570.0],
-				"Angle" : 0.0
+				"Scale" : [40.0,570.0]
 			},
 			"Body" : {
 				"AABB" : [570.0, 40.0, 570.0, 40.0]
@@ -42,8 +71,7 @@
 			"Type" : "Wall",
 			"Transform" : {
 				"Pos"  : [865.0, 360.0],
-				"Scale" : [40.0,570.0],
-				"Angle" : 0.0
+				"Scale" : [40.0,570.0]				
 			},
 			"Body" : {
 				"AABB" : [570.0, 40.0, 570.0, 40.0]
@@ -56,8 +84,7 @@
 			"Type" : "Wall",
 			"Transform" : {
 				"Pos"  : [480.0, 625.0],
-				"Scale" : [810.0,40.0],
-				"Angle" : 0.0
+				"Scale" : [810.0,40.0]
 			},
 			"Body" : {
 				"AABB" : [40.0, 810.0, 40.0, 810.0]
@@ -70,8 +97,7 @@
 			"Type" : "Wall",
 			"Transform" : {
 				"Pos"  : [480.0, 95.0],
-				"Scale" : [810.0,40.0],
-				"Angle" : 0.0
+				"Scale" : [810.0,40.0]
 			},
 			"Body" : {
 				"AABB" : [40.0, 810.0, 40.0, 810.0]

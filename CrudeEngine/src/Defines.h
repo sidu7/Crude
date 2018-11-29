@@ -22,6 +22,8 @@ enum GameObjectTypes
 	TOMBSTONE,
 	HPBAR,
 	DROPITEM,
+	TOMB1HP,
+	TOMB2HP
 };
 
 enum COMPONENT_TYPE
@@ -49,6 +51,7 @@ enum EventType
 	GRENADETHROW,
 	GRENADEHIT,
 	DROPPICKED,
+	TOMBHIT,
 	NUM
 };
 

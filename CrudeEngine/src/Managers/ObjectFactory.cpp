@@ -61,8 +61,6 @@ void ObjectFactory::LoadLevel(const char *pFileName)
 			std::string tt(wt.begin(), wt.end());
 			if ("Player" == tt)
 				type = PLAYER;
-			else if ("Crawler" == tt)
-				type = CRAWLER;
 			else if ("Wall" == tt)
 				type = WALL;
 			else if ("Tombstone" == tt)
@@ -96,9 +94,11 @@ void ObjectFactory::LoadLevel(const char *pFileName)
 			}
 
 			pTr->Serialize(obj[L"Transform"]->AsObject());
-
-			Body *pBody = static_cast<Body*>(pGameObject->GetComponent(BODY));
-			pBody->Initialize();
+			if (type != NO_OBJECT)
+			{
+				Body *pBody = static_cast<Body*>(pGameObject->GetComponent(BODY));
+				pBody->Initialize();
+			}
 		}
 		if (obj.find(L"Sprite") != obj.end()) {
 			Sprite *pSp = static_cast<Sprite*>(pGameObject->AddComponent(SPRITE));
