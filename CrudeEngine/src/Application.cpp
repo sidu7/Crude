@@ -182,14 +182,15 @@ int main(int argc, char* args[])
 		pause.SetTransform(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
 		pause.SetSprite("res/textures/pause.png");
 
-	//----- Gameover Screen ----
-		/*GameObject gameover(NO_OBJECT);
+	//------ Help Screen -----
 
-		pNewComponent = gameover.AddComponent(TRANSFORM);
-		pNewComponent = gameover.AddComponent(SPRITE);
+		GameObject help(NO_OBJECT);
 
-		gameover.SetTransform(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
-		gameover.SetSprite("res/textures/gameover.png");*/
+		pNewComponent = help.AddComponent(TRANSFORM);
+		pNewComponent = help.AddComponent(SPRITE);
+
+		help.SetTransform(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
+		help.SetSprite("res/textures/help.png");
 
 	//----- Health Bar ------
 
@@ -248,7 +249,8 @@ int main(int argc, char* args[])
 
 	//------
 		Renderer renderer;
-		bool Pause = false;
+		bool Pause = true;
+		bool ShowHelp = true;
 		PlayerIsDead = false;
 		Debug = false;
 		GrenadeCount = 5;
@@ -276,7 +278,7 @@ int main(int argc, char* args[])
 			{
 				appIsRunning = false;
 			}
-			if (gpInputManager->IsTriggered(SDL_SCANCODE_P))
+			if (gpInputManager->IsTriggered(SDL_SCANCODE_P) && !ShowHelp)
 			{
 				Pause = !Pause;
 			}
@@ -288,7 +290,11 @@ int main(int argc, char* args[])
 			{
 				MouseEnabled = !MouseEnabled;
 			}
-			
+			if (gpInputManager->IsTriggered(SDL_SCANCODE_H))
+			{
+				ShowHelp = !ShowHelp;
+				Pause = ShowHelp;
+			}
 			gpShader->Bind();
 
 			/* Render here */
@@ -355,7 +361,7 @@ int main(int argc, char* args[])
 					/* Draw call*/
 					renderer.Draw(va, ib, *gpShader);
 				}
-				if (Pause)
+				if (Pause && !ShowHelp)
 				{
 					pause.Update();
 				}
@@ -364,6 +370,10 @@ int main(int argc, char* args[])
 					GameObject* gameover = gpObjectFactory->LoadObject("gameover.json",NO_OBJECT);
 					gameover->Update();
 
+				}
+				else if (ShowHelp)
+				{
+					help.Update();
 				}
 				renderer.Draw(va, ib, *gpShader);
 			}

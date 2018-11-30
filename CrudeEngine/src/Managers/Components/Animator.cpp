@@ -75,7 +75,7 @@ void Animator::Update()
 					{
 						mpOwner->RemoveComponent(FOLLOW);
 						mpOwner->RemoveComponent(SUBSCRIPTION);
-						mpOwner->mDeathDelay = 5.0f;
+						mpOwner->mDeathDelay = 1.0f;
 					}
 					mpOwner->RemoveComponent(ANIMATOR);
 					mpOwner->RemoveComponent(ATTRIBUTES);
