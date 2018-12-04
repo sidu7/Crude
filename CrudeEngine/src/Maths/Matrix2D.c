@@ -183,17 +183,17 @@ Save the resultant matrix in Result
 void Matrix2DRotRad(Matrix2D *pResult, float Angle)
 {
 	Matrix2DIdentity(pResult);
-	pResult->m[0][0] = pResult->m[1][1] = cos(Angle);
-	pResult->m[1][0] = sin(Angle);
-	pResult->m[0][1] = - sin(Angle);
+	pResult->m[0][0] = pResult->m[1][1] = (float)cos(Angle);
+	pResult->m[1][0] = (float)sin(Angle);
+	pResult->m[0][1] = (float)-sin(Angle);
 }
 
 void Matrix3DRotRad(Matrix3D * pResult, float Angle)
 {
 	Matrix3DIdentity(pResult);
 	pResult->m[0][0] = pResult->m[1][1] = cos(Angle);
-	pResult->m[1][0] = sin(Angle);
-	pResult->m[0][1] = -sin(Angle);
+	pResult->m[1][0] = (float)sin(Angle);
+	pResult->m[0][1] = (float)-sin(Angle);
 }
 
 // ---------------------------------------------------------------------------

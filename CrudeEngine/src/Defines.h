@@ -24,7 +24,8 @@ enum GameObjectTypes
 	HPBAR,
 	DROPITEM,
 	TOMB1HP,
-	TOMB2HP
+	TOMB2HP,
+	OBJ_NUM
 };
 
 enum COMPONENT_TYPE

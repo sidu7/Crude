@@ -47,7 +47,7 @@ void Vector2DNeg(Vector2D *pResult, Vector2D *pVec0)
 
 void Vector2DAdd(Vector2D *pResult, Vector2D *pVec0, Vector2D *pVec1)
 {
-	pResult -> x = pVec0 -> x + pVec1 -> x;
+  	pResult -> x = pVec0 -> x + pVec1 -> x;
 	pResult -> y = pVec0 -> y + pVec1 -> y;
 }
 
@@ -63,7 +63,7 @@ void Vector2DSub(Vector2D *pResult, Vector2D *pVec0, Vector2D *pVec1)
 
 void Vector2DNormalize(Vector2D *pResult, Vector2D *pVec0)
 {
-	float magnitude = sqrt(pVec0->x*pVec0->x + pVec0->y*pVec0->y);
+	float magnitude = (float)sqrt(pVec0->x*pVec0->x + pVec0->y*pVec0->y);
 	pResult->x = pVec0->x / magnitude;
 	pResult->y = pVec0->y / magnitude;
 }
@@ -96,7 +96,7 @@ void Vector2DScaleSub(Vector2D *pResult, Vector2D *pVec0, Vector2D *pVec1, float
 
 float Vector2DLength(Vector2D *pVec0)
 {
-	return sqrt(pVec0->x*pVec0->x + pVec0->y*pVec0->y);
+	return (float)sqrt(pVec0->x*pVec0->x + pVec0->y*pVec0->y);
 }
 
 // ---------------------------------------------------------------------------
@@ -112,7 +112,7 @@ float Vector2DDistance(Vector2D *pVec0, Vector2D *pVec1)
 {
 	float x2 = (pVec0->x - pVec1->x);
 	float y2 = (pVec0->y - pVec1->y);
-	return sqrt(x2*x2 + y2*y2);
+	return (float)sqrt(x2*x2 + y2*y2);
 }
 
 // ---------------------------------------------------------------------------
@@ -135,15 +135,15 @@ float Vector2DDotProduct(Vector2D *pVec0, Vector2D *pVec1)
 
 void Vector2DFromAngleDeg(Vector2D *pResult, float angle)
 {
-	Vector2DFromAngleRad(pResult,(angle*PI)/360);
+	Vector2DFromAngleRad(pResult, (float)(angle*PI)/360);
 }
 
 // ---------------------------------------------------------------------------
 
 void Vector2DFromAngleRad(Vector2D *pResult, float angle)
 {
-	pResult->x = cos(angle);
-	pResult->y = sin(angle);
+	pResult->x = (float)cos(angle);
+	pResult->y = (float)sin(angle);
 }
 
 // ---------------------------------------------------------------------------

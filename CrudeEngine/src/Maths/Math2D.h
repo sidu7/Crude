@@ -220,6 +220,9 @@ It should first make sure that the animated circle is intersecting with the stat
 */
 float ReflectAnimatedCircleOnStaticCircle(Vector2D *Center0s, Vector2D *Center0e, float Radius0, Vector2D *Center1, float Radius1, Vector2D *Pi, Vector2D *R);
 
+int staticCircleToStaticRect(Vector2D *pPos, float radius, Vector2D *pRect, float Width, float Height);
+
+
 #ifdef __cplusplus
 } //only visible by C++ compiler
 #endif

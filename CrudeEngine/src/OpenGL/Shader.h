@@ -2,7 +2,7 @@
 
 #include <string>
 
-class Matrix3D;
+struct Matrix3D;
 
 struct ShaderSource
 {

@@ -29,7 +29,7 @@ void Body::Serialize(JSONObject obj)
 {
 	if (obj.find(L"Mass") != obj.end())
 	{
-		mMass = obj[L"Mass"]->AsNumber();
+		mMass = (float)obj[L"Mass"]->AsNumber();
 		if (mMass != 0.0f)
 		{
 			mInvMass = 1.0f / mMass;
@@ -41,13 +41,13 @@ void Body::Serialize(JSONObject obj)
 	}
 	if (obj.find(L"Circle") != obj.end())
 	{
-		mpShape = new ShapeCircle(obj[L"Circle"]->AsNumber());
+		mpShape = new ShapeCircle((float)obj[L"Circle"]->AsNumber());
 		mpShape->mpOwnerBody = this;
 	}
 	if (obj.find(L"AABB") != obj.end())
 	{
 		JSONArray coords = obj[L"AABB"]->AsArray();
-		mpShape = new ShapeAABB(coords[0]->AsNumber(), coords[1]->AsNumber(), coords[2]->AsNumber(), coords[3]->AsNumber());
+		mpShape = new ShapeAABB((float)coords[0]->AsNumber(), (float)coords[1]->AsNumber(),(float)coords[2]->AsNumber(), (float)coords[3]->AsNumber());
 		mpShape->mpOwnerBody = this;
 	}
 }
@@ -61,6 +61,7 @@ void Body::Initialize()
 	{
 		mPrevPosition.x = mPosition.x = pTr->mPosition.x;
 		mPrevPosition.y = mPosition.y = pTr->mPosition.y;
+		mAngV = pTr->mAngle;
 	}
 }
 
@@ -86,7 +87,7 @@ void Body::Integrate(float Gravity, float DeltaTime)
 	//mPosX = mVelX * DeltaTime + mPosX;
 	//mPosY = mVelY * DeltaTime + mPosY;
 
-	mTotalForce.x = mTotalForce.y = 0.0f;
+	//mTotalForce.x = mTotalForce.y = 0.0f;
 	//mVelocity.x = mVelocity.y = 0.0f;
 
 	Transform *pTr = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM));
@@ -97,14 +98,13 @@ void Body::Integrate(float Gravity, float DeltaTime)
 		pTr->mPosition.y = mPosition.y;
 
 		pTr->mAngle = mAngV;
-		//mAngV = 0.0f;
 	}
 }
 
 void Body::AddVelocity(float velocity)
 {
 	Vector2D vel;
-	Vector2DSet(&vel, cosf(mAngV*PI/180), sinf(mAngV*PI/180));
+	Vector2DSet(&vel, (float)cosf(mAngV*PI/180), (float)sinf(mAngV*PI/180));
 	Vector2DScale(&mVelocity, &vel, velocity);
 }
 

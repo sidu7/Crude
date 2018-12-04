@@ -22,6 +22,7 @@ bool ShapeCircle::TestPoint(float PointX, float PointY)
 	return false;
 }
 
+//TODO: Change it to width and height
 ShapeAABB::ShapeAABB(float left, float top, float right, float bottom) :Shape(RECTANGLE)
 {
 	mTop = top;
@@ -81,14 +82,18 @@ bool checkCollisionCircleAABB(Shape *pShape1, float Pos1X, float Pos1Y, Shape *p
 	Vector2D Pos2;
 	Vector2DSet(&Pos2, Pos2X, Pos2Y);
 
-	
-	//Create a new contact and add to the contacts list
-	Contact *pNewContact = new Contact();
-	pNewContact->mBodies[0] = pShape1->mpOwnerBody;
-	pNewContact->mBodies[1] = pShape2->mpOwnerBody;
-	Contacts.push_back(pNewContact);
+	if (staticCircleToStaticRect(&Pos1, p1->mRadius, &Pos2, p2->mTop, p2->mLeft))
+	{
+		//Create a new contact and add to the contacts list
+		Contact *pNewContact = new Contact();
+		pNewContact->mBodies[0] = pShape1->mpOwnerBody;
+		pNewContact->mBodies[1] = pShape2->mpOwnerBody;
+		Contacts.push_back(pNewContact);
 
-	return true;
+		return true;
+	}
+
+	return false;
 }
 bool checkCollisionAABBAABB(Shape *pShape1, float Pos1X, float Pos1Y, Shape *pShape2, float Pos2X, float Pos2Y, std::list<Contact*> &Contacts)
 {

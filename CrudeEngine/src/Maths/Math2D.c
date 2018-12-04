@@ -285,7 +285,7 @@ float AnimatedPointToStaticCircle(Vector2D *Ps, Vector2D *Pe, Vector2D *Center, 
 	{
 		return -1.0f;
 	}
-	s = sqrt((Radius * Radius) - n);
+	s = (float)sqrt((Radius * Radius) - n);
 	Ti = (m - s) / Vector2DLength(&v);
 	if (Ti < 0 || Ti > 1)
 	{
@@ -322,7 +322,7 @@ It should first make sure that the animated point is intersecting with the circl
 */
 float ReflectAnimatedPointOnStaticCircle(Vector2D *Ps, Vector2D *Pe, Vector2D *Center, float Radius, Vector2D *Pi, Vector2D *R)
 {
-	float Ti, tt;
+	float Ti;
 	Vector2D nC, m, tempR, v;
 
 	Ti = AnimatedPointToStaticCircle(Ps, Pe, Center, Radius, Pi);
@@ -382,4 +382,12 @@ It should first make sure that the animated circle is intersecting with the stat
 float ReflectAnimatedCircleOnStaticCircle(Vector2D *Center0s, Vector2D *Center0e, float Radius0, Vector2D *Center1, float Radius1, Vector2D *Pi, Vector2D *R)
 {
 	return ReflectAnimatedPointOnStaticCircle(Center0s, Center0e, Center1, Radius0 + Radius1, Pi, R);
+}
+
+/*
+ Detect collision between Circle and Rectangle
+*/
+int staticCircleToStaticRect(Vector2D *pCircle, float Radius, Vector2D *pRect, float Width, float Height)
+{
+	return StaticPointToStaticRect(pCircle, pRect, Width + 2 * Radius, Height + 2 * Radius);
 }

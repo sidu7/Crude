@@ -2,9 +2,7 @@
 
 #include <vector>
 #include "../Maths/Vector2D.h"
-
-
-class Component;
+#include "Components/Component.h"
 
 class Sprite;
 class Transform;
@@ -24,6 +22,8 @@ public:
 		void SetTransform(float posX, float posY, float scaleX, float scaleY, float angle);
 		void SetSprite(const char* filePath);
 		void HandleEvent(Event* pEvent);
+
+		//functions for debug drawing
 		void ScaleToBody();
 		void ResetScale();
 

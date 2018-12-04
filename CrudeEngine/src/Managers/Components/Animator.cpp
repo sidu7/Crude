@@ -60,9 +60,9 @@ void Animator::Update()
 			mCurrDelay += gpFrameRateController->GetFrameTime();
 		if (mCurrDelay < 0.0f || mCurrDelay > (1.0f / mAnimations[mCurrState].size()))
 		{
-			if (mCurrFrame < mAnimations[mCurrState].size())
+			if (mCurrFrame < (int)mAnimations[mCurrState].size())
 				pSp->mpTexture = mAnimations[mCurrState][mCurrFrame++];
-			if (mCurrFrame >= mAnimations[mCurrState].size())
+			if (mCurrFrame >= (int)mAnimations[mCurrState].size())
 			{
 				PlayingAnimation = false;
 				mCurrFrame = 0;
@@ -92,9 +92,9 @@ void Animator::Update()
 		mCurrDelay += gpFrameRateController->GetFrameTime();
 		if (mCurrDelay >(1.0f / mAnimations[mCurrState].size()))
 		{
-			if (mCurrFrame < mAnimations[mCurrState].size())
+			if (mCurrFrame < (int)mAnimations[mCurrState].size())
 				pSp->mpTexture = mAnimations[mCurrState][mCurrFrame++];
-			if (mCurrFrame >= mAnimations[mCurrState].size())
+			if (mCurrFrame >= (int)mAnimations[mCurrState].size())
 				mCurrFrame = 0;
 			mCurrDelay = 0.0f;
 		}
@@ -105,7 +105,7 @@ void Animator::Serialize(JSONObject obj)
 {
 	JSONArray Spritesheets = obj[L"Sprites"]->AsArray();
 
-	for (int i = 0; i < Spritesheets.size(); ++i) {
+	for (int i = 0; i < (int)Spritesheets.size(); ++i) {
 		JSONObject eobj = Spritesheets[i]->AsObject();
 		std::wstring wp = eobj[L"FileDir"]->AsString();
 		std::wstring wt = eobj[L"Type"]->AsString();

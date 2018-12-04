@@ -6,8 +6,6 @@
 #include "../../OpenGL/Texture.h"
 #include "../../OpenGL/Shader.h"
 
-class SDL_Surface;
-
 class Sprite : public Component
 {
 public:

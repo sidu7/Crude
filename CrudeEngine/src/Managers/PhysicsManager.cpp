@@ -37,7 +37,7 @@ void PhysicsManager::Update(float FrameTime)
 
 	//Check for intersections
 
-	for (int pObj1 = 0; pObj1 < GO.size(); ++pObj1)
+	for (int pObj1 = 0; pObj1 < (int)GO.size(); ++pObj1)
 	{
 		if (GO[pObj1]->mType == NO_OBJECT)
 		{
@@ -49,7 +49,7 @@ void PhysicsManager::Update(float FrameTime)
 		if (pBody1 == nullptr)
 			continue;
 
-		for (int pObj2 = pObj1 + 1; pObj2 < GO.size(); ++pObj2)
+		for (int pObj2 = pObj1 + 1; pObj2 < (int)GO.size(); ++pObj2)
 		{
 			if (GO[pObj2]->mType == NO_OBJECT)
 			{
@@ -79,18 +79,18 @@ void PhysicsManager::Update(float FrameTime)
 			gpGameObjectManager->Destroy(c->mBodies[1]->mpOwner);
 
 		}
-		else if (c->mBodies[0]->mpOwner->mType == PLAYER && c->mBodies[1]->mpOwner->mType == WALL)
+		else if (c->mBodies[0]->mpOwner->mType == WALL && (c->mBodies[1]->mpOwner->mType == PLAYER || c->mBodies[1]->mpOwner->mType == GRENADE))
 		{
 			WallCollideEvent *wc = new WallCollideEvent();
-			if (c->mBodies[1]->mPosition.y > SCREEN_HEIGHT / 2)
+			if (c->mBodies[0]->mPosition.y > SCREEN_HEIGHT / 2)
 				wc->side = 1;
-			else if (c->mBodies[1]->mPosition.y < SCREEN_HEIGHT / 2)
+			else if (c->mBodies[0]->mPosition.y < SCREEN_HEIGHT / 2)
 				wc->side = 3;
-			else if (c->mBodies[1]->mPosition.x < SCREEN_WIDTH / 2)
+			else if (c->mBodies[0]->mPosition.x < SCREEN_WIDTH / 2)
 				wc->side = 0;
-			else if (c->mBodies[1]->mPosition.x > SCREEN_WIDTH / 2)
+			else if (c->mBodies[0]->mPosition.x > SCREEN_WIDTH / 2)
 				wc->side = 2;
-			c->mBodies[0]->mpOwner->HandleEvent(wc);
+			c->mBodies[1]->mpOwner->HandleEvent(wc);
 		}
 		else if (c->mBodies[0]->mpOwner->mType == WALL && c->mBodies[1]->mpOwner->mType == BULLET)
 		{
@@ -123,11 +123,6 @@ void PhysicsManager::Update(float FrameTime)
 				GrenadeHit gh;
 				c->mBodies[0]->mpOwner->HandleEvent(&gh);
 			}
-		}
-		else if (c->mBodies[0]->mpOwner->mType == WALL && c->mBodies[1]->mpOwner->mType == GRENADE)
-		{
-			WallCollideEvent wc;
-			c->mBodies[1]->mpOwner->HandleEvent(&wc);
 		}
 		else if (c->mBodies[0]->mpOwner->mType == PLAYER && (c->mBodies[1]->mpOwner->mType == GHOUL 
 			|| c->mBodies[1]->mpOwner->mType == CRAWLER))

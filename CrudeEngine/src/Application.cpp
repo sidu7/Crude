@@ -24,8 +24,10 @@
 #include "Managers/Components/Component.h"
 #include "Managers/EventManager.h"
 #include "Managers/Components/Spawner.h"
-#include "Managers/Components/Transform.h" //to remove
+#include "Managers/Components/Transform.h" 
 #include "Managers/Components/Sprite.h"
+
+#include "Managers/Components/Body.h"
 
 #include "Defines.h"
 
@@ -85,8 +87,8 @@ int main(int argc, char* args[])
 		return 1;
 	}
 
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3); 
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3); 
+	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3); 
+	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3); 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -242,18 +244,19 @@ int main(int argc, char* args[])
 		}
 
 	//-----
-
 	//----- Load Level -----
 
+		gpObjectFactory->LoadArchetypes("Archetypes.json");
 		gpObjectFactory->LoadLevel("level.json");
 
 	//------
 		Renderer renderer;
 		bool Pause = true;
+		bool Start = false;
 		bool ShowHelp = true;
 		PlayerIsDead = false;
 		Debug = false;
-		GrenadeCount = 5;
+		GrenadeCount = 500;
 		MouseEnabled = true;
 
 		/* Loop until the user closes the window */
@@ -274,10 +277,10 @@ int main(int argc, char* args[])
 
 			gpInputManager->Update();
 			
-			if (gpInputManager->IsPressed(SDL_SCANCODE_ESCAPE))
+			/*if (gpInputManager->IsPressed(SDL_SCANCODE_ESCAPE))
 			{
 				appIsRunning = false;
-			}
+			}*/
 			if (gpInputManager->IsTriggered(SDL_SCANCODE_P) && !ShowHelp)
 			{
 				Pause = !Pause;
@@ -290,10 +293,16 @@ int main(int argc, char* args[])
 			{
 				MouseEnabled = !MouseEnabled;
 			}
-			if (gpInputManager->IsTriggered(SDL_SCANCODE_H))
+			if (gpInputManager->IsTriggered(SDL_SCANCODE_H) && Start)
 			{
 				ShowHelp = !ShowHelp;
 				Pause = ShowHelp;
+			}
+			if (gpInputManager->IsTriggered(SDL_SCANCODE_S))
+			{
+				ShowHelp = false;
+				Start = true;
+				Pause = false;
 			}
 			gpShader->Bind();
 
@@ -305,12 +314,12 @@ int main(int argc, char* args[])
 
 
 			//Current Greande Count
-			for (unsigned int i = 0; i < GrenadeCount; ++i)
+			/*for (int i = 0; i < GrenadeCount; ++i)
 			{
 				CurrGrenade[i]->SetTransform(300.0f + (i*30), SCREEN_HEIGHT - 30.0f, 30.0f, 30.0f, 0.0f);
 				CurrGrenade[i]->Update();
 				renderer.Draw(va, ib, *gpShader);
-			}
+			}*/
 			
 			if (!PlayerIsDead && !Pause)
 			{
@@ -323,6 +332,7 @@ int main(int argc, char* args[])
 						gpGameObjectManager->mStaticDeadObjects.erase(gpGameObjectManager->mStaticDeadObjects.begin() + i);
 					else
 					{
+						
 						gpGameObjectManager->mStaticDeadObjects[i]->Update();
 						renderer.Draw(va, ib, *gpShader);
 					}
@@ -335,13 +345,29 @@ int main(int argc, char* args[])
 					
 					/* Draw call*/
 					renderer.Draw(va, ib, *gpShader);
-					if (Debug && !destroyed)
+ 					if (Debug && !destroyed)
 					{
-						Component* pBody = gpGameObjectManager->mGameObjects[i]->GetComponent(BODY);
+						Body* pBody = static_cast<Body*>(gpGameObjectManager->mGameObjects[i]->GetComponent(BODY));
 						if (pBody == nullptr)
 							continue;
-						gpGameObjectManager->mGameObjects[i]->ScaleToBody();
+						
+						
+			 			gpGameObjectManager->mGameObjects[i]->ScaleToBody();
 						renderer.DebugDraw(va, ib, *gpShader);
+						if (gpGameObjectManager->mGameObjects[i]->mType == PLAYER)
+						{
+							glBegin(GL_LINES);
+							glLineWidth(2.5);
+							glColor3f(1.0, 0.0, 0.0);
+							Vector2D p;
+							Vector2DSet(&p, (float)cosf(pBody->mAngV*PI / 180), (float)sinf(pBody->mAngV*PI / 180));
+							Vector2DNormalize(&p, &p);
+							glVertex2f(0, 0);
+							Vector2DScale(&p, &p, 1.5);
+							glVertex2f(p.x, p.y);
+							glEnd();
+							glFlush();
+						}						
 						gpGameObjectManager->mGameObjects[i]->ResetScale();
 					}
 				}

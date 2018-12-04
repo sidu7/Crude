@@ -23,10 +23,10 @@ Spawner::~Spawner()
 
 void Spawner::Update()
 {
-	mCurrDelay += gpFrameRateController->GetFrameTime();
+	/*mCurrDelay += gpFrameRateController->GetFrameTime();
 	if (mCurrDelay > mStartDelay + 2.0f)
 	{
-		GameObject *pCrawler = gpObjectFactory->LoadObject("Ghoul.json", GHOUL);
+		GameObject *pCrawler = gpObjectFactory->GetArcheType(GHOUL);
 		Body *pTombBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
 		Body *pCrawlerBody = static_cast<Body*>(pCrawler->GetComponent(BODY));
 		Transform *pCrawlerTrans = static_cast<Transform*>(pCrawler->GetComponent(TRANSFORM));
@@ -40,7 +40,7 @@ void Spawner::Update()
 		mCurrDelay = mStartDelay;
 
 		//------ Add Drop Items -----
-		srand(time(NULL));
+		srand((unsigned int)time(NULL));
 		int value = rand() % 20;
 		if (value == 1 || value == 3 || value == 5 || value == 7)
 		{
@@ -48,7 +48,7 @@ void Spawner::Update()
 			pDrop->mType = DropType(value);
 		}
 		//---------------------------
-	}
+	}*/
 }
 
 Component * Spawner::Create()

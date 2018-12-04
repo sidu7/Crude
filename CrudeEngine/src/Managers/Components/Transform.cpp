@@ -44,16 +44,16 @@ void Transform::Serialize(JSONObject obj)
 {
 	if (obj.find(L"Pos") != obj.end()) {
 		JSONArray Pos = obj[L"Pos"]->AsArray();
-		mPosition.x = Pos[0]->AsNumber();
-		mPosition.y = Pos[1]->AsNumber();
+		mPosition.x = (float)Pos[0]->AsNumber();
+		mPosition.y = (float)Pos[1]->AsNumber();
 	}
 	if (obj.find(L"Scale") != obj.end()) {
 		JSONArray Scale = obj[L"Scale"]->AsArray();
-		mScale.x = Scale[0]->AsNumber();
-		mScale.y = Scale[1]->AsNumber();
+		mScale.x = (float)Scale[0]->AsNumber();
+		mScale.y = (float)Scale[1]->AsNumber();
 	}
 	if(obj.find(L"Angle") != obj.end())
-		mAngle = obj[L"Angle"]->AsNumber();
+		mAngle = (float)obj[L"Angle"]->AsNumber();
 }
 
 void Transform::HandleEvent(Event * pEvent)

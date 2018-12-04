@@ -100,11 +100,42 @@ void GameObject::ScaleToBody()
 	Body* pBody = static_cast<Body*>(GetComponent(BODY));
 	if (pBody == nullptr)
 		return;
-	ShapeAABB *pShape = static_cast<ShapeAABB*>(pBody->mpShape);
-	Vector2DSet(&mTempScale, pTr->mScale.x, pTr->mScale.y);
-	Vector2DSet(&pTr->mScale, pShape->mTop, pShape->mLeft);
-	pTr->Debug = true;
-	pTr->Update();
+	if (pBody->mpShape->mType == Shape::CIRCLE)
+	{
+		ShapeCircle *pCircle = static_cast<ShapeCircle*>(pBody->mpShape);
+		double circle[] = {
+		   0.5f,    0.0f, 0.0f,
+		 0.433f,   0.25f, 0.0f,
+		 0.353f,  0.353f, 0.0f,
+		  0.25f,  0.433f, 0.0f,
+		   0.0f,    0.5f, 0.0f,
+		 -0.25f,  0.433f, 0.0f,
+		-0.353f,  0.353f, 0.0f,
+		-0.433f,   0.25f, 0.0f,
+		  -0.5f,    0.0f, 0.0f,
+		-0.433f,  -0.25f, 0.0f,
+		-0.353f, -0.353f, 0.0f,
+		 -0.25f, -0.433f, 0.0f,
+		   0.0f,   -0.5f, 0.0f,
+		  0.25f, -0.433f, 0.0f,
+		 0.353f, -0.353f, 0.0f,
+		 0.433f,  -0.25f, 0.0f
+		};
+
+		/*glBegin(GL_LINE_LOOP);
+		for (int i = 0; i < 48; i++)
+			glVertex3dv(&circle[i]);
+		glEnd();*/
+
+	}
+	else
+	{
+		ShapeAABB *pShape = static_cast<ShapeAABB*>(pBody->mpShape);
+		Vector2DSet(&mTempScale, pTr->mScale.x, pTr->mScale.y);
+		Vector2DSet(&pTr->mScale, pShape->mTop, pShape->mLeft);
+		pTr->Debug = true;
+		pTr->Update();
+	}
 }
 
 void GameObject::ResetScale()
@@ -114,5 +145,4 @@ void GameObject::ResetScale()
 	pTr->Debug = false;
 	pTr->Update();
 }
-
 

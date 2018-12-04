@@ -33,7 +33,7 @@ void Follow::Update()
 	{
 		Vector2D Dir, eDir;
 		Vector2DSub(&Dir, &mPlayerPos->mPosition, &mBody->mPosition);
-		Vector2DSet(&eDir, cosf(PI), sinf(PI));
+		Vector2DSet(&eDir, (float)cosf(PI), (float)sinf(PI));
 		Vector2DNormalize(&Dir, &Dir);
 		if(mpOwner->mType == CRAWLER)
 			Vector2DScale(&mBody->mVelocity, &Dir, CRAWLER_VELOCITY);
@@ -41,9 +41,9 @@ void Follow::Update()
 			Vector2DScale(&mBody->mVelocity, &Dir, GHOUL_VELOCITY);
 		float ang = getAngleVector(Dir, eDir);
 		if (ang > 0)
-			mBody->mAngV = acosf(Dir.x) * 180 / PI;
+			mBody->mAngV = (float)acosf(Dir.x) * 180 / PI;
 		else
-			mBody->mAngV = -(acosf(Dir.x) * 180 / PI);
+			mBody->mAngV = (float)-(acosf(Dir.x) * 180 / PI);
 	}
 	else
 	{

@@ -28,7 +28,7 @@
 		"Events" : [ 1 ]
 	},
 	"Attributes" : {
-		"TotalHP" : 40,
+		"TotalHP" : 30,
 		"Damage" : 10
 	}
 }

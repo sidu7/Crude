@@ -47,14 +47,6 @@
 			}
 		},
 		{
-			"File" : "Player.json",
-			"Type" : "Player",
-			"Transform" : {
-				"Pos" : [480.0, 360.0],
-				"Scale" : [150.0, 150.0]
-			}
-		},
-		{
 			"Type" : "Wall",
 			"Transform" : {
 				"Pos"  : [95.0, 360.0],
@@ -104,6 +96,14 @@
 			},
 			"Sprite" : {
 				"File" : "trigger.png"
+			}
+		},
+		{
+			"File" : "Player.json",
+			"Type" : "Player",
+			"Transform" : {
+				"Pos" : [480.0, 360.0],
+				"Scale" : [150.0, 150.0]
 			}
 		}
 	]

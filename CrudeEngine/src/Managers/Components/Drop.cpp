@@ -30,12 +30,11 @@ void Drop::Update()
 		Sprite* pSp = nullptr;
 		if (mType == CRAWL)
 		{
-			pDrop = gpObjectFactory->LoadObject("Crawler.json", CRAWLER);
-			//TODO: Delete parent ghoul from staticdead list
+			pDrop = gpObjectFactory->GetArcheType(CRAWLER);
 		}
 		else
 		{
-			pDrop = gpObjectFactory->LoadObject("drop.json", DROPITEM);
+			pDrop = gpObjectFactory->GetArcheType(DROPITEM);
 			Buff *pBuff = static_cast<Buff*>(pDrop->AddComponent(BUFF));
 			pBuff->DropType = mType;
 			pBuff->BuffTime = 5.0f;

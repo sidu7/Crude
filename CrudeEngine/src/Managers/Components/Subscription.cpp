@@ -23,9 +23,9 @@ void Subscription::Update()
 void Subscription::Serialize(JSONObject obj)
 {
 	JSONArray events = obj[L"Events"]->AsArray();
-	for (int i = 0; i < events.size(); ++i)
+	for (int i = 0; i < (int)events.size(); ++i)
 	{	
-		unsigned int type = events[i]->AsNumber();
+		unsigned int type = (unsigned int)events[i]->AsNumber();
 		gpEventManager->Subscribe(EventType(type), mpOwner);
 		mEventSubscriptions.push_back(type);
 	}

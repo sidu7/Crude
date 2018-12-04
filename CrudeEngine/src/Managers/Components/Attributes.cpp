@@ -6,6 +6,7 @@
 #include "Transform.h"
 #include "Sprite.h"
 #include "Buff.h"
+#include "Body.h"
 
 extern GameObjectManager *gpGameObjectManager;
 extern int GrenadeCount;
@@ -30,7 +31,7 @@ void Attributes::Serialize(JSONObject obj)
 	mTotalHP = static_cast<int>(obj[L"TotalHP"]->AsNumber());
 	if (obj.find(L"Damage") != obj.end())
 	{
-		mDamage = obj[L"Damage"]->AsNumber();
+		mDamage = (int)obj[L"Damage"]->AsNumber();
 	}
 	mCurrHP = mTotalHP;
 }
@@ -92,7 +93,7 @@ void Attributes::HandleEvent(Event * pEvent)
 			}
 		}
 	}
-	if (pEvent->mType == GRENADEHIT)
+	else if (pEvent->mType == GRENADEHIT)
 	{
 		Animator *pAnimator = static_cast<Animator*>(mpOwner->GetComponent(ANIMATOR));
 		pAnimator->PlayAnimation("die", false);
@@ -101,7 +102,7 @@ void Attributes::HandleEvent(Event * pEvent)
 		mpOwner->RemoveComponent(FOLLOW);
 		mpOwner->RemoveComponent(SUBSCRIPTION);
 	}
-	if (pEvent->mType == DROPPICKED)
+	else if (pEvent->mType == DROPPICKED)
 	{
 		DropPicked *dp = static_cast<DropPicked*>(pEvent);
 		if (dp->Drop == MEDKIT)
@@ -109,7 +110,7 @@ void Attributes::HandleEvent(Event * pEvent)
 			if (mCurrHP < mTotalHP*0.9)
 			{
 				PlayerHPEvent *phe = new PlayerHPEvent();
-				phe->HPChange = 0.1;	
+				phe->HPChange = 0.1f;	
 				gpEventManager->BroadcastEventToSubscribers(phe);
 			}
 		}

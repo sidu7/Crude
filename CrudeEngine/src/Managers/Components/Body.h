@@ -5,6 +5,7 @@
 #include "Component.h"
 
 class Body : public Component {
+	
 public:
 	Body();
 	~Body();
