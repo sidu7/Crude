@@ -1,9 +1,9 @@
 #include "GameObject.h"
-#include "Components/Sprite.h"
-#include "Components/Transform.h"
-#include "Components/Controller.h"
-#include "Components/Body.h"
-#include "Components/Animator.h"
+#include "../Components/Sprite.h"
+#include "../Components/Transform.h"
+#include "../Components/Controller.h"
+#include "../Components/Body.h"
+#include "../Components/Animator.h"
 #include "ResourceManager.h"
 #include "GameObjectManager.h"
 #include "EventManager.h"
@@ -100,42 +100,19 @@ void GameObject::ScaleToBody()
 	Body* pBody = static_cast<Body*>(GetComponent(BODY));
 	if (pBody == nullptr)
 		return;
+	Vector2DSet(&mTempScale, pTr->mScale.x, pTr->mScale.y);
 	if (pBody->mpShape->mType == Shape::CIRCLE)
 	{
 		ShapeCircle *pCircle = static_cast<ShapeCircle*>(pBody->mpShape);
-		double circle[] = {
-		   0.5f,    0.0f, 0.0f,
-		 0.433f,   0.25f, 0.0f,
-		 0.353f,  0.353f, 0.0f,
-		  0.25f,  0.433f, 0.0f,
-		   0.0f,    0.5f, 0.0f,
-		 -0.25f,  0.433f, 0.0f,
-		-0.353f,  0.353f, 0.0f,
-		-0.433f,   0.25f, 0.0f,
-		  -0.5f,    0.0f, 0.0f,
-		-0.433f,  -0.25f, 0.0f,
-		-0.353f, -0.353f, 0.0f,
-		 -0.25f, -0.433f, 0.0f,
-		   0.0f,   -0.5f, 0.0f,
-		  0.25f, -0.433f, 0.0f,
-		 0.353f, -0.353f, 0.0f,
-		 0.433f,  -0.25f, 0.0f
-		};
-
-		/*glBegin(GL_LINE_LOOP);
-		for (int i = 0; i < 48; i++)
-			glVertex3dv(&circle[i]);
-		glEnd();*/
-
+		Vector2DSet(&pTr->mScale, pCircle->mRadius*2, pCircle->mRadius * 2);
 	}
 	else
 	{
 		ShapeAABB *pShape = static_cast<ShapeAABB*>(pBody->mpShape);
-		Vector2DSet(&mTempScale, pTr->mScale.x, pTr->mScale.y);
-		Vector2DSet(&pTr->mScale, pShape->mTop, pShape->mLeft);
-		pTr->Debug = true;
-		pTr->Update();
+		Vector2DSet(&pTr->mScale, pShape->mTop, pShape->mLeft);	
 	}
+	pTr->Debug = true;
+	pTr->Update();
 }
 
 void GameObject::ResetScale()

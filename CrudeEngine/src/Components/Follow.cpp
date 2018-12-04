@@ -1,10 +1,10 @@
 #include "Follow.h"
 #include "Transform.h"
-#include "../GameObjectManager.h"
-#include "../GameObject.h"
+#include "../Managers/GameObjectManager.h"
+#include "../Managers/GameObject.h"
 #include "Body.h"
-#include "../Events.h"
-#include "../../Maths/Vector2D.h"
+#include "../Managers/Events.h"
+#include "../Maths/Vector2D.h"
 
 
 extern GameObjectManager *gpGameObjectManager;
@@ -41,7 +41,7 @@ void Follow::Update()
 			Vector2DScale(&mBody->mVelocity, &Dir, GHOUL_VELOCITY);
 		float ang = getAngleVector(Dir, eDir);
 		if (ang > 0)
-			mBody->mAngV = (float)acosf(Dir.x) * 180 / PI;
+			mBody->mAngV = (float)acosf(Dir.x) * 180.0f / PI;
 		else
 			mBody->mAngV = (float)-(acosf(Dir.x) * 180 / PI);
 	}

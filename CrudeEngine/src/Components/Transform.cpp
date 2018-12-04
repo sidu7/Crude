@@ -1,11 +1,14 @@
 #include "Transform.h"
-#include "../Events.h"
-#include "../GameObject.h"
-#include "../GameObjectManager.h"
+#include "../Managers/Events.h"
+#include "../Managers/GameObject.h"
+#include "../Managers/GameObjectManager.h"
+#include "../Managers/EventManager.h"
 
 extern Shader* gpShader;
+extern Shader* gdShader;
 extern Matrix3D* gpProj;
 extern GameObjectManager* gpGameObjectManager;
+extern EventManager *gpEventManager;
 
 Transform::Transform() : Component (TRANSFORM)
 {
@@ -37,7 +40,10 @@ void Transform::Update()
 	}
 
 	Matrix3DConcat(&mvp, gpProj, &model);
+	gpShader->Bind();
 	gpShader->SetUniformMat4f("u_MVP", &mvp);
+	gdShader->Bind();
+	gdShader->SetUniformMat4f("u_MVP", &mvp);
 }
 
 void Transform::Serialize(JSONObject obj)
@@ -71,33 +77,35 @@ void Transform::HandleEvent(Event * pEvent)
 		{
 			mScale.x -= 90.0f * the->HPLost;
 			mPosition.x -= 45.0f * the->HPLost;
-			if (mScale.x == 0.0f)
+			if (mScale.x < 0.0f)
 			{
-				for (unsigned int i = 0; i < gpGameObjectManager->mGameObjects.size(); ++i)
-				{
-  					Transform *pTr = static_cast<Transform*>(gpGameObjectManager->mGameObjects[i]->GetComponent(TRANSFORM));
-					if (gpGameObjectManager->mGameObjects[i]->mType == NO_OBJECT && pTr->mPosition.x == 200.0f)
-					{
-						gpGameObjectManager->mGameObjects.erase(gpGameObjectManager->mGameObjects.begin() + i);
-					}
-				}
+				TombDestroyed *tbd = new TombDestroyed();
+				tbd->tomb = the->tomb;
+				gpEventManager->BroadcastEventToSubscribers(tbd);
 			}
 		}
 		else if(mpOwner->mType == TOMB2HP && the->tomb == 2)
 		{
 			mScale.x -= 90.0f * the->HPLost;
 			mPosition.x -= 45.0f * the->HPLost;
-			if (mScale.x == 0.0f)
+			if (mScale.x < 0.0f)
 			{
-				for (unsigned int i = 0; i < gpGameObjectManager->mGameObjects.size(); ++i)
-				{
-					Transform *pTr = static_cast<Transform*>(gpGameObjectManager->mGameObjects[i]->GetComponent(TRANSFORM));
-					if (gpGameObjectManager->mGameObjects[i]->mType == NO_OBJECT && pTr->mPosition.x == 760.0f)
-					{
-						gpGameObjectManager->mGameObjects.erase(gpGameObjectManager->mGameObjects.begin() + i);
-					}
-				}
+				TombDestroyed *tbd = new TombDestroyed();
+				tbd->tomb = the->tomb;
+				gpEventManager->BroadcastEventToSubscribers(tbd);
 			}
+		}
+	}
+	else if (pEvent->mType == TOMBDESTROY)
+	{
+		TombDestroyed *tbd = static_cast<TombDestroyed*>(pEvent);
+		if (tbd->tomb == 1 && mPosition.x == 200.0f)
+		{
+			gpGameObjectManager->Destroy(mpOwner);
+		}
+		else if(tbd->tomb == 2 && mPosition.x == 760.0f)
+		{
+			gpGameObjectManager->Destroy(mpOwner);
 		}
 	}
 }

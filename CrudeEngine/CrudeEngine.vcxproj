@@ -131,21 +131,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Managers\Components\Attributes.h" />
-    <ClInclude Include="src\Managers\Components\Buff.h" />
-    <ClInclude Include="src\Managers\Components\Drop.h" />
-    <ClInclude Include="src\Managers\Components\FallExplode.h" />
+    <ClInclude Include="src\Components\Attributes.h" />
+    <ClInclude Include="src\Components\Buff.h" />
+    <ClInclude Include="src\Components\Drop.h" />
+    <ClInclude Include="src\Components\FallExplode.h" />
     <ClInclude Include="src\Defines.h" />
     <ClInclude Include="src\Managers\CollisionManager.h" />
-    <ClInclude Include="src\Managers\Components\Animator.h" />
-    <ClInclude Include="src\Managers\Components\Body.h" />
-    <ClInclude Include="src\Managers\Components\Component.h" />
-    <ClInclude Include="src\Managers\Components\Controller.h" />
-    <ClInclude Include="src\Managers\Components\Follow.h" />
-    <ClInclude Include="src\Managers\Components\Spawner.h" />
-    <ClInclude Include="src\Managers\Components\Sprite.h" />
-    <ClInclude Include="src\Managers\Components\Subscription.h" />
-    <ClInclude Include="src\Managers\Components\Transform.h" />
+    <ClInclude Include="src\Components\Animator.h" />
+    <ClInclude Include="src\Components\Body.h" />
+    <ClInclude Include="src\Components\Component.h" />
+    <ClInclude Include="src\Components\Controller.h" />
+    <ClInclude Include="src\Components\Follow.h" />
+    <ClInclude Include="src\Components\Spawner.h" />
+    <ClInclude Include="src\Components\Sprite.h" />
+    <ClInclude Include="src\Components\Subscription.h" />
+    <ClInclude Include="src\Components\Transform.h" />
     <ClInclude Include="src\Managers\EventManager.h" />
     <ClInclude Include="src\Managers\Frame Rate Controller.h" />
     <ClInclude Include="src\Managers\GameObject.h" />
@@ -172,24 +172,26 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\fragment.shader" />
+    <None Include="res\shaders\fragmentcircle.shader" />
     <None Include="res\shaders\vertex.shader" />
+    <None Include="res\shaders\vertexcircle.shader" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Managers\Components\Attributes.cpp" />
-    <ClCompile Include="src\Managers\Components\Buff.cpp" />
-    <ClCompile Include="src\Managers\Components\Drop.cpp" />
-    <ClCompile Include="src\Managers\Components\FallExplode.cpp" />
+    <ClCompile Include="src\Components\Attributes.cpp" />
+    <ClCompile Include="src\Components\Buff.cpp" />
+    <ClCompile Include="src\Components\Drop.cpp" />
+    <ClCompile Include="src\Components\FallExplode.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Managers\CollisionManager.cpp" />
-    <ClCompile Include="src\Managers\Components\Animator.cpp" />
-    <ClCompile Include="src\Managers\Components\Body.cpp" />
-    <ClCompile Include="src\Managers\Components\Component.cpp" />
-    <ClCompile Include="src\Managers\Components\Controller.cpp" />
-    <ClCompile Include="src\Managers\Components\Spawner.cpp" />
-    <ClCompile Include="src\Managers\Components\Sprite.cpp" />
-    <ClCompile Include="src\Managers\Components\Follow.cpp" />
-    <ClCompile Include="src\Managers\Components\Subscription.cpp" />
-    <ClCompile Include="src\Managers\Components\Transform.cpp" />
+    <ClCompile Include="src\Components\Animator.cpp" />
+    <ClCompile Include="src\Components\Body.cpp" />
+    <ClCompile Include="src\Components\Component.cpp" />
+    <ClCompile Include="src\Components\Controller.cpp" />
+    <ClCompile Include="src\Components\Spawner.cpp" />
+    <ClCompile Include="src\Components\Sprite.cpp" />
+    <ClCompile Include="src\Components\Follow.cpp" />
+    <ClCompile Include="src\Components\Subscription.cpp" />
+    <ClCompile Include="src\Components\Transform.cpp" />
     <ClCompile Include="src\Managers\EventManager.cpp" />
     <ClCompile Include="src\Managers\Frame Rate Controller.cpp" />
     <ClCompile Include="src\Managers\GameObject.cpp" />

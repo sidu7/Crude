@@ -15,18 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Managers\Components\Component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Managers\Components\Controller.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Managers\Components\Sprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Managers\Components\Transform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Managers\Frame Rate Controller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -49,9 +37,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Managers\PhysicsManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Managers\Components\Body.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\OpenGL\IndexBuffer.h">
@@ -87,9 +72,6 @@
     <ClInclude Include="src\Defines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Managers\Components\Animator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\vendor\simplejson\JSON.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -108,46 +90,54 @@
     <ClInclude Include="src\Managers\Events.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Managers\Components\Follow.h">
+    <ClInclude Include="src\Components\Animator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Managers\Components\FallExplode.h">
+    <ClInclude Include="src\Components\Attributes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Managers\Components\Subscription.h">
+    <ClInclude Include="src\Components\Body.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Managers\Components\Spawner.h">
+    <ClInclude Include="src\Components\Buff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Managers\Components\Attributes.h">
+    <ClInclude Include="src\Components\Component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Managers\Components\Drop.h">
+    <ClInclude Include="src\Components\Controller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Managers\Components\Buff.h">
+    <ClInclude Include="src\Components\Drop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\FallExplode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\Follow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\Spawner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\Sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\Subscription.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\fragment.shader" />
     <None Include="res\shaders\vertex.shader" />
+    <None Include="res\shaders\vertexcircle.shader" />
+    <None Include="res\shaders\fragmentcircle.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Managers\Components\Component.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Managers\Components\Controller.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Managers\Components\Sprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Managers\Components\Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Managers\Frame Rate Controller.cpp">
@@ -172,9 +162,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Managers\PhysicsManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Managers\Components\Body.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\OpenGL\Indexbuffer.cpp">
@@ -207,9 +194,6 @@
     <ClCompile Include="src\Maths\Vector2D.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Managers\Components\Animator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\vendor\simplejson\JSON.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -222,25 +206,43 @@
     <ClCompile Include="src\Managers\EventManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Managers\Components\Follow.cpp">
+    <ClCompile Include="src\Components\Animator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Managers\Components\FallExplode.cpp">
+    <ClCompile Include="src\Components\Attributes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Managers\Components\Subscription.cpp">
+    <ClCompile Include="src\Components\Body.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Managers\Components\Spawner.cpp">
+    <ClCompile Include="src\Components\Buff.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Managers\Components\Attributes.cpp">
+    <ClCompile Include="src\Components\Component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Managers\Components\Drop.cpp">
+    <ClCompile Include="src\Components\Controller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Managers\Components\Buff.cpp">
+    <ClCompile Include="src\Components\Drop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\FallExplode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\Follow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\Spawner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\Sprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\Subscription.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

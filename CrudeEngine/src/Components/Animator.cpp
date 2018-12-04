@@ -1,17 +1,17 @@
 #include "Animator.h"
-#include "../Texture.h"
 #include "../../vendor/dirent/dirent.h"
 #include <iostream>
-#include "../ResourceManager.h"
-#include "../Frame Rate Controller.h"
-#include "../GameObject.h"
-#include "../GameObjectManager.h"
+#include "../Managers/ResourceManager.h"
+#include "../Managers/Frame Rate Controller.h"
+#include "../Managers/GameObject.h"
+#include "../Managers/GameObjectManager.h"
 #include "Sprite.h"
 #include "Transform.h"
 
 extern ResourceManager *gpResourceManager;
 extern GameObjectManager *gpGameObjectManager;
 extern FrameRateController *gpFrameRateController;
+extern int Tombstones;
 
 Animator::Animator() : Component(ANIMATOR), mCurrState(""), mCurrFrame(0), mCurrDelay(0.0f), 
 PlayingAnimation(false), DestroyAfterAnimation(false)
@@ -76,6 +76,10 @@ void Animator::Update()
 						mpOwner->RemoveComponent(FOLLOW);
 						mpOwner->RemoveComponent(SUBSCRIPTION);
 						mpOwner->mDeathDelay = 1.0f;
+					}
+					else
+					{
+						Tombstones--;
 					}
 					mpOwner->RemoveComponent(ANIMATOR);
 					mpOwner->RemoveComponent(ATTRIBUTES);

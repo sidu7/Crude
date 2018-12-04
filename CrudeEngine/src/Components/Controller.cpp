@@ -1,16 +1,16 @@
 #include "Controller.h"
-#include "../InputManager.h"
-#include "../GameObject.h"
+#include "../Managers/InputManager.h"
+#include "../Managers/GameObject.h"
 #include "Body.h"
 #include "Transform.h"
 #include "SDL_keyboard.h"
 #include "Animator.h"
-#include "../ObjectFactory.h"
-#include "../Events.h"
+#include "../Managers/ObjectFactory.h"
+#include "../Managers/Events.h"
 #include "Buff.h"
 #include "Attributes.h"
 #include "Sprite.h"
-#include "../ResourceManager.h"
+#include "../Managers/ResourceManager.h"
 #include "SDL.h"
 
 #include "../../Defines.h"
@@ -20,7 +20,6 @@ extern ObjectFactory *gpObjectFactory;
 extern EventManager *gpEventManager;
 extern ResourceManager *gpResourceManager;
 extern int GrenadeCount;
-extern bool MouseEnabled;
 
 
 Controller::Controller() : Component (CONTROLLER) , moving(false)
@@ -40,8 +39,7 @@ void Controller::Update()
 	if(pAnimator->mCurrState != "throw")
 	{
 		
-		if (MouseEnabled)
-			pBody->mAngV = getAngleFromMouse(pBody->mPosition);
+		pBody->mAngV = getAngleFromMouse(pBody->mPosition);
 			
 		if (gpInputManager->IsPressed(SDL_SCANCODE_W))
 		{
@@ -101,6 +99,7 @@ void Controller::Update()
 			}
 		}
 		if (gpInputManager->IsTriggered(SDL_SCANCODE_SPACE))
+		//if(gpInputManager->IsMouseClicked(SDL_BUTTON_LEFT))
 		{
 				
 			if (pAnimator->mCurrState != "move")
@@ -181,7 +180,7 @@ void Controller::HandleEvent(Event * pEvent)
 		
 		//---- Offset -----------
 		Vector2D Offset;
-		Vector2DSet(&Offset, 40.0f * (float)cosf(tge->pBody->mAngV * PI / 180), 40.0f * (float)sinf(tge->pBody->mAngV * PI / 180));
+		Vector2DSet(&Offset, 40.0f * (float)cosf(tge->pBody->mAngV * PI / 180.0f), 40.0f * (float)sinf(tge->pBody->mAngV * PI / 180.0f));
 		
 		Vector2DAdd(&pGrenadeBody->mPosition, &tge->pBody->mPosition, &Offset);
 		//-------------------------
@@ -225,8 +224,8 @@ float Controller::getAngleFromMouse(Vector2D PlayerPos)
 	Vector2DNormalize(&Dir, &Dir);
 	float ang = getAngleVector(Dir, eDir);
 	if (ang > 0)
-		return (float)acosf(Dir.x) * 180 / PI;
+		return (float)acosf(Dir.x) * 180.0f / PI;
 	else
-		return (float)-(acosf(Dir.x) * 180 / PI);
+		return (float)-(acosf(Dir.x) * 180.0f / PI);
 }
 

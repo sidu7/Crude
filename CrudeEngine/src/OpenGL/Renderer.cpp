@@ -7,7 +7,7 @@
 #include "../OpenGL/Shader.h"
 
 extern Shader *gpShader;
-
+extern Shader *gdShader;
 
 void GLClearError()
 {
@@ -45,4 +45,11 @@ void Renderer::DebugDraw(const VertexArray& va, const IndexBuffer& ib, const Sha
 	ib.Bind();
 	gpShader->SetUniform1i("debug", 1);
 	GLCall(glDrawElements(GL_LINE_LOOP, ib.GetCount(), GL_UNSIGNED_INT, nullptr));
+}
+
+void Renderer::DebugDrawCircle(const VertexArray& va, const Shader& shader) const
+{
+	shader.Bind();
+	va.Bind();
+	GLCall(glDrawArrays(GL_LINE_LOOP, 0, 16));
 }

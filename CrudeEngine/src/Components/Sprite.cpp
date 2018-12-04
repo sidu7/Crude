@@ -1,6 +1,6 @@
 #include "Sprite.h"
 #include <string>
-#include "../ResourceManager.h"
+#include "../Managers/ResourceManager.h"
 
 extern ResourceManager *gpResourceManager;
 extern Shader *gpShader;
@@ -17,6 +17,7 @@ Sprite::~Sprite()
 void Sprite::Update()
 {
 	mpTexture->Bind();
+	gpShader->Bind();
 	gpShader->SetUniform1i("TextureS", 0);
 }
 

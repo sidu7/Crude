@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "../Maths/Vector2D.h"
-#include "Components/Component.h"
+#include "../Components/Component.h"
 
 class Sprite;
 class Transform;

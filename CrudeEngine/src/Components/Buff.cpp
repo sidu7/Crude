@@ -1,7 +1,7 @@
 #include "Buff.h"
-#include "../GameObject.h"
-#include "../Frame Rate Controller.h"
-#include "../GameObjectManager.h"
+#include "../Managers/GameObject.h"
+#include "../Managers/Frame Rate Controller.h"
+#include "../Managers/GameObjectManager.h"
 
 extern FrameRateController *gpFrameRateController;
 extern GameObjectManager *gpGameObjectManager;

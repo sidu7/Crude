@@ -1,11 +1,11 @@
 
 #include "ObjectFactory.h"
 #include "GameObject.h"
-#include "Components/Transform.h"
-#include "Components/Sprite.h"
+#include "../Components/Transform.h"
+#include "../Components/Sprite.h"
 #include "GameObjectManager.h"
-#include "Components/Body.h"
-#include "Components/Follow.h"
+#include "../Components/Body.h"
+#include "../Components/Follow.h"
 
 #include <fstream>
 #include <sstream>
@@ -41,27 +41,17 @@ void ObjectFactory::LoadArchetypes(const char *pFileName)
 	}
 	JSONObject root = value->AsObject();
 	JSONArray prefabs = root[L"Prefabs"]->AsArray();
-	GameObjectTypes type;
+	int type;
 	std::string FileName;
 	GameObject *pGameObject = nullptr;
 	for (unsigned int i = 0; i < prefabs.size(); ++i)
 	{
 		JSONObject obj = prefabs[i]->AsObject();
 		//Type
-		std::wstring wt = obj[L"Type"]->AsString();
-		std::string tt(wt.begin(), wt.end());
-		if ("Bullet" == tt)
-			type = BULLET;
-		else if ("Ghoul" == tt)
-			type = GHOUL;
-		else if ("Crawler" == tt)
-			type = CRAWLER;
-		else if ("Grenade" == tt)
-			type = GRENADE;
-		else if ("Drop" == tt)
-			type = DROPITEM;
+		type = (int)obj[L"Type"]->AsNumber();
+
 		//File
-		wt = obj[L"File"]->AsString();
+		std::wstring wt = obj[L"File"]->AsString();
 		FileName = std::string(wt.begin(), wt.end());
 		
 		std::string Path = "res/data/";
@@ -76,12 +66,13 @@ void ObjectFactory::LoadArchetypes(const char *pFileName)
 		}
 		JSONObject *prefab = new JSONObject();
 		*prefab = value->AsObject();
-		mArchetypes[type] = prefab;
+		mArchetypes[(GameObjectTypes)type] = prefab;
 	}
 }
 
 void ObjectFactory::LoadLevel(const char *pFileName)
 {
+	gpGameObjectManager->mGameObjects.erase(gpGameObjectManager->mGameObjects.begin(), gpGameObjectManager->mGameObjects.end());
 
 	std::string fullPath = "res/data/";
 	fullPath += pFileName;
@@ -99,48 +90,32 @@ void ObjectFactory::LoadLevel(const char *pFileName)
 	std::string FileName;
 	for (unsigned int i = 0; i < objects.size(); ++i)
 	{
+		GameObject *pGameObject = nullptr;
 		JSONObject obj = objects[i]->AsObject();
+
+		if (obj.find(L"Type") != obj.end())
+			type = (int)obj[L"Type"]->AsNumber();
 		if (obj.find(L"File") != obj.end())
 		{
 			std::wstring wt = obj[L"File"]->AsString();
 			FileName = std::string(wt.begin(), wt.end());
+			pGameObject = LoadObject(FileName.c_str(), GameObjectTypes(type));
 		}
 		else
-		{
-			FileName = "";
-		}
-		if (obj.find(L"Type") != obj.end())
-		{
-			std::wstring wt = obj[L"Type"]->AsString();
-			std::string tt(wt.begin(), wt.end());
-			if ("Player" == tt)
-				type = PLAYER;
-			else if ("Wall" == tt)
-				type = WALL;
-			else if ("Tombstone" == tt)
-				type = TOMBSTONE;
-			else
-				type = NO_OBJECT;
-
-		}
-		GameObject *pGameObject = nullptr;
-		if (FileName == "")
 		{
 			pGameObject = new GameObject(GameObjectTypes(type));
 			gpGameObjectManager->mGameObjects.push_back(pGameObject);
 		}
-		else
-			pGameObject = LoadObject(FileName.c_str(), GameObjectTypes(type));
-
-		if (obj.find(L"Body") != obj.end()){
-			Body *pBody = static_cast<Body*>(pGameObject->GetComponent(BODY));
-			if (!pBody)
-			{
-				pBody = static_cast<Body*>(pGameObject->AddComponent(BODY));
-			}
-			pBody->Serialize(obj[L"Body"]->AsObject());
+	
+		if (obj.find(L"Body") != obj.end())
+		{
+			Body *pBody = static_cast<Body*>(pGameObject->AddComponent(BODY));
+			if(pBody!= nullptr)
+				pBody->Serialize(obj[L"Body"]->AsObject());
 		}
-		if (obj.find(L"Transform") != obj.end()) {
+
+		if (obj.find(L"Transform") != obj.end())
+		{
 			Transform *pTr = static_cast<Transform*>(pGameObject->GetComponent(TRANSFORM));
 			if (!pTr)
 			{
@@ -151,10 +126,12 @@ void ObjectFactory::LoadLevel(const char *pFileName)
 			if (type != NO_OBJECT)
 			{
 				Body *pBody = static_cast<Body*>(pGameObject->GetComponent(BODY));
-				pBody->Initialize();
+				if(pBody != nullptr)
+					pBody->Initialize();
 			}
 		}
-		if (obj.find(L"Sprite") != obj.end()) {
+		if (obj.find(L"Sprite") != obj.end()) 
+		{
 			Sprite *pSp = static_cast<Sprite*>(pGameObject->AddComponent(SPRITE));
 			pSp->Serialize(obj[L"Sprite"]->AsObject());
 		}
@@ -182,6 +159,7 @@ GameObject* ObjectFactory::LoadObject(const char *pFileName, GameObjectTypes typ
 
 		return pNewGameObject;
 	}
+	return nullptr;
 }
 
 GameObject* ObjectFactory::LoadObject(JSONObject root,GameObjectTypes type)
@@ -248,5 +226,4 @@ GameObject* ObjectFactory::GetArcheType(GameObjectTypes type)
 {
 	return LoadObject(*mArchetypes[type],type);
 }
-
 

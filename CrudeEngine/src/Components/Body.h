@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../CollisionManager.h"
-#include "../../Maths/Vector2D.h"
+#include "../Managers/CollisionManager.h"
+#include "../Maths/Vector2D.h"
 #include "Component.h"
 
 class Body : public Component {

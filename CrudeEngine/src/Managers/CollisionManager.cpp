@@ -81,7 +81,7 @@ bool checkCollisionCircleAABB(Shape *pShape1, float Pos1X, float Pos1Y, Shape *p
 	ShapeAABB *p2 = static_cast<ShapeAABB*>(pShape2);
 	Vector2D Pos2;
 	Vector2DSet(&Pos2, Pos2X, Pos2Y);
-
+	
 	if (staticCircleToStaticRect(&Pos1, p1->mRadius, &Pos2, p2->mTop, p2->mLeft))
 	{
 		//Create a new contact and add to the contacts list

@@ -25,6 +25,8 @@ Input_Manager::Input_Manager()
 {
 	SDL_memset(mCurrentState, 0, 512 * sizeof(Uint8));
 	SDL_memset(mPreviousState, 0, 512 * sizeof(Uint8));
+	SDL_memset(mPrevMouseState, 0, 3 * sizeof(Uint8));
+	SDL_memset(mCurrentMouseState, 0, 3 * sizeof(Uint8));
 }
 
 Input_Manager::~Input_Manager()
@@ -33,6 +35,24 @@ Input_Manager::~Input_Manager()
 
 void Input_Manager::Update()
 {
+	//fetch mouse state
+
+	SDL_memcpy(mPrevMouseState, mCurrentMouseState, 3 * sizeof(Uint8));
+
+	SDL_Event e;
+	while (SDL_PollEvent(&e) != 0)
+	{
+		if (e.type == SDL_MOUSEBUTTONDOWN)
+		{
+			mCurrentMouseState[e.button.button - 1] = true;
+		}
+		if (e.type == SDL_MOUSEBUTTONUP)
+		{
+			mCurrentMouseState[e.button.button - 1] = false;
+		}
+	}
+
+	//fetch keyboard state
 	int numberOfFetchedKeys = 0;
 	const Uint8* pCurrentKeyStates = SDL_GetKeyboardState(&numberOfFetchedKeys);
 
@@ -80,22 +100,7 @@ bool Input_Manager::IsReleased(unsigned int KeyScanCode)
 
 bool Input_Manager::IsMouseClicked(unsigned int KeyScanCode)
 {
-	SDL_Event e;
-	bool result = false;
-	while (SDL_PollEvent(&e) != 0)
-	{
-		//User requests quit
-		if (e.type == SDL_MOUSEBUTTONDOWN)
-		{
-			if (e.button.button == SDL_BUTTON_LEFT)
-				result = true;
-		}
-		if (e.type == SDL_MOUSEBUTTONUP)
-		{
-			if (e.button.button == SDL_BUTTON_LEFT)
-				if (result)
-					return true;
-				else return false;
-		}
-	}
+	if (mCurrentMouseState[KeyScanCode - 1] && !mPrevMouseState[KeyScanCode - 1])
+		return true;
+	return false;
 }

@@ -1,7 +1,11 @@
 {
 	"Objects" : [
 		{
-			"Type" : "PlayerHPbar",
+			"File" : "PlayerHP.json",
+			"Type" : 7
+		},
+		{
+			"Type" : -1,
 			"Transform" : {
 				"Pos" : [170.0,680.0],
 				"Scale" : [225.0,60.0]
@@ -11,28 +15,36 @@
 			}
 		},
 		{
-			"Type" : "TombstoneHPbar",
+			"File" : "TombstoneHP.json",
+			"Type" : 9,
 			"Transform" : {
-				"Pos" : [200.0,145.0],
-				"Scale" : [100.0,50.0]
-			},
-			"Sprite" : {
-				"File" : "tombhp.png"
+				"Pos" : [200.0,145.0]
 			}
 		},
 		{
-			"Type" : "TombstoneHPbar",
+			"File" : "TombstoneHP.json",
+			"Type" : 10,
 			"Transform" : {
-				"Pos" : [760.0,580.0],
-				"Scale" : [100.0,50.0]
-			},
-			"Sprite" : {
-				"File" : "tombhp.png"
+				"Pos" : [760.0,580.0]
+			}
+		},
+		{
+			"File" : "TombstoneHPbar.json",
+			"Type" : -1,
+			"Transform" : {
+				"Pos" : [200.0,145.0]
+			}
+		},
+		{
+			"File" : "TombstoneHPbar.json",
+			"Type" : -1,
+			"Transform" : {
+				"Pos" : [760.0,580.0]
 			}
 		},
 		{
 			"File" : "Tombstone.json",
-			"Type" : "Tombstone",
+			"Type" : 6,
 			"Transform" : {
 				"Pos" : [200.0,200.0],
 				"Scale" : [100.0, 100.0]
@@ -40,14 +52,22 @@
 		},
 		{
 			"File" : "Tombstone.json",
-			"Type" : "Tombstone",
+			"Type" : 6,
 			"Transform" : {
 				"Pos" : [760.0,520.0],
 				"Scale" : [100.0, 100.0]
 			}
 		},
 		{
-			"Type" : "Wall",
+			"File" : "Player.json",
+			"Type" : 0,
+			"Transform" : {
+				"Pos" : [480.0, 360.0],
+				"Scale" : [150.0, 150.0]
+			}
+		},
+		{
+			"Type" : 3,
 			"Transform" : {
 				"Pos"  : [95.0, 360.0],
 				"Scale" : [40.0,570.0]
@@ -60,7 +80,7 @@
 			}
 		},
 		{
-			"Type" : "Wall",
+			"Type" : 3,
 			"Transform" : {
 				"Pos"  : [865.0, 360.0],
 				"Scale" : [40.0,570.0]				
@@ -73,7 +93,7 @@
 			}
 		},
 		{
-			"Type" : "Wall",
+			"Type" : 3,
 			"Transform" : {
 				"Pos"  : [480.0, 625.0],
 				"Scale" : [810.0,40.0]
@@ -86,7 +106,7 @@
 			}
 		},
 		{
-			"Type" : "Wall",
+			"Type" : 3,
 			"Transform" : {
 				"Pos"  : [480.0, 95.0],
 				"Scale" : [810.0,40.0]
@@ -96,14 +116,6 @@
 			},
 			"Sprite" : {
 				"File" : "trigger.png"
-			}
-		},
-		{
-			"File" : "Player.json",
-			"Type" : "Player",
-			"Transform" : {
-				"Pos" : [480.0, 360.0],
-				"Scale" : [150.0, 150.0]
 			}
 		}
 	]

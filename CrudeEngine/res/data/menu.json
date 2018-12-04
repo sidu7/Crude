@@ -1,0 +1,53 @@
+{
+    "Objects" : [
+        {
+            "Type" : -1,
+			"Transform" : {
+				"Pos"  : [480.0, 360.0],
+				"Scale" : [960.0, 720.0]
+			},
+			"Sprite" : {
+				"File" : "menu.png"
+            }
+        },
+        {
+            "Type" : 11,
+			"Transform" : {
+				"Pos"  : [480.0, 180.0],
+				"Scale" : [300.0, 65.0]
+            },
+            "Body" : {
+                "AABB" : [65.0, 300.0, 65.0, 300.0]
+            },
+			"Sprite" : {
+				"File" : "start.png"
+            }
+        },
+        {
+            "Type" : 11,
+			"Transform" : {
+				"Pos"  : [480.0, 110.0],
+				"Scale" : [300.0, 65.0]
+            },
+            "Body" : {
+                "AABB" : [65.0, 300.0, 65.0, 300.0]
+            },
+			"Sprite" : {
+				"File" : "howtoplay.png"
+            }
+        },
+        {
+            "Type" : 11,
+			"Transform" : {
+				"Pos"  : [480.0, 40.0],
+				"Scale" : [300.0, 65.0]
+            },
+            "Body" : {
+                "AABB" : [65.0, 300.0, 65.0, 300.0]
+            },
+			"Sprite" : {
+				"File" : "quit.png"
+            }
+        }
+    ]
+}

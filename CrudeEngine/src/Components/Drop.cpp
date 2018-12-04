@@ -1,13 +1,13 @@
 #include "Drop.h"
-#include "../GameObject.h"
-#include "../ObjectFactory.h"
+#include "../Managers/GameObject.h"
+#include "../Managers/ObjectFactory.h"
 #include "Transform.h"
 #include "Sprite.h"
 #include "Body.h"
 #include "Buff.h"
-#include "../../Maths/Vector2D.h"
-#include "../ResourceManager.h"
-#include "../GameObjectManager.h"
+#include "../Maths/Vector2D.h"
+#include "../Managers/ResourceManager.h"
+#include "../Managers/GameObjectManager.h"
 
 extern ResourceManager *gpResourceManager;
 extern ObjectFactory *gpObjectFactory;

@@ -1,5 +1,5 @@
 #include "Component.h"
-#include "../GameObject.h"
+#include "../Managers/GameObject.h"
 
 Component::Component(unsigned int Type)
 {

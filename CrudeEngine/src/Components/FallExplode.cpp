@@ -4,11 +4,11 @@
 #include "Body.h"
 #include "Animator.h"
 #include "Transform.h"
-#include "../GameObject.h"
-#include "../ObjectFactory.h"
-#include "../Events.h"
-#include "../../Maths/Math2D.h"
-#include "../Frame Rate Controller.h"
+#include "../Managers/GameObject.h"
+#include "../Managers/ObjectFactory.h"
+#include "../Managers/Events.h"
+#include "../Maths/Math2D.h"
+#include "../Managers/Frame Rate Controller.h"
 
 extern FrameRateController *gpFrameRateController;
 extern EventManager *gpEventManager;
@@ -79,6 +79,7 @@ void FallExplode::HandleEvent(Event * pEvent)
 		BuildLineSegment2D(&Ls, &P0, &P1);
 		float ti = ReflectAnimatedPointOnStaticLineSegment(&pBody->mPosition, &Pe, &Ls, &Pi, &Rv);
 
+		
 		if (ti != -1.0f)
 		{
 			Vector2DNormalize(&Rv, &Rv);
@@ -95,8 +96,10 @@ void FallExplode::Explode()
 	Animator* pAnimator = static_cast<Animator*>(mpOwner->GetComponent(ANIMATOR));
 	Transform *pTr = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM));
 	Vector2DSet(&pTr->mScale, 200.0, 200.0);
-	ShapeAABB *rect = static_cast<ShapeAABB*>(pBody->mpShape);
-	rect->mTop = rect->mBottom = rect->mLeft = rect->mRight = 150.0f;
+	//ShapeAABB *rect = static_cast<ShapeAABB*>(pBody->mpShape);
+	//rect->mTop = rect->mBottom = rect->mLeft = rect->mRight = 150.0f;
+	ShapeCircle *circle = static_cast<ShapeCircle*>(pBody->mpShape);
+	circle->mRadius = 75.0f;
 	pAnimator->PlayAnimation("explode", true);
 	Exploding = true;
 }

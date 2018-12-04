@@ -21,13 +21,13 @@
 #include "Managers/ObjectFactory.h"
 #include "Managers/CollisionManager.h"
 #include "Managers/PhysicsManager.h"
-#include "Managers/Components/Component.h"
+#include "Components/Component.h"
 #include "Managers/EventManager.h"
-#include "Managers/Components/Spawner.h"
-#include "Managers/Components/Transform.h" 
-#include "Managers/Components/Sprite.h"
+#include "Components/Spawner.h"
+#include "Components/Transform.h" 
+#include "Components/Sprite.h"
 
-#include "Managers/Components/Body.h"
+#include "Components/Body.h"
 
 #include "Defines.h"
 
@@ -53,10 +53,11 @@ EventManager *gpEventManager;
 bool PlayerIsDead;
 bool Debug;
 int GrenadeCount;
-bool MouseEnabled;
 
 Shader *gpShader;
+Shader *gdShader;
 Matrix3D* gpProj;
+int Tombstones;
 
 float Spawner::mStatic = 0.0f;
 
@@ -141,6 +142,25 @@ int main(int argc, char* args[])
 			-0.5f,  0.5f, 0.0f, 1.0f
 		};
 
+		double circle[] = {
+			   0.5f,    0.0f,
+			 0.433f,   0.25f,
+			 0.353f,  0.353f,
+			  0.25f,  0.433f,
+			   0.0f,    0.5f,
+			 -0.25f,  0.433f,
+			-0.353f,  0.353f,
+			-0.433f,   0.25f,
+			  -0.5f,    0.0f,
+			-0.433f,  -0.25f,
+			-0.353f, -0.353f,
+			 -0.25f, -0.433f,
+			   0.0f,   -0.5f,
+			  0.25f, -0.433f,
+			 0.353f, -0.353f,
+			 0.433f,  -0.25f
+		};
+
 		unsigned int indices[] = {
 			0, 1, 2,
 			2, 3, 0
@@ -154,6 +174,13 @@ int main(int argc, char* args[])
 		va.Push(2, GL_FLOAT, sizeof(float));
 		va.AddLayout();
 
+		VertexArray vc;
+
+		VertexBuffer vbc(circle, 2 * 16 * sizeof(float));
+		vc.AddBuffer(vbc);
+		vc.Push(2, GL_FLOAT, sizeof(float));
+		vc.AddLayout();
+
 		IndexBuffer ib(indices, 6);
 
 		gpProj = new Matrix3D();
@@ -164,6 +191,8 @@ int main(int argc, char* args[])
 		gpShader = new Shader("res/shaders/vertex.shader", "res/shaders/fragment.shader");
 		gpShader->Bind();
 
+		gdShader = new Shader("res/shaders/vertexcircle.shader", "res/shaders/fragmentcircle.shader");
+
 
 	//---- Background -----
 		GameObject background(NO_OBJECT);
@@ -172,7 +201,7 @@ int main(int argc, char* args[])
 		pNewComponent = background.AddComponent(TRANSFORM);
 		pNewComponent = background.AddComponent(SPRITE);
 
-		background.SetTransform(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH - 150.0f, SCREEN_HEIGHT - 150.0f, 0.0f);
+		background.SetTransform(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
 		background.SetSprite("res/textures/background.png");
 
 	//------ Pause Screen -----
@@ -187,49 +216,19 @@ int main(int argc, char* args[])
 	//------ Help Screen -----
 
 		GameObject help(NO_OBJECT);
-
 		pNewComponent = help.AddComponent(TRANSFORM);
 		pNewComponent = help.AddComponent(SPRITE);
 
 		help.SetTransform(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
 		help.SetSprite("res/textures/help.png");
 
-	//----- Health Bar ------
+	//------- End Screen -----
+		GameObject end(NO_OBJECT);
+		pNewComponent = end.AddComponent(TRANSFORM);
+		pNewComponent = end.AddComponent(SPRITE);
 
-		GameObject HP(HPBAR);
-
-		pNewComponent = HP.AddComponent(TRANSFORM);
-		pNewComponent = HP.AddComponent(SPRITE);
-		gpEventManager->Subscribe(PLAYERHP, &HP);
-
-		HP.SetTransform(190.0f, SCREEN_HEIGHT - 30.0f, 155.0f, 20.0f, 0.0f);
-		HP.SetSprite("res/textures/hp.png");
-
-		gpGameObjectManager->mGameObjects.push_back(&HP);
-
-		GameObject Tomb1HP(TOMB1HP);
-
-		pNewComponent = Tomb1HP.AddComponent(TRANSFORM);
-		pNewComponent = Tomb1HP.AddComponent(SPRITE);
-		gpEventManager->Subscribe(TOMBHIT, &Tomb1HP);
-
-		Tomb1HP.SetTransform(200.0f, 145.0f, 90.0f, 10.0f, 0.0f);
-		Tomb1HP.SetSprite("res/textures/hp.png");
-
-		gpGameObjectManager->mGameObjects.push_back(&Tomb1HP);
-
-		GameObject Tomb2HP(TOMB2HP);
-
-		pNewComponent = Tomb2HP.AddComponent(TRANSFORM);
-		pNewComponent = Tomb2HP.AddComponent(SPRITE);
-		gpEventManager->Subscribe(TOMBHIT, &Tomb2HP);
-
-		Tomb2HP.SetTransform(760.0f, 580.0f, 90.0f, 10.0f, 0.0f);
-		Tomb2HP.SetSprite("res/textures/hp.png");
-
-		gpGameObjectManager->mGameObjects.push_back(&Tomb2HP);
-	//-----
-
+		end.SetTransform(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
+		end.SetSprite("res/textures/end.png");
 	//------ Grenades counter ----
 
 		GameObject* CurrGrenade[5];
@@ -246,19 +245,20 @@ int main(int argc, char* args[])
 	//-----
 	//----- Load Level -----
 
+
 		gpObjectFactory->LoadArchetypes("Archetypes.json");
-		gpObjectFactory->LoadLevel("level.json");
+		gpObjectFactory->LoadLevel("menu.json");
 
 	//------
 		Renderer renderer;
-		bool Pause = true;
+		bool Pause = false;
 		bool Start = false;
-		bool ShowHelp = true;
+		bool ShowHelp = false;
 		PlayerIsDead = false;
 		Debug = false;
-		GrenadeCount = 500;
-		MouseEnabled = true;
-
+		GrenadeCount = 5;
+		Tombstones = 2;
+		
 		/* Loop until the user closes the window */
 		while (true == appIsRunning)
 		{
@@ -277,33 +277,35 @@ int main(int argc, char* args[])
 
 			gpInputManager->Update();
 			
-			/*if (gpInputManager->IsPressed(SDL_SCANCODE_ESCAPE))
+			if (gpInputManager->IsPressed(SDL_SCANCODE_ESCAPE) && PlayerIsDead)
 			{
 				appIsRunning = false;
-			}*/
+			}
 			if (gpInputManager->IsTriggered(SDL_SCANCODE_P) && !ShowHelp)
 			{
 				Pause = !Pause;
+				
 			}
 			if (gpInputManager->IsTriggered(SDL_SCANCODE_O))
 			{
 				Debug = !Debug;
-			}
-			if (gpInputManager->IsTriggered(SDL_SCANCODE_M))
-			{
-				MouseEnabled = !MouseEnabled;
 			}
 			if (gpInputManager->IsTriggered(SDL_SCANCODE_H) && Start)
 			{
 				ShowHelp = !ShowHelp;
 				Pause = ShowHelp;
 			}
-			if (gpInputManager->IsTriggered(SDL_SCANCODE_S))
+			if (gpInputManager->IsTriggered(SDL_SCANCODE_S) && !Start)
 			{
 				ShowHelp = false;
 				Start = true;
 				Pause = false;
+				gpObjectFactory->LoadLevel("level.json");
 			}
+			if (Pause)
+				background.SetSprite("res/textures/pause_background.png");
+			else
+				background.SetSprite("res/textures/background.png");
 			gpShader->Bind();
 
 			/* Render here */
@@ -314,12 +316,12 @@ int main(int argc, char* args[])
 
 
 			//Current Greande Count
-			/*for (int i = 0; i < GrenadeCount; ++i)
+			for (int i = 0; i < GrenadeCount; ++i)
 			{
 				CurrGrenade[i]->SetTransform(300.0f + (i*30), SCREEN_HEIGHT - 30.0f, 30.0f, 30.0f, 0.0f);
 				CurrGrenade[i]->Update();
 				renderer.Draw(va, ib, *gpShader);
-			}*/
+			}
 			
 			if (!PlayerIsDead && !Pause)
 			{
@@ -350,28 +352,37 @@ int main(int argc, char* args[])
 						Body* pBody = static_cast<Body*>(gpGameObjectManager->mGameObjects[i]->GetComponent(BODY));
 						if (pBody == nullptr)
 							continue;
-						
-						
-			 			gpGameObjectManager->mGameObjects[i]->ScaleToBody();
-						renderer.DebugDraw(va, ib, *gpShader);
+					
+						gpGameObjectManager->mGameObjects[i]->ScaleToBody();
+						if (pBody->mpShape->mType == Shape::CIRCLE)
+						{
+							renderer.DebugDrawCircle(vc, *gdShader);
+						}
+						else
+						{
+							renderer.DebugDraw(va, ib, *gpShader);
+						}
+							
+						//Direction vector
 						if (gpGameObjectManager->mGameObjects[i]->mType == PLAYER)
 						{
 							glBegin(GL_LINES);
 							glLineWidth(2.5);
 							glColor3f(1.0, 0.0, 0.0);
 							Vector2D p;
-							Vector2DSet(&p, (float)cosf(pBody->mAngV*PI / 180), (float)sinf(pBody->mAngV*PI / 180));
+							Vector2DSet(&p, cosf(pBody->mAngV*PI / 180.0f), sinf(pBody->mAngV*PI / 180.0f));
 							Vector2DNormalize(&p, &p);
 							glVertex2f(0, 0);
-							Vector2DScale(&p, &p, 1.5);
+							Vector2DScale(&p, &p, 1.5f);
 							glVertex2f(p.x, p.y);
 							glEnd();
 							glFlush();
-						}						
+						}
 						gpGameObjectManager->mGameObjects[i]->ResetScale();
+						
 					}
 				}
-
+				
 				gpPhysicsManager->Update(gpFrameRateController->GetFrameTime());
 				gpEventManager->Update(gpFrameRateController->GetFrameTime());
 			}
@@ -403,6 +414,13 @@ int main(int argc, char* args[])
 				}
 				renderer.Draw(va, ib, *gpShader);
 			}
+			if (Tombstones == 0)
+			{
+				Pause = true;
+				end.Update();
+				renderer.Draw(va, ib, *gpShader);
+			}
+
 			SDL_GL_SwapWindow(pWindow);
 
 			gpFrameRateController->FrameEnd();

@@ -1,0 +1,12 @@
+{
+    "Transform" : {
+        "Pos" : [0.0,0.0],
+        "Scale" : [100.0,50.0]
+    },
+    "Sprite" : {
+        "File" : "tombhp.png"
+    },
+    "Subscriptions" : {
+		"Events" : [ 7 ]
+	}
+}

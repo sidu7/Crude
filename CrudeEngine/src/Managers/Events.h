@@ -1,7 +1,7 @@
 #pragma once
 
 #include "EventManager.h"
-#include "Components/Body.h"
+#include "../Components/Body.h"
 
 
 class WallCollideEvent : public Event
@@ -59,4 +59,12 @@ public:
 	~TombHitEvent() { }
 	int tomb;
 	float HPLost;
+};
+
+class TombDestroyed : public Event
+{
+public: 
+	TombDestroyed() : Event(TOMBDESTROY) { }
+	~TombDestroyed() { }
+	int tomb;
 };

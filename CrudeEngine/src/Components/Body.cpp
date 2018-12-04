@@ -1,10 +1,10 @@
 #include "Body.h"
-#include "../GameObject.h"
+#include "../Managers/GameObject.h"
 #include "Transform.h"
-#include "../EventManager.h"
-#include "../Events.h"
-#include "../GameObjectManager.h"
-#include "../../Defines.h"
+#include "../Managers/EventManager.h"
+#include "../Managers/Events.h"
+#include "../Managers/GameObjectManager.h"
+#include "../Defines.h"
 
 extern GameObjectManager *gpGameObjectManager;
 
@@ -22,7 +22,6 @@ Body::~Body()
 
 void Body::Update()
 {
-
 }
 
 void Body::Serialize(JSONObject obj)

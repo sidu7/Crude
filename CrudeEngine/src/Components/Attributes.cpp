@@ -1,7 +1,7 @@
 #include "Attributes.h"
-#include "../Events.h"
-#include "../GameObjectManager.h"
-#include "../GameObject.h"
+#include "../Managers/Events.h"
+#include "../Managers/GameObjectManager.h"
+#include "../Managers/GameObject.h"
 #include "Animator.h"
 #include "Transform.h"
 #include "Sprite.h"
@@ -12,6 +12,7 @@ extern GameObjectManager *gpGameObjectManager;
 extern int GrenadeCount;
 extern EventManager *gpEventManager;
 extern bool PlayerIsDead;
+
 
 
 Attributes::Attributes() : Component(ATTRIBUTES), mCurrHP(0), mTotalHP(0), mDamage(0)

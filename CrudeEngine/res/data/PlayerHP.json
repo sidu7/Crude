@@ -1,0 +1,12 @@
+{
+    "Transform" : {
+        "Pos" : [190.0,690.0],
+        "Scale" : [ 155.0, 20.0]
+    },
+    "Sprite" : {
+        "File" : "hp.png"
+    },
+    "Subscriptions" : {
+		"Events" : [ 2 ]
+	}
+}

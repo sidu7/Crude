@@ -1,11 +1,11 @@
 #include "PhysicsManager.h"
-#include "Components/Body.h"
-#include "Components/Transform.h"
+#include "../Components/Body.h"
+#include "../Components/Transform.h"
 #include "GameObject.h"
 #include "GameObjectManager.h"
 #include "Events.h"
-#include "Components/Attributes.h"
-#include "Components/Buff.h"
+#include "../Components/Attributes.h"
+#include "../Components/Buff.h"
 
 #include "../Defines.h"
 
@@ -79,18 +79,18 @@ void PhysicsManager::Update(float FrameTime)
 			gpGameObjectManager->Destroy(c->mBodies[1]->mpOwner);
 
 		}
-		else if (c->mBodies[0]->mpOwner->mType == WALL && (c->mBodies[1]->mpOwner->mType == PLAYER || c->mBodies[1]->mpOwner->mType == GRENADE))
+		else if (c->mBodies[1]->mpOwner->mType == WALL && (c->mBodies[0]->mpOwner->mType == PLAYER || c->mBodies[0]->mpOwner->mType == GRENADE))
 		{
 			WallCollideEvent *wc = new WallCollideEvent();
-			if (c->mBodies[0]->mPosition.y > SCREEN_HEIGHT / 2)
+			if (c->mBodies[1]->mPosition.y > SCREEN_HEIGHT / 2)
 				wc->side = 1;
-			else if (c->mBodies[0]->mPosition.y < SCREEN_HEIGHT / 2)
+			else if (c->mBodies[1]->mPosition.y < SCREEN_HEIGHT / 2)
 				wc->side = 3;
-			else if (c->mBodies[0]->mPosition.x < SCREEN_WIDTH / 2)
+			else if (c->mBodies[1]->mPosition.x < SCREEN_WIDTH / 2)
 				wc->side = 0;
-			else if (c->mBodies[0]->mPosition.x > SCREEN_WIDTH / 2)
+			else if (c->mBodies[1]->mPosition.x > SCREEN_WIDTH / 2)
 				wc->side = 2;
-			c->mBodies[1]->mpOwner->HandleEvent(wc);
+			c->mBodies[0]->mpOwner->HandleEvent(wc);
 		}
 		else if (c->mBodies[0]->mpOwner->mType == WALL && c->mBodies[1]->mpOwner->mType == BULLET)
 		{
