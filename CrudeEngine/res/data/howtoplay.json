@@ -1,0 +1,27 @@
+{
+    "Objects" : [
+        {
+            "Type" : -1,
+			"Transform" : {
+				"Pos"  : [480.0, 360.0],
+				"Scale" : [960.0, 720.0]
+			},
+			"Sprite" : {
+				"File" : "help.png"
+            }
+        },
+        {
+            "Type" : 14,
+			"Transform" : {
+				"Pos"  : [130.0, 40.0],
+				"Scale" : [200.0, 65.0]
+            },
+            "Body" : {
+                "AABB" : [65.0, 200.0, 65.0, 200.0]
+            },
+            "Sprite" : {
+				"File" : "trigger.png"
+            }
+        }
+    ]
+}

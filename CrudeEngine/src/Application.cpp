@@ -68,6 +68,8 @@ EventManager *gpEventManager;
 bool PlayerIsDead;
 bool Debug;
 int GrenadeCount;
+bool Start;
+bool ShowHelp;
 
 Shader *gpShader;
 Shader *gdShader;
@@ -76,6 +78,7 @@ int Tombstones;
 
 float Spawner::mStatic = 0.0f;
 
+bool appIsRunning = true;
 int main(int argc, char* args[])
 {
 	//-----SDL
@@ -94,7 +97,6 @@ int main(int argc, char* args[])
 	SDL_Window *pWindow;
 	int error = 0;
 	int posX = 0, posY = 0;
-	bool appIsRunning = true;
 	
 	// Initialize SDL
 	if ((error = SDL_Init(SDL_INIT_VIDEO)) < 0)
@@ -227,7 +229,7 @@ int main(int argc, char* args[])
 
 		pause.SetTransform(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
 		pause.SetSprite("res/textures/pause.png");
-
+		
 	//------ Help Screen -----
 
 		GameObject help(NO_OBJECT);
@@ -235,7 +237,7 @@ int main(int argc, char* args[])
 		pNewComponent = help.AddComponent(SPRITE);
 
 		help.SetTransform(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
-		help.SetSprite("res/textures/help.png");
+		help.SetSprite("res/textures/ingamehelp.png");
 
 	//------- End Screen -----
 		GameObject end(NO_OBJECT);
@@ -267,8 +269,8 @@ int main(int argc, char* args[])
 	//------
 		Renderer renderer;
 		bool Pause = false;
-		bool Start = false;
-		bool ShowHelp = false;
+		Start = false;
+		ShowHelp = false;
 		PlayerIsDead = false;
 		Debug = false;
 		GrenadeCount = 5;
@@ -280,26 +282,11 @@ int main(int argc, char* args[])
 			gpFrameRateController->FrameStart();
 			//printf("Frame time = %f\n", gpFrameRateController->GetFrameTime());
 			
-			SDL_Event e;
-			while (SDL_PollEvent(&e) != 0)
-			{
-				//User requests quit
-				if (e.type == SDL_QUIT)
-				{
-					appIsRunning = false;
-				}
-			}
-
 			gpInputManager->Update();
 			
-			if (gpInputManager->IsPressed(SDL_SCANCODE_ESCAPE) && PlayerIsDead)
-			{
-				appIsRunning = false;
-			}
-			if (gpInputManager->IsTriggered(SDL_SCANCODE_P) && !ShowHelp)
+			if (gpInputManager->IsTriggered(SDL_SCANCODE_P) && !ShowHelp && Start)
 			{
 				Pause = !Pause;
-				
 			}
 			if (gpInputManager->IsTriggered(SDL_SCANCODE_O))
 			{
@@ -310,34 +297,31 @@ int main(int argc, char* args[])
 				ShowHelp = !ShowHelp;
 				Pause = ShowHelp;
 			}
-			if (gpInputManager->IsTriggered(SDL_SCANCODE_S) && !Start)
-			{
-				ShowHelp = false;
-				Start = true;
-				Pause = false;
-				gpObjectFactory->LoadLevel("level.json");
-			}
-			if (Pause)
-				background.SetSprite("res/textures/pause_background.png");
-			else
-				background.SetSprite("res/textures/background.png");
+			
 			gpShader->Bind();
 
 			/* Render here */
 			renderer.Clear();
 
-			background.Update();
-			renderer.Draw(va, ib, *gpShader);
-
-
-			//Current Greande Count
-			for (int i = 0; i < GrenadeCount; ++i)
+			if (Start) 
 			{
-				CurrGrenade[i]->SetTransform(300.0f + (i*30), SCREEN_HEIGHT - 30.0f, 30.0f, 30.0f, 0.0f);
-				CurrGrenade[i]->Update();
+				if (Pause)
+				background.SetSprite("res/textures/pause_background.png");
+				else
+				background.SetSprite("res/textures/background.png");
+
+				background.Update();
 				renderer.Draw(va, ib, *gpShader);
+
+
+				//Current Greande Count
+				for (int i = 0; i < GrenadeCount; ++i)
+				{
+					CurrGrenade[i]->SetTransform(300.0f + (i * 30), SCREEN_HEIGHT - 30.0f, 30.0f, 30.0f, 0.0f);
+					CurrGrenade[i]->Update();
+					renderer.Draw(va, ib, *gpShader);
+				}
 			}
-			
 			if (!PlayerIsDead && !Pause)
 			{
 				//--- Draw static dead objects
@@ -421,9 +405,8 @@ int main(int argc, char* args[])
 				{
 					GameObject* gameover = gpObjectFactory->LoadObject("gameover.json",NO_OBJECT);
 					gameover->Update();
-
 				}
-				else if (ShowHelp)
+				if (ShowHelp)
 				{
 					help.Update();
 				}

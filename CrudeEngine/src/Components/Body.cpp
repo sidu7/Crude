@@ -20,9 +20,19 @@ Creation date:	12/04/2018
 #include "../Managers/EventManager.h"
 #include "../Managers/Events.h"
 #include "../Managers/GameObjectManager.h"
+#include "../Managers/InputManager.h"
+#include "../Managers/ObjectFactory.h"
 #include "../Defines.h"
+#include "../Maths/Math2D.h"
+#include "SDL_mouse.h"
 
 extern GameObjectManager *gpGameObjectManager;
+extern Input_Manager *gpInputManager;
+extern ObjectFactory *gpObjectFactory;
+extern bool appIsRunning;
+extern bool Start;
+
+bool IsButtonClicked(Body* pBody);
 
 Body::Body() : Component(BODY)
 {
@@ -38,6 +48,35 @@ Body::~Body()
 
 void Body::Update()
 {
+	if (mpOwner->mType == STARTBUTTON)
+	{
+		if (IsButtonClicked(this))
+		{
+			Start = true;
+			gpObjectFactory->LoadLevel("level.json");
+		}
+	}
+	else if (mpOwner->mType == HOWTOPLAYBUTTON)
+	{
+		if (IsButtonClicked(this))
+		{
+			gpObjectFactory->LoadLevel("howtoplay.json");
+		}
+	}
+	else if (mpOwner->mType == QUITBUTTON)
+	{
+		if (IsButtonClicked(this))
+		{
+			appIsRunning = false;
+		}
+	}
+	else if (mpOwner->mType == BACKBUTTON)
+	{
+		if (IsButtonClicked(this))
+		{
+			gpObjectFactory->LoadLevel("menu.json");
+		}
+	}
 }
 
 void Body::Serialize(JSONObject obj)
@@ -130,4 +169,22 @@ void Body::HandleEvent(Event * pEvent)
 Component * Body::Create()
 {
 	return new Body();
+}
+
+
+bool IsButtonClicked(Body *pBody)
+{
+	if (gpInputManager->IsMouseClicked(SDL_BUTTON_LEFT))
+	{
+		int x, y;
+		SDL_GetMouseState(&x, &y);
+		Vector2D MousePos;
+		Vector2DSet(&MousePos, x, 720 - y);
+		ShapeAABB *pRect = static_cast<ShapeAABB*>(pBody->mpShape);
+		if (StaticPointToStaticRect(&MousePos, &pBody->mPosition, pRect->mTop, pRect->mLeft))
+		{
+			return true;
+		}
+	}
+	return false;
 }

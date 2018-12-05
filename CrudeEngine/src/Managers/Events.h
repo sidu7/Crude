@@ -84,3 +84,9 @@ public:
 	~TombDestroyed() { }
 	int tomb;
 };
+
+class ButtonClick : public Event {
+public:
+	ButtonClick() : Event(BUTTONCLICK) { }
+	~ButtonClick() { }
+};

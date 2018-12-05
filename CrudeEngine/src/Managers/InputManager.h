@@ -32,8 +32,9 @@ public:
 	bool IsReleased(unsigned int KeyScanCode);
 
 	bool IsMouseClicked(unsigned int KeyScanCode);
+	
 
-private:
+public:
 	Uint8 mCurrentState[512];
 	Uint8 mPreviousState[512];
 	bool mPrevMouseState[3];

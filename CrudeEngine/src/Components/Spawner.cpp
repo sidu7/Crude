@@ -39,7 +39,7 @@ Spawner::~Spawner()
 
 void Spawner::Update()
 {
-	/*mCurrDelay += gpFrameRateController->GetFrameTime();
+	mCurrDelay += gpFrameRateController->GetFrameTime();
 	if (mCurrDelay > mStartDelay + 2.0f)
 	{
 		GameObject *pCrawler = gpObjectFactory->GetArcheType(GHOUL);
@@ -63,8 +63,7 @@ void Spawner::Update()
 			Drop *pDrop = static_cast<Drop*>(pCrawler->AddComponent(DROP));
 			pDrop->mType = DropType(value);
 		}
-		//---------------------------
-	}*/
+	}
 }
 
 Component * Spawner::Create()

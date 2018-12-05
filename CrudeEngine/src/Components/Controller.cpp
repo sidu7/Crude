@@ -97,7 +97,8 @@ void Controller::Update()
 		if (gpInputManager->IsPressed(SDL_SCANCODE_A) && gpInputManager->IsPressed(SDL_SCANCODE_S)) {
 			pBody->mAngV = 225.0f;
 		}
-		if (gpInputManager->IsTriggered(SDL_SCANCODE_G))
+		//if (gpInputManager->IsTriggered(SDL_SCANCODE_G))
+		if(gpInputManager->IsMouseClicked(SDL_BUTTON_RIGHT))
 		{
 			if (GrenadeCount > 0)
 			{
@@ -114,8 +115,8 @@ void Controller::Update()
 				GrenadeCount--;
 			}
 		}
-		if (gpInputManager->IsTriggered(SDL_SCANCODE_SPACE))
-		//if(gpInputManager->IsMouseClicked(SDL_BUTTON_LEFT))
+		//if (gpInputManager->IsTriggered(SDL_SCANCODE_SPACE))
+		if(gpInputManager->IsMouseClicked(SDL_BUTTON_LEFT))
 		{
 				
 			if (pAnimator->mCurrState != "move")

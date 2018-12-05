@@ -20,13 +20,14 @@ Creation date:	12/04/2018
 #include <string>
 #include <iostream>
 
+extern bool appIsRunning;
 
 Input_Manager::Input_Manager()
 {
 	SDL_memset(mCurrentState, 0, 512 * sizeof(Uint8));
 	SDL_memset(mPreviousState, 0, 512 * sizeof(Uint8));
-	SDL_memset(mPrevMouseState, 0, 3 * sizeof(Uint8));
-	SDL_memset(mCurrentMouseState, 0, 3 * sizeof(Uint8));
+	SDL_memset(mPrevMouseState, 0, 3 * sizeof(bool));
+	SDL_memset(mCurrentMouseState, 0, 3 * sizeof(bool));
 }
 
 Input_Manager::~Input_Manager()
@@ -37,11 +38,17 @@ void Input_Manager::Update()
 {
 	//fetch mouse state
 
-	SDL_memcpy(mPrevMouseState, mCurrentMouseState, 3 * sizeof(Uint8));
+	SDL_memcpy(mPrevMouseState, mCurrentMouseState, 3 * sizeof(bool));
 
 	SDL_Event e;
 	while (SDL_PollEvent(&e) != 0)
 	{
+		//User requests quit
+		if (e.type == SDL_QUIT)
+		{
+			appIsRunning = false;
+		}
+
 		if (e.type == SDL_MOUSEBUTTONDOWN)
 		{
 			mCurrentMouseState[e.button.button - 1] = true;
@@ -101,6 +108,9 @@ bool Input_Manager::IsReleased(unsigned int KeyScanCode)
 bool Input_Manager::IsMouseClicked(unsigned int KeyScanCode)
 {
 	if (mCurrentMouseState[KeyScanCode - 1] && !mPrevMouseState[KeyScanCode - 1])
+	{
 		return true;
+		printf("Mouse Clicked\n");
+	}
 	return false;
 }
