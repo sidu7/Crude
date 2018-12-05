@@ -7,9 +7,9 @@ File Name:		LineSegment2D.c
 Purpose:		Math Functions to check for collision between point, Circle and Rectangle
 Language:		C
 Platform:		Visual Studio 2017 | Visual C++ 14.1 | Windows 10 Home
-Project:		CS529_sidhantt_2
+Project:		CS529_sidhantt_FinalProject
 Author:			Sidhant Tumma | sidhant.t | 60002218
-Creation date:	10/02/2018
+Creation date:	12/04/2018
 - End Header --------------------------------------------------------*/
 
 #include "LineSegment2D.h"

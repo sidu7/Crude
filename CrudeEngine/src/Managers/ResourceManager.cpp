@@ -8,9 +8,9 @@ File Name:		ResouceManager.cpp
 Purpose:		Resource handling for Game Engine
 Language:		C++
 Platform:		Visual Studio 2017 | Visual C++ 14.1 | Windows 10 Home
-Project:		CS529_sidhantt_Milestone1
+Project:		CS529_sidhantt_FinalProject
 Author:			Sidhant Tumma | sidhant.t | 60002218
-Creation date:	10/18/2018
+Creation date:	12/04/2018
 
 - End Header --------------------------------------------------------*/
 
