@@ -28,7 +28,7 @@ extern GameObjectManager *gpGameObjectManager;
 extern int GrenadeCount;
 extern EventManager *gpEventManager;
 extern bool PlayerIsDead;
-
+extern bool GodMode;
 
 
 Attributes::Attributes() : Component(ATTRIBUTES), mCurrHP(0), mTotalHP(0), mDamage(0)
@@ -66,14 +66,16 @@ void Attributes::HandleEvent(Event * pEvent)
 		mCurrHP -= td->DamageDealt;
 		if (mpOwner->mType == PLAYER)
 		{
-			//Update Player HP bar
-			PlayerHPEvent *phe = new PlayerHPEvent();
-			phe->HPChange = -(td->DamageDealt*1.0f/mTotalHP);
-			gpEventManager->BroadcastEventToSubscribers(phe);
-			if (mCurrHP <= 0)
-			{
-				PlayerIsDead = true;
-				gpGameObjectManager->Destroy(mpOwner);
+			if (!GodMode) {
+				//Update Player HP bar
+				PlayerHPEvent *phe = new PlayerHPEvent();
+				phe->HPChange = -(td->DamageDealt*1.0f / mTotalHP);
+				gpEventManager->BroadcastEventToSubscribers(phe);
+				if (mCurrHP <= 0)
+				{
+					PlayerIsDead = true;
+					gpGameObjectManager->Destroy(mpOwner);
+				}
 			}
 		}
 		if (mpOwner->mType == TOMBSTONE)

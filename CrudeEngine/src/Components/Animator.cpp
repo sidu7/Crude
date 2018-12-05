@@ -38,8 +38,6 @@ Animator::~Animator()
 {
 	for (auto a : mAnimations)
 	{
-		for (auto t : a.second)
-			delete t;
 		a.second.clear();
 	}
 	mAnimations.clear();

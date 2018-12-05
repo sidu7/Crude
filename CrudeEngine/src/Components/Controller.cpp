@@ -36,6 +36,7 @@ extern ObjectFactory *gpObjectFactory;
 extern EventManager *gpEventManager;
 extern ResourceManager *gpResourceManager;
 extern int GrenadeCount;
+extern bool GodMode;
 
 
 Controller::Controller() : Component (CONTROLLER) , moving(false)
@@ -111,8 +112,10 @@ void Controller::Update()
 				gpEventManager->AddTimedEvent(tge);
 
 				moving = false;
-
-				GrenadeCount--;
+				if (!GodMode)
+				{
+					GrenadeCount--;
+				}
 			}
 		}
 		//if (gpInputManager->IsTriggered(SDL_SCANCODE_SPACE))

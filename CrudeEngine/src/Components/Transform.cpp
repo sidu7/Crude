@@ -58,8 +58,11 @@ void Transform::Update()
 	Matrix3DConcat(&mvp, gpProj, &model);
 	gpShader->Bind();
 	gpShader->SetUniformMat4f("u_MVP", &mvp);
-	gdShader->Bind();
-	gdShader->SetUniformMat4f("u_MVP", &mvp);
+	if (Debug)
+	{
+		gdShader->Bind();
+		gdShader->SetUniformMat4f("u_MVP", &mvp);
+	}
 }
 
 void Transform::Serialize(JSONObject obj)

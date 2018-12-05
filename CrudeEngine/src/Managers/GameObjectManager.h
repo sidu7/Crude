@@ -26,9 +26,13 @@ class GameObjectManager
 	GameObjectManager();
 	~GameObjectManager();
 	void Destroy(GameObject* pGameObject);
-		
-	public:
+	void Update();
+
+public:
 	std::vector<GameObject *> mGameObjects;
 	std::vector<GameObject*> mStaticDeadObjects;
 	std::map<unsigned int, Component*> mComponentMap;
+
+private:
+	std::vector<GameObject*> mDeleteObjects;
 };

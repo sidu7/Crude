@@ -70,6 +70,7 @@ bool Debug;
 int GrenadeCount;
 bool Start;
 bool ShowHelp;
+bool GodMode;
 
 Shader *gpShader;
 Shader *gdShader;
@@ -158,8 +159,13 @@ int main(int argc, char* args[])
 			 0.5f,  0.5f, 1.0f, 1.0f,
 			-0.5f,  0.5f, 0.0f, 1.0f
 		};
+		
+		unsigned int indices[] = {
+			0, 1, 2,
+			2, 3, 0
+		};
 
-		double circle[] = {
+		float circle[] = {
 			   0.5f,    0.0f,
 			 0.433f,   0.25f,
 			 0.353f,  0.353f,
@@ -178,11 +184,6 @@ int main(int argc, char* args[])
 			 0.433f,  -0.25f
 		};
 
-		unsigned int indices[] = {
-			0, 1, 2,
-			2, 3, 0
-		};
-
 		VertexArray va;
 
 		VertexBuffer vb(positions, 4 * 4 * sizeof(float));
@@ -191,14 +192,15 @@ int main(int argc, char* args[])
 		va.Push(2, GL_FLOAT, sizeof(float));
 		va.AddLayout();
 
+		IndexBuffer ib(indices, 6);
+
+
 		VertexArray vc;
 
 		VertexBuffer vbc(circle, 2 * 16 * sizeof(float));
 		vc.AddBuffer(vbc);
 		vc.Push(2, GL_FLOAT, sizeof(float));
 		vc.AddLayout();
-
-		IndexBuffer ib(indices, 6);
 
 		gpProj = new Matrix3D();
 		Matrix3DOrtho(gpProj, 0.0f, SCREEN_WIDTH, 0.0f, SCREEN_HEIGHT, -1.0f, 1.0f);
@@ -220,6 +222,14 @@ int main(int argc, char* args[])
 
 		background.SetTransform(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
 		background.SetSprite("res/textures/background.png");
+
+	//----- GodMode icon ----
+		GameObject god(NO_OBJECT);
+		pNewComponent = god.AddComponent(TRANSFORM);
+		pNewComponent = god.AddComponent(SPRITE);
+
+		god.SetTransform(800, 680, 50, 50, 0.0f);
+		god.SetSprite("res/textures/godmode.png");
 
 	//------ Pause Screen -----
 		GameObject pause(NO_OBJECT);
@@ -272,6 +282,7 @@ int main(int argc, char* args[])
 		Start = false;
 		ShowHelp = false;
 		PlayerIsDead = false;
+		GodMode = false;
 		Debug = false;
 		GrenadeCount = 5;
 		Tombstones = 2;
@@ -284,19 +295,11 @@ int main(int argc, char* args[])
 			
 			gpInputManager->Update();
 			
-			if (gpInputManager->IsTriggered(SDL_SCANCODE_P) && !ShowHelp && Start)
-			{
-				Pause = !Pause;
-			}
 			if (gpInputManager->IsTriggered(SDL_SCANCODE_O))
 			{
 				Debug = !Debug;
 			}
-			if (gpInputManager->IsTriggered(SDL_SCANCODE_H) && Start)
-			{
-				ShowHelp = !ShowHelp;
-				Pause = ShowHelp;
-			}
+			
 			
 			gpShader->Bind();
 
@@ -305,6 +308,20 @@ int main(int argc, char* args[])
 
 			if (Start) 
 			{
+				if (gpInputManager->IsTriggered(SDL_SCANCODE_P) && !ShowHelp)
+				{
+					Pause = !Pause;
+				}
+				if (gpInputManager->IsTriggered(SDL_SCANCODE_H))
+				{
+					ShowHelp = !ShowHelp;
+					Pause = ShowHelp;
+				}
+				if (gpInputManager->IsTriggered(SDL_SCANCODE_G))
+				{
+					GodMode = !GodMode;
+					
+				}
 				if (Pause)
 				background.SetSprite("res/textures/pause_background.png");
 				else
@@ -312,7 +329,12 @@ int main(int argc, char* args[])
 
 				background.Update();
 				renderer.Draw(va, ib, *gpShader);
-
+				
+				if (GodMode)
+				{
+					god.Update();
+					renderer.Draw(va, ib, *gpShader);
+				}
 
 				//Current Greande Count
 				for (int i = 0; i < GrenadeCount; ++i)
@@ -330,7 +352,10 @@ int main(int argc, char* args[])
 					if(gpGameObjectManager->mStaticDeadObjects[i]->mType != TOMBSTONE)
 						gpGameObjectManager->mStaticDeadObjects[i]->mDeathDelay -= gpFrameRateController->GetFrameTime();
 					if (gpGameObjectManager->mStaticDeadObjects[i]->mDeathDelay < 0.0f)
+					{
+						delete gpGameObjectManager->mStaticDeadObjects[i];
 						gpGameObjectManager->mStaticDeadObjects.erase(gpGameObjectManager->mStaticDeadObjects.begin() + i);
+					}
 					else
 					{
 						
@@ -420,7 +445,7 @@ int main(int argc, char* args[])
 			}
 
 			SDL_GL_SwapWindow(pWindow);
-
+			gpGameObjectManager->Update();
 			gpFrameRateController->FrameEnd();
 		}
 	}

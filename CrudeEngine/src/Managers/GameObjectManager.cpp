@@ -62,13 +62,22 @@ GameObjectManager::~GameObjectManager()
 	mStaticDeadObjects.clear();
 }
 
+
 void GameObjectManager::Destroy(GameObject* pGameObject)
 {
 	for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		if (mGameObjects[i] == pGameObject)
 		{
-			//mGameObjects[i]->~GameObject();
 			mGameObjects[i]->Destroyed = true;
+			if(mGameObjects[i]->mType != GHOUL && mGameObjects[i]->mType != CRAWLER)
+				mDeleteObjects.push_back(pGameObject);
 			mGameObjects.erase(mGameObjects.begin()+i);
 		}
+}
+
+void GameObjectManager::Update()
+{
+	for (unsigned int i = 0; i < mDeleteObjects.size(); ++i)
+		delete mDeleteObjects[i];
+	mDeleteObjects.erase(mDeleteObjects.begin(), mDeleteObjects.end());
 }
