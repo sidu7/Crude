@@ -128,7 +128,7 @@ void GameObject::ScaleToBody()
 		Vector2DSet(&pTr->mScale, pShape->mTop, pShape->mLeft);	
 	}
 	pTr->Debug = true;
-	pTr->Update();
+	pTr->UpdateDebug();
 }
 
 void GameObject::ResetScale()

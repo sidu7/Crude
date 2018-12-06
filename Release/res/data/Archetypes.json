@@ -1,0 +1,24 @@
+{
+    "Prefabs" : [
+        {
+            "Type" : 4,
+            "File" : "bullet.json"
+        },
+        {
+            "Type" : 2,
+            "File" : "Ghoul.json"
+        },
+        {
+            "Type" : 1,
+            "File" : "Crawler.json"
+        },
+        {
+            "Type" : 5,
+            "File" : "grenade.json"
+        },
+        {
+            "Type" : 8,
+            "File" : "drop.json"
+        }
+    ]
+}

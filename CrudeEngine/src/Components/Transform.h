@@ -29,15 +29,21 @@ class Transform : public Component
 
 	void Update();
 	
+	void UpdateLine();
+	void UpdateDebug();
 	void Serialize(JSONObject obj);
 	void HandleEvent(Event *pEvent);
 
 	Component* Create();
 	
-	public:
+public:
 	Vector2D mPosition;
 	Vector2D mScale;
 	float mAngle;
 	bool Debug;
+
+private:
+	Matrix3D trans;
+	Matrix3D mvp;
 
 };

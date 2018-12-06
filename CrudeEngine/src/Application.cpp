@@ -385,6 +385,8 @@ int main(int argc, char* args[])
 					
 					/* Draw call*/
 					renderer.Draw(va, ib, *gpShader);
+
+					//Debug drawing calls
  					if (Debug && !destroyed)
 					{
 						Body* pBody = static_cast<Body*>(gpGameObjectManager->mGameObjects[i]->GetComponent(BODY));
@@ -404,20 +406,8 @@ int main(int argc, char* args[])
 						//Direction vector
 						if (gpGameObjectManager->mGameObjects[i]->mType == PLAYER)
 						{
-							Matrix3D scale, trans, rot, transform;
-							Matrix3D model;
-							Matrix3D mvp;
-
 							Transform* pTr = static_cast<Transform*>(gpGameObjectManager->mGameObjects[i]->GetComponent(TRANSFORM));
-							Matrix3DScale(&scale, pTr->mScale.x, pTr->mScale.y, 1.0f);
-
-							Matrix3DTranslate(&trans, pBody->mPosition.x, pBody->mPosition.y, 0.0f);
-							Matrix3DRotDeg(&rot, pBody->mAngV);
-							Matrix3DConcat(&transform, &trans, &rot);
-							Matrix3DConcat(&model, &transform, &scale);
-							Matrix3DConcat(&mvp, gpProj, &model);
-							gdShader->Bind();
-							gdShader->SetUniformMat4f("u_MVP", &mvp);
+							pTr->UpdateLine();
 							renderer.DrawDebugLine(vl, *gdShader);
 						}
 						gpGameObjectManager->mGameObjects[i]->ResetScale();

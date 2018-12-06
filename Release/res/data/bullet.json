@@ -1,0 +1,14 @@
+{
+    "Transform" : {
+        "Pos"   : [0.0, 0.0],
+        "Scale" : [20.0, 10.0],
+        "Angle" : 0.0
+    },
+    "Sprite" : {
+        "File" : "bullet.png"
+    },
+    "Body" : {
+        "Mass" : 0.0,
+        "AABB" : [20.0, 20.0, 20.0, 20.0]
+    }
+}

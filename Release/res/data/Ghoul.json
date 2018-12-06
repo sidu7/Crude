@@ -1,0 +1,34 @@
+{
+	"Transform" : {
+		"Pos"  : [-100.0, -100.0],
+		"Scale" : [1.0,1.0],
+		"Angle" : 0.0
+	},
+	"Sprite" : {
+		"File" : "enemy/ghoul/move/move0.png"
+    },
+	"Body" : {
+		"AABB" : [60.0, 60.0, 60.0, 60.0]
+	},
+	"Animator" : {
+		"Sprites" : [
+			{
+				"FileDir" : "res/textures/enemy/ghoul/move",
+				"Type" : "move",
+				"Default" : true
+			},
+			{
+				"FileDir" : "res/textures/enemy/ghoul/die",
+				"Type" : "die"
+			}
+		]
+	},
+	"Follow" : "true",
+	"Subscriptions" : {
+		"Events" : [ 1 ]
+	},
+	"Attributes" : {
+		"TotalHP" : 30,
+		"Damage" : 10
+	}
+}

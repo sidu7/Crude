@@ -1,0 +1,29 @@
+{
+    "Transform" : {
+        "Pos"   : [0.0, 0.0],
+        "Scale" : [80.0, 80.0],
+        "Angle" : 0.0
+    },
+    "Sprite" : {
+        "File" : "grenade/grenade0.png"
+    },
+    "Body" : {
+        "Circle" : 25.0
+    },
+    "Animator" : {
+        "Sprites" : [
+            {
+                "FileDir" : "res/textures/grenade",
+                "Type" : "grenade",
+                "Default" : true
+            },
+            {
+                "FileDir" : "res/textures/explosion",
+                "Type" : "explode"
+            }
+        ]
+    },
+    "FallExplode" : {
+        "Limit" : 1.5
+    }
+}

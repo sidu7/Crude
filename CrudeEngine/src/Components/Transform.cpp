@@ -36,33 +36,37 @@ Transform::~Transform()
 
 void Transform::Update()
 {
-	Matrix3D scale, trans, rot, transform;
+	Matrix3D rot, scale, transform;
 	Matrix3D model;
-	Matrix3D mvp;
 
 	Matrix3DScale(&scale,mScale.x, mScale.y, 1.0f);
 
 	Matrix3DTranslate(&trans, mPosition.x, mPosition.y, 0.0f);
 	
-	if (!Debug)
-	{
-		Matrix3DRotDeg(&rot, mAngle);
-		Matrix3DConcat(&transform, &trans, &rot);
-		Matrix3DConcat(&model, &transform, &scale);
-	}
-	else
-	{
-		Matrix3DConcat(&model, &trans, &scale);
-	}
+	Matrix3DRotDeg(&rot, mAngle);
+	Matrix3DConcat(&transform, &trans, &rot);
+	Matrix3DConcat(&model, &transform, &scale);
 
 	Matrix3DConcat(&mvp, gpProj, &model);
 	gpShader->Bind();
 	gpShader->SetUniformMat4f("u_MVP", &mvp);
-	if (Debug)
-	{
-		gdShader->Bind();
-		gdShader->SetUniformMat4f("u_MVP", &mvp);
-	}
+}
+
+void Transform::UpdateLine()
+{
+	gdShader->Bind();
+	gdShader->SetUniformMat4f("u_MVP", &mvp);
+}
+
+void Transform::UpdateDebug()
+{
+	Matrix3D model, scale;
+	Matrix3D d_mvp;
+	Matrix3DScale(&scale, mScale.x, mScale.y, 1.0f);
+	Matrix3DConcat(&model, &trans, &scale);
+	Matrix3DConcat(&d_mvp, gpProj, &model);
+	gdShader->Bind();
+	gdShader->SetUniformMat4f("u_MVP", &d_mvp);
 }
 
 void Transform::Serialize(JSONObject obj)

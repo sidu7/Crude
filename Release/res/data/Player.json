@@ -1,0 +1,46 @@
+{
+	"Transform" : {
+		"Pos"  : [100.0, 1000.0],
+		"Scale" : [1.0,1.0],
+		"Angle" : 0.0
+	},
+	
+	"Sprite" : {
+		"File" : "player/idle/idle.png"
+	},
+	"Controller" : "true",
+	"Body" : {
+		"AABB" : [80.0, 80.0, 80.0, 80.0]
+	},
+	"Animator" : {
+		"Sprites" : [
+			{
+				"FileDir" : "res/textures/player/move",
+				"Type" : "move"
+			},
+			{
+				"FileDir" : "res/textures/player/idle",
+				"Type" : "idle"
+			},
+			{
+				"FileDir" : "res/textures/player/move_shoot",
+				"Type" : "move_shoot"
+			},
+			{
+				"FileDir" : "res/textures/player/throw",
+				"Type" : "throw"
+			},
+			{
+				"FileDir" : "res/textures/player/shoot",
+				"Type" : "shoot"
+			}
+		]
+	},
+	"Subscriptions" : {
+		"Events" : [ 0, 3]
+	},
+	"Attributes" : {
+		"TotalHP" : 100,
+		"Damage" : 10
+	}
+}
