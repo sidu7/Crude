@@ -96,7 +96,7 @@ void Transform::HandleEvent(Event * pEvent)
 		{
 			mScale.x -= 90.0f * the->HPLost;
 			mPosition.x -= 45.0f * the->HPLost;
-			if (mScale.x < 0.0f)
+			if (mScale.x <= 0.0f)
 			{
 				TombDestroyed *tbd = new TombDestroyed();
 				tbd->tomb = the->tomb;
@@ -107,7 +107,7 @@ void Transform::HandleEvent(Event * pEvent)
 		{
 			mScale.x -= 90.0f * the->HPLost;
 			mPosition.x -= 45.0f * the->HPLost;
-			if (mScale.x < 0.0f)
+			if (mScale.x <= 0.0f)
 			{
 				TombDestroyed *tbd = new TombDestroyed();
 				tbd->tomb = the->tomb;

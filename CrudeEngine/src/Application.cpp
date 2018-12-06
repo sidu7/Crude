@@ -184,6 +184,12 @@ int main(int argc, char* args[])
 			 0.433f,  -0.25f
 		};
 
+		float line[] = {
+			0.0f, 0.0f,
+			1.0f, 0.0f,
+		};
+
+		//Quad
 		VertexArray va;
 
 		VertexBuffer vb(positions, 4 * 4 * sizeof(float));
@@ -194,7 +200,7 @@ int main(int argc, char* args[])
 
 		IndexBuffer ib(indices, 6);
 
-
+		//Circle
 		VertexArray vc;
 
 		VertexBuffer vbc(circle, 2 * 16 * sizeof(float));
@@ -202,15 +208,24 @@ int main(int argc, char* args[])
 		vc.Push(2, GL_FLOAT, sizeof(float));
 		vc.AddLayout();
 
+		//Line
+		VertexArray vl;
+
+		VertexBuffer vbl(line, 2 * 2 * sizeof(float));
+		vl.AddBuffer(vbl);
+		vl.Push(2, GL_FLOAT, sizeof(float));
+		vl.AddLayout();
+
+
 		gpProj = new Matrix3D();
 		Matrix3DOrtho(gpProj, 0.0f, SCREEN_WIDTH, 0.0f, SCREEN_HEIGHT, -1.0f, 1.0f);
 	//-----
 		
 		
-		gpShader = new Shader("res/shaders/vertex.shader", "res/shaders/fragment.shader");
+		gpShader = new Shader("res/shaders/shader.vertex", "res/shaders/shader.fragment");
 		gpShader->Bind();
 
-		gdShader = new Shader("res/shaders/vertexcircle.shader", "res/shaders/fragmentcircle.shader");
+		gdShader = new Shader("res/shaders/debug.vertex", "res/shaders/debug.fragment");
 
 
 	//---- Background -----
@@ -353,12 +368,11 @@ int main(int argc, char* args[])
 						gpGameObjectManager->mStaticDeadObjects[i]->mDeathDelay -= gpFrameRateController->GetFrameTime();
 					if (gpGameObjectManager->mStaticDeadObjects[i]->mDeathDelay < 0.0f)
 					{
-						delete gpGameObjectManager->mStaticDeadObjects[i];
+						gpGameObjectManager->mDeleteObjects.push_back(gpGameObjectManager->mStaticDeadObjects[i]);
 						gpGameObjectManager->mStaticDeadObjects.erase(gpGameObjectManager->mStaticDeadObjects.begin() + i);
 					}
 					else
-					{
-						
+					{	
 						gpGameObjectManager->mStaticDeadObjects[i]->Update();
 						renderer.Draw(va, ib, *gpShader);
 					}
@@ -380,27 +394,31 @@ int main(int argc, char* args[])
 						gpGameObjectManager->mGameObjects[i]->ScaleToBody();
 						if (pBody->mpShape->mType == Shape::CIRCLE)
 						{
-							renderer.DebugDrawCircle(vc, *gdShader);
+							renderer.DrawDebugCircle(vc, *gdShader);
 						}
 						else
 						{
-							renderer.DebugDraw(va, ib, *gpShader);
+							renderer.DebugDraw(va, ib, *gdShader);
 						}
 							
 						//Direction vector
 						if (gpGameObjectManager->mGameObjects[i]->mType == PLAYER)
 						{
-							glBegin(GL_LINES);
-							glLineWidth(2.5);
-							glColor3f(1.0, 0.0, 0.0);
-							Vector2D p;
-							Vector2DSet(&p, cosf(pBody->mAngV*PI / 180.0f), sinf(pBody->mAngV*PI / 180.0f));
-							Vector2DNormalize(&p, &p);
-							glVertex2f(0, 0);
-							Vector2DScale(&p, &p, 1.5f);
-							glVertex2f(p.x, p.y);
-							glEnd();
-							glFlush();
+							Matrix3D scale, trans, rot, transform;
+							Matrix3D model;
+							Matrix3D mvp;
+
+							Transform* pTr = static_cast<Transform*>(gpGameObjectManager->mGameObjects[i]->GetComponent(TRANSFORM));
+							Matrix3DScale(&scale, pTr->mScale.x, pTr->mScale.y, 1.0f);
+
+							Matrix3DTranslate(&trans, pBody->mPosition.x, pBody->mPosition.y, 0.0f);
+							Matrix3DRotDeg(&rot, pBody->mAngV);
+							Matrix3DConcat(&transform, &trans, &rot);
+							Matrix3DConcat(&model, &transform, &scale);
+							Matrix3DConcat(&mvp, gpProj, &model);
+							gdShader->Bind();
+							gdShader->SetUniformMat4f("u_MVP", &mvp);
+							renderer.DrawDebugLine(vl, *gdShader);
 						}
 						gpGameObjectManager->mGameObjects[i]->ResetScale();
 						
@@ -412,6 +430,7 @@ int main(int argc, char* args[])
 			}
 			else
 			{
+				//Paused state
 				for (unsigned int i = 0; i < gpGameObjectManager->mGameObjects.size(); ++i)
 				{
 					Transform* pT = static_cast<Transform*>(gpGameObjectManager->mGameObjects[i]->GetComponent(TRANSFORM));

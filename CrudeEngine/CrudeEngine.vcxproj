@@ -171,10 +171,10 @@
     <ClInclude Include="src\OpenGL\VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\fragment.shader" />
-    <None Include="res\shaders\fragmentcircle.shader" />
-    <None Include="res\shaders\vertex.shader" />
-    <None Include="res\shaders\vertexcircle.shader" />
+    <None Include="res\shaders\shader.fragment" />
+    <None Include="res\shaders\debug.fragment" />
+    <None Include="res\shaders\shader.vertex" />
+    <None Include="res\shaders\debug.vertex" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attributes.cpp" />

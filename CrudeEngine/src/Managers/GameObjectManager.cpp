@@ -69,8 +69,7 @@ void GameObjectManager::Destroy(GameObject* pGameObject)
 		if (mGameObjects[i] == pGameObject)
 		{
 			mGameObjects[i]->Destroyed = true;
-			if(mGameObjects[i]->mType != GHOUL && mGameObjects[i]->mType != CRAWLER)
-				mDeleteObjects.push_back(pGameObject);
+			mDeleteObjects.push_back(pGameObject);
 			mGameObjects.erase(mGameObjects.begin()+i);
 		}
 }
@@ -78,6 +77,19 @@ void GameObjectManager::Destroy(GameObject* pGameObject)
 void GameObjectManager::Update()
 {
 	for (unsigned int i = 0; i < mDeleteObjects.size(); ++i)
+	{
 		delete mDeleteObjects[i];
+	}
 	mDeleteObjects.erase(mDeleteObjects.begin(), mDeleteObjects.end());
+}
+
+void GameObjectManager::MoveToStaticDead(GameObject* pGameObject)
+{
+	for (unsigned int i = 0; i < mGameObjects.size(); ++i)
+		if (mGameObjects[i] == pGameObject)
+		{
+			mGameObjects[i]->Destroyed = true;
+			mStaticDeadObjects.push_back(pGameObject);
+			mGameObjects.erase(mGameObjects.begin() + i);
+		}
 }

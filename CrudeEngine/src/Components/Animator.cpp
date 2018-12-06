@@ -84,7 +84,6 @@ void Animator::Update()
 					gpGameObjectManager->Destroy(mpOwner);
 				if (mCurrState == "die" || mCurrState == "destroy")
 				{
-					gpGameObjectManager->Destroy(mpOwner);
 					if (mCurrState == "die")
 					{
 						mpOwner->RemoveComponent(FOLLOW);
@@ -97,7 +96,7 @@ void Animator::Update()
 					}
 					mpOwner->RemoveComponent(ANIMATOR);
 					mpOwner->RemoveComponent(ATTRIBUTES);
-					gpGameObjectManager->mStaticDeadObjects.push_back(mpOwner);
+					gpGameObjectManager->MoveToStaticDead(mpOwner);
 				}
 				else
 					ResetState();

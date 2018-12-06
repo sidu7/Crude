@@ -37,5 +37,6 @@ public:
 	void Clear() const;
 	void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
 	void DebugDraw(const VertexArray & va, const IndexBuffer & ib, const Shader & shader) const;
-	void DebugDrawCircle(const VertexArray& va, const Shader& shader) const;
+	void DrawDebugCircle(const VertexArray& va, const Shader& shader) const;
+	void DrawDebugLine(const VertexArray& va, const Shader& shader) const;
 };

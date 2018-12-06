@@ -48,7 +48,6 @@ void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& 
 	shader.Bind();
 	va.Bind();
 	ib.Bind();
-	gpShader->SetUniform1i("debug", 0);
 	GLCall(glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr));
 }
 
@@ -57,13 +56,19 @@ void Renderer::DebugDraw(const VertexArray& va, const IndexBuffer& ib, const Sha
 	shader.Bind();
 	va.Bind();
 	ib.Bind();
-	gpShader->SetUniform1i("debug", 1);
 	GLCall(glDrawElements(GL_LINE_LOOP, ib.GetCount(), GL_UNSIGNED_INT, nullptr));
 }
 
-void Renderer::DebugDrawCircle(const VertexArray& va, const Shader& shader) const
+void Renderer::DrawDebugCircle(const VertexArray& va, const Shader& shader) const
 {
 	shader.Bind();
 	va.Bind();
 	GLCall(glDrawArrays(GL_LINE_LOOP, 0, 16));
+}
+
+void Renderer::DrawDebugLine(const VertexArray& va, const Shader& shader) const
+{
+	shader.Bind();
+	va.Bind();
+	GLCall(glDrawArrays(GL_LINE_LOOP, 0, 2));
 }
