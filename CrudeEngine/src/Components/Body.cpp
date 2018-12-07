@@ -21,16 +21,17 @@ Creation date:	12/04/2018
 #include "../Managers/Events.h"
 #include "../Managers/GameObjectManager.h"
 #include "../Managers/InputManager.h"
-#include "../Managers/ObjectFactory.h"
 #include "../Defines.h"
 #include "../Maths/Math2D.h"
+#include "../Managers/GameStateManager.h"
 #include "SDL_mouse.h"
 
 extern GameObjectManager *gpGameObjectManager;
 extern Input_Manager *gpInputManager;
-extern ObjectFactory *gpObjectFactory;
+extern GameStateManager *gpGameStateManager;
 extern bool appIsRunning;
 extern bool Start;
+extern bool PlayerIsDead;
 
 bool IsButtonClicked(Body* pBody);
 
@@ -53,14 +54,15 @@ void Body::Update()
 		if (IsButtonClicked(this))
 		{
 			Start = true;
-			gpObjectFactory->LoadLevel("level.json");
+			PlayerIsDead = false;
+			gpGameStateManager->LoadLevel(LEVEL1);
 		}
 	}
 	else if (mpOwner->mType == HOWTOPLAYBUTTON)
 	{
 		if (IsButtonClicked(this))
 		{
-			gpObjectFactory->LoadLevel("howtoplay.json");
+			gpGameStateManager->LoadLevel(HOWTOPLAY);
 		}
 	}
 	else if (mpOwner->mType == QUITBUTTON)
@@ -74,7 +76,7 @@ void Body::Update()
 	{
 		if (IsButtonClicked(this))
 		{
-			gpObjectFactory->LoadLevel("menu.json");
+			gpGameStateManager->LoadLevel(MAINMENU);
 		}
 	}
 }
@@ -179,7 +181,7 @@ bool IsButtonClicked(Body *pBody)
 		int x, y;
 		SDL_GetMouseState(&x, &y);
 		Vector2D MousePos;
-		Vector2DSet(&MousePos, x, 720 - y);
+		Vector2DSet(&MousePos, (float)x, (float)720 - y);
 		ShapeAABB *pRect = static_cast<ShapeAABB*>(pBody->mpShape);
 		if (StaticPointToStaticRect(&MousePos, &pBody->mPosition, pRect->mTop, pRect->mLeft))
 		{

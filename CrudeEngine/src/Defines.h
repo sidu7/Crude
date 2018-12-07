@@ -26,6 +26,15 @@ Creation date:	12/04/2018
 #define CRAWLER_VELOCITY 100.0f
 #define GRENADE_SPEED 150.0f
 
+enum Levels
+{
+	MAINMENU,
+	LEVEL1,
+	WINSCREEN,
+	LOSESCREEN,
+	HOWTOPLAY
+};
+
 enum GameObjectTypes
 {
 	NO_OBJECT = -1,

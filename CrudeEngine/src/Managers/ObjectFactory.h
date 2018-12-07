@@ -28,7 +28,6 @@ public:
 	~ObjectFactory();
 
 	void LoadArchetypes(const char *pFileName);
-	void LoadLevel(const char *pFileName);
 	GameObject* LoadObject(const char* pFileName, GameObjectTypes type);
 	GameObject* LoadObject(JSONObject obj, GameObjectTypes type);
 	GameObject* GetArcheType(GameObjectTypes type);

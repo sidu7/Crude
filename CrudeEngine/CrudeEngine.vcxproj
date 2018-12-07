@@ -151,6 +151,7 @@
     <ClInclude Include="src\Managers\GameObject.h" />
     <ClInclude Include="src\Managers\GameObjectManager.h" />
     <ClInclude Include="src\Managers\Events.h" />
+    <ClInclude Include="src\Managers\GameStateManager.h" />
     <ClInclude Include="src\Managers\InputManager.h" />
     <ClInclude Include="src\Managers\ObjectFactory.h" />
     <ClInclude Include="src\Managers\PhysicsManager.h" />
@@ -196,6 +197,7 @@
     <ClCompile Include="src\Managers\Frame Rate Controller.cpp" />
     <ClCompile Include="src\Managers\GameObject.cpp" />
     <ClCompile Include="src\Managers\GameObjectManager.cpp" />
+    <ClCompile Include="src\Managers\GameStateManager.cpp" />
     <ClCompile Include="src\Managers\InputManager.cpp" />
     <ClCompile Include="src\Managers\ObjectFactory.cpp" />
     <ClCompile Include="src\Managers\PhysicsManager.cpp" />

@@ -41,6 +41,7 @@ Creation date:	12/04/2018
 #include "Components/Spawner.h"
 #include "Components/Transform.h" 
 #include "Components/Sprite.h"
+#include "Managers/GameStateManager.h"
 
 #include "Components/Body.h"
 
@@ -64,6 +65,7 @@ ObjectFactory *gpObjectFactory;
 CollisionManager *gpCollisionManager;
 PhysicsManager *gpPhysicsManager;
 EventManager *gpEventManager;
+GameStateManager *gpGameStateManager;
 
 bool PlayerIsDead;
 bool Debug;
@@ -149,6 +151,7 @@ int main(int argc, char* args[])
 	gpCollisionManager = new CollisionManager();
 	gpPhysicsManager = new PhysicsManager();
 	gpEventManager = new EventManager();
+	gpGameStateManager = new GameStateManager();
 
 	//-----
 	printf("%s\n",glGetString(GL_VERSION));
@@ -264,13 +267,6 @@ int main(int argc, char* args[])
 		help.SetTransform(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
 		help.SetSprite("res/textures/ingamehelp.png");
 
-	//------- End Screen -----
-		GameObject end(NO_OBJECT);
-		pNewComponent = end.AddComponent(TRANSFORM);
-		pNewComponent = end.AddComponent(SPRITE);
-
-		end.SetTransform(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
-		end.SetSprite("res/textures/end.png");
 	//------ Grenades counter ----
 
 		GameObject* CurrGrenade[5];
@@ -289,8 +285,8 @@ int main(int argc, char* args[])
 
 
 		gpObjectFactory->LoadArchetypes("Archetypes.json");
-		gpObjectFactory->LoadLevel("menu.json");
-
+		gpGameStateManager->PrecacheLevels("Levels.json");
+		gpGameStateManager->LoadLevel(MAINMENU);
 	//------
 		Renderer renderer;
 		bool Pause = false;
@@ -315,12 +311,12 @@ int main(int argc, char* args[])
 				Debug = !Debug;
 			}
 			
-			
 			gpShader->Bind();
 
 			/* Render here */
 			renderer.Clear();
 
+			
 			if (Start) 
 			{
 				if (gpInputManager->IsTriggered(SDL_SCANCODE_P) && !ShowHelp)
@@ -425,6 +421,12 @@ int main(int argc, char* args[])
 				{
 					Transform* pT = static_cast<Transform*>(gpGameObjectManager->mGameObjects[i]->GetComponent(TRANSFORM));
 					Sprite* pSp = static_cast<Sprite*>(gpGameObjectManager->mGameObjects[i]->GetComponent(SPRITE));
+					if (PlayerIsDead)
+					{
+						Body* pBody = static_cast<Body*>(gpGameObjectManager->mGameObjects[i]->GetComponent(BODY));
+						if(pBody != nullptr)
+							pBody->Update();
+					}
 					pT->Update();
 					pSp->Update();
 
@@ -435,11 +437,6 @@ int main(int argc, char* args[])
 				{
 					pause.Update();
 				}
-				else if (PlayerIsDead)
-				{
-					GameObject* gameover = gpObjectFactory->LoadObject("gameover.json",NO_OBJECT);
-					gameover->Update();
-				}
 				if (ShowHelp)
 				{
 					help.Update();
@@ -448,9 +445,13 @@ int main(int argc, char* args[])
 			}
 			if (Tombstones == 0)
 			{
-				Pause = true;
-				end.Update();
-				renderer.Draw(va, ib, *gpShader);
+				Start = false;
+				gpGameStateManager->LoadLevel(WINSCREEN);
+			}
+			if (PlayerIsDead)
+			{
+				Start = false;
+				gpGameStateManager->LoadLevel(LOSESCREEN);
 			}
 
 			SDL_GL_SwapWindow(pWindow);

@@ -1,0 +1,24 @@
+{
+    "Levels" : [
+        {
+            "Level" : 0,
+            "File" : "menu.json"
+        },
+        {
+            "Level" : 1,
+            "File" : "level1.json"
+        },
+        {
+            "Level" : 2,
+            "File" : "win.json"
+        },
+        {
+            "Level" : 3,
+            "File" : "lose.json"
+        },
+        {
+            "Level" : 4,
+            "File" : "howtoplay.json"
+        }
+    ]
+}
