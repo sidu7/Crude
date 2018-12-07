@@ -45,5 +45,6 @@ public:
 	void SetUniform1f(const std::string& name, float v);
 	void SetUniform4f(const std::string& name, float v1, float v2, float v3, float v4);
 	void SetUniformMat4f(const std::string& name, Matrix3D* matrix);
+	void SetUniformMat4fLoc(int location, Matrix3D* matrix);
 	int GetUniformLocation(const std::string& name);
 };

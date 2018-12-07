@@ -108,8 +108,8 @@ int main(int argc, char* args[])
 		return 1;
 	}
 
-	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3); 
-	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3); 
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4); 
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3); 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -141,6 +141,10 @@ int main(int argc, char* args[])
 			printf( "Error initializing GLEW!\n"); 
 		}
 	}
+
+	if (!GLEW_VERSION_4_3)
+		printf("OpenGL 4.3 is not supported\n");
+
 	//------ SDL End
 	
 	gpInputManager = new Input_Manager();
@@ -189,7 +193,7 @@ int main(int argc, char* args[])
 
 		float line[] = {
 			0.0f, 0.0f,
-			1.0f, 0.0f,
+			0.75f, 0.0f,
 		};
 
 		//Quad

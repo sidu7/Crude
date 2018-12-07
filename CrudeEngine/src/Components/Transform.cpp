@@ -49,13 +49,13 @@ void Transform::Update()
 
 	Matrix3DConcat(&mvp, gpProj, &model);
 	gpShader->Bind();
-	gpShader->SetUniformMat4f("u_MVP", &mvp);
+	gpShader->SetUniformMat4fLoc(2, &mvp);
 }
 
 void Transform::UpdateLine()
 {
 	gdShader->Bind();
-	gdShader->SetUniformMat4f("u_MVP", &mvp);
+	gdShader->SetUniformMat4fLoc(1, &mvp);
 }
 
 void Transform::UpdateDebug()
@@ -66,7 +66,7 @@ void Transform::UpdateDebug()
 	Matrix3DConcat(&model, &trans, &scale);
 	Matrix3DConcat(&d_mvp, gpProj, &model);
 	gdShader->Bind();
-	gdShader->SetUniformMat4f("u_MVP", &d_mvp);
+	gdShader->SetUniformMat4fLoc(1, &d_mvp);
 }
 
 void Transform::Serialize(JSONObject obj)

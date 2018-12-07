@@ -1,11 +1,10 @@
-#version 330 core
+#version 430 core
 
 layout (location = 0) in vec4 position;
 layout (location = 1) in vec2 TexCoord;
+layout (location = 2) uniform mat4 u_MVP;
 
 out vec2 u_TexCoord;
-
-uniform mat4 u_MVP;
 
 void main()
 {
