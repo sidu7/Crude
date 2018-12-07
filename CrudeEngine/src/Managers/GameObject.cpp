@@ -106,36 +106,3 @@ void GameObject::HandleEvent(Event * pEvent)
 		c->HandleEvent(pEvent);
 	}
 }
-
-
-//For Debug Drawing
-
-void GameObject::ScaleToBody()
-{
-	Transform *pTr = static_cast<Transform*>(GetComponent(TRANSFORM));
-	Body* pBody = static_cast<Body*>(GetComponent(BODY));
-	if (pBody == nullptr)
-		return;
-	Vector2DSet(&mTempScale, pTr->mScale.x, pTr->mScale.y);
-	if (pBody->mpShape->mType == Shape::CIRCLE)
-	{
-		ShapeCircle *pCircle = static_cast<ShapeCircle*>(pBody->mpShape);
-		Vector2DSet(&pTr->mScale, pCircle->mRadius*2, pCircle->mRadius * 2);
-	}
-	else
-	{
-		ShapeAABB *pShape = static_cast<ShapeAABB*>(pBody->mpShape);
-		Vector2DSet(&pTr->mScale, pShape->mTop, pShape->mLeft);	
-	}
-	pTr->Debug = true;
-	pTr->UpdateDebug();
-}
-
-void GameObject::ResetScale()
-{
-	Transform *pTr = static_cast<Transform*>(GetComponent(TRANSFORM));
-	Vector2DSet(&pTr->mScale, mTempScale.x, mTempScale.y);
-	pTr->Debug = false;
-	pTr->Update();
-}
-

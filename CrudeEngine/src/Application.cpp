@@ -393,7 +393,8 @@ int main(int argc, char* args[])
 						if (pBody == nullptr)
 							continue;
 					
-						gpGameObjectManager->mGameObjects[i]->ScaleToBody();
+						Transform* pTr = static_cast<Transform*>(gpGameObjectManager->mGameObjects[i]->GetComponent(TRANSFORM));
+						pTr->UpdateDebug();
 						if (pBody->mpShape->mType == Shape::CIRCLE)
 						{
 							renderer.DrawDebugCircle(vc, *gdShader);
@@ -406,11 +407,9 @@ int main(int argc, char* args[])
 						//Direction vector
 						if (gpGameObjectManager->mGameObjects[i]->mType == PLAYER)
 						{
-							Transform* pTr = static_cast<Transform*>(gpGameObjectManager->mGameObjects[i]->GetComponent(TRANSFORM));
 							pTr->UpdateLine();
 							renderer.DrawDebugLine(vl, *gdShader);
 						}
-						gpGameObjectManager->mGameObjects[i]->ResetScale();
 						
 					}
 				}

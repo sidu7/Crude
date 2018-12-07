@@ -25,7 +25,7 @@ GameStateManager::~GameStateManager()
 
 void GameStateManager::PrecacheLevels(const char* pFileName)
 {
-	std::string fullPath = "res/data/";
+	std::string fullPath = "res/data/Levels/";
 	fullPath += pFileName;
 	std::ifstream file(fullPath);
 	std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
@@ -49,7 +49,7 @@ void GameStateManager::PrecacheLevels(const char* pFileName)
 		std::wstring wt = obj[L"File"]->AsString();
 		std::string FileName = std::string(wt.begin(), wt.end());
 
-		std::string Path = "res/data/";
+		std::string Path = "res/data/Levels/";
 		Path += FileName;
 		std::ifstream file(Path);
 		std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());

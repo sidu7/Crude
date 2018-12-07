@@ -19,6 +19,7 @@ Creation date:	12/04/2018
 #include "../Managers/GameObject.h"
 #include "../Managers/GameObjectManager.h"
 #include "../Managers/EventManager.h"
+#include "Body.h"
 
 extern Shader* gpShader;
 extern Shader* gdShader;
@@ -62,7 +63,19 @@ void Transform::UpdateDebug()
 {
 	Matrix3D model, scale;
 	Matrix3D d_mvp;
-	Matrix3DScale(&scale, mScale.x, mScale.y, 1.0f);
+	Body *pBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
+	
+	if (pBody->mpShape->mType == Shape::CIRCLE)
+	{
+		ShapeCircle *pCircle = static_cast<ShapeCircle*>(pBody->mpShape);
+		Matrix3DScale(&scale, pCircle->mRadius * 2, pCircle->mRadius * 2, 1.0f);
+	}
+	else
+	{
+		ShapeAABB *pShape = static_cast<ShapeAABB*>(pBody->mpShape);
+		Matrix3DScale(&scale, pShape->mTop, pShape->mLeft, 1.0f);
+	}
+
 	Matrix3DConcat(&model, &trans, &scale);
 	Matrix3DConcat(&d_mvp, gpProj, &model);
 	gdShader->Bind();

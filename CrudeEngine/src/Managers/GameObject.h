@@ -39,10 +39,7 @@ public:
 		void SetSprite(const char* filePath);
 		void HandleEvent(Event* pEvent);
 
-		//functions for debug drawing
-		void ScaleToBody();
-		void ResetScale();
-
+		
 public:
 		GameObjectTypes mType;
 		float mDeathDelay;

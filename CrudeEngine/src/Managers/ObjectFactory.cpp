@@ -45,7 +45,7 @@ ObjectFactory::~ObjectFactory()
 
 void ObjectFactory::LoadArchetypes(const char *pFileName)
 {
-	std::string fullPath = "res/data/";
+	std::string fullPath = "res/data/Archetypes/";
 	fullPath += pFileName;
 	std::ifstream file(fullPath);
 	std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
@@ -70,7 +70,7 @@ void ObjectFactory::LoadArchetypes(const char *pFileName)
 		std::wstring wt = obj[L"File"]->AsString();
 		FileName = std::string(wt.begin(), wt.end());
 		
-		std::string Path = "res/data/";
+		std::string Path = "res/data/Archetypes/";
 		Path += FileName;
 		std::ifstream file(Path);
 		std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
@@ -90,7 +90,7 @@ GameObject* ObjectFactory::LoadObject(const char *pFileName, GameObjectTypes typ
 {
 	GameObject *pNewGameObject = nullptr;
 	
-	std::string fullPath = "res/data/";
+	std::string fullPath = "res/data/GameObjects/";
 	fullPath += pFileName;
 	std::ifstream file(fullPath);
 	std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
