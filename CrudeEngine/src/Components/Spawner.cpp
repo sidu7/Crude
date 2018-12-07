@@ -45,14 +45,12 @@ void Spawner::Update()
 		GameObject *pCrawler = gpObjectFactory->GetArcheType(GHOUL);
 		Body *pTombBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
 		Body *pCrawlerBody = static_cast<Body*>(pCrawler->GetComponent(BODY));
-		Transform *pCrawlerTrans = static_cast<Transform*>(pCrawler->GetComponent(TRANSFORM));
 		//---- Offset -----------
-		if (mStartDelay == 1.0f)
+		if (mStartDelay == 0.0f)
 			Vector2DSet(&pCrawlerBody->mPosition, pTombBody->mPosition.x + 50.0f, pTombBody->mPosition.y + 20.0f);
 		else
 			Vector2DSet(&pCrawlerBody->mPosition, pTombBody->mPosition.x - 50.0f, pTombBody->mPosition.y - 20.0f);
 		//-------------------------
-		Vector2DSet(&pCrawlerTrans->mScale, 80.0f, 80.0f);
 		mCurrDelay = mStartDelay;
 
 		//------ Add Drop Items -----

@@ -79,7 +79,7 @@ Shader *gdShader;
 Matrix3D* gpProj;
 int Tombstones;
 
-float Spawner::mStatic = 0.0f;
+float Spawner::mStatic;
 
 bool appIsRunning = true;
 int main(int argc, char* args[])

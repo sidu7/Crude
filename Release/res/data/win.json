@@ -1,0 +1,14 @@
+{
+    "Objects" : [
+        {
+            "Type" : -1,
+            "Transform" : {
+				"Pos"  : [480.0, 360.0],
+				"Scale" : [960.0, 720.0]
+			},
+			"Sprite" : {
+				"File" : "end.png"
+            }
+        }
+    ]
+}

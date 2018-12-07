@@ -24,6 +24,7 @@ Creation date:	12/04/2018
 #include "../Defines.h"
 #include "../Maths/Math2D.h"
 #include "../Managers/GameStateManager.h"
+#include "Spawner.h"
 #include "SDL_mouse.h"
 
 extern GameObjectManager *gpGameObjectManager;
@@ -55,6 +56,7 @@ void Body::Update()
 		{
 			Start = true;
 			PlayerIsDead = false;
+			Spawner::mStatic = 0.0f;
 			gpGameStateManager->LoadLevel(LEVEL1);
 		}
 	}
