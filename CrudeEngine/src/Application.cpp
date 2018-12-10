@@ -463,7 +463,6 @@ int main(int argc, char* args[])
 		}
 	}
 
-
 	free(gpInputManager);
 	free(gpFrameRateController);
 	free(gpResourceManager);
@@ -472,6 +471,7 @@ int main(int argc, char* args[])
 	free(gpObjectFactory);
 	free(gpPhysicsManager);
 	free(gpEventManager);
+	free(gpGameStateManager);
 
 	// Close and destroy the window
 	SDL_DestroyWindow(pWindow);
