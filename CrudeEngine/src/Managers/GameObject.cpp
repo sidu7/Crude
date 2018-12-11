@@ -42,8 +42,8 @@ GameObject::~GameObject()
 
 bool GameObject::Update()
 {	
-	for(auto c: mComponents)
-		c->Update();
+	for (unsigned int i = 0; i < mComponents.size(); ++i)
+		mComponents[i]->Update();
 	return Destroyed;
 }
 
@@ -99,10 +99,8 @@ void GameObject::SetSprite(const char* filePath)
 
 void GameObject::HandleEvent(Event * pEvent)
 {
-	for (auto c : mComponents)
+	for (unsigned int i = 0; i < mComponents.size(); ++i)
 	{
-		if (mComponents.size() == 0)
-			break;
-		c->HandleEvent(pEvent);
+		mComponents[i]->HandleEvent(pEvent);
 	}
 }
